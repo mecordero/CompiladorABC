@@ -23,7 +23,8 @@ public class Scanner {
 
     public Scanner() {
         
-        path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/Código/CompiladorABC/src/Scanner/Lexer.flex";
+// path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/Código/CompiladorABC/src/Scanner/Lexer.flex";
+        path = "C://Users//yanil//Google Drive//IIS.2018//COMPILADORES//PROYECTO//CompiladorABC//CompiladorABC//src//Scanner//Lexer.flex";
         generarLexer();
     }
         
@@ -39,7 +40,7 @@ public class Scanner {
         
         while(true){
             Tipo_token t_token = lexer.yylex();
-            if(token == null){
+            if(t_token == null){
                 resultado += "EOF";
                 return resultado;
             }

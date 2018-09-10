@@ -66,3 +66,36 @@ WHILE { return PALABRA_RESERVADA;}
 WITH { return PALABRA_RESERVADA;}
 WRITE { return PALABRA_RESERVADA;}
 XOR { return PALABRA_RESERVADA;}
+
+
+
+"," { return OPERADOR;}
+";" { return OPERADOR;}
+"++" { return OPERADOR;}
+"--" { return OPERADOR;}
+">=" { return OPERADOR;}
+">" { return OPERADOR;}
+"<=" { return OPERADOR;}
+"<" { return OPERADOR;}
+"<>" { return OPERADOR;}
+"=" { return OPERADOR;}
+"+" { return OPERADOR;}
+"-" { return OPERADOR;}
+"*" { return OPERADOR;}
+"/" { return OPERADOR;}
+"(" { return OPERADOR;}
+")" { return OPERADOR;}
+"[" { return OPERADOR;}
+"]" { return OPERADOR;}
+":=" { return OPERADOR;}
+"." { return OPERADOR;}
+":" { return OPERADOR;}
+"+=" { return OPERADOR;}
+"-=" { return OPERADOR;}
+"*=" { return OPERADOR;}
+"/=" { return OPERADOR;}
+">>" { return OPERADOR;}
+"<<" { return OPERADOR;}
+"<<=" { return OPERADOR;} 
+">>=" { return OPERADOR;}
+
