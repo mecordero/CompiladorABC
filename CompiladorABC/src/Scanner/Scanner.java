@@ -5,7 +5,9 @@
  */
 package Scanner;
 
+import Clases.Tabla_símbolos;
 import Clases.Tipo_token;
+import static Clases.Tipo_token.ERROR;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,8 +25,8 @@ public class Scanner {
 
     public Scanner() {
         
-// path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/Código/CompiladorABC/src/Scanner/Lexer.flex";
-        path = "C://Users//yanil//Google Drive//IIS.2018//COMPILADORES//PROYECTO//CompiladorABC//CompiladorABC//src//Scanner//Lexer.flex";
+        path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        //path = "C://Users//yanil//Google Drive//IIS.2018//COMPILADORES//PROYECTO//CompiladorABC//CompiladorABC//src//Scanner//Lexer.flex";
         generarLexer();
     }
         
@@ -33,19 +35,25 @@ public class Scanner {
         jflex.Main.generate(lexer);
     }
     
-    public String escanearArchivo(String nombreArchivo) throws FileNotFoundException, IOException{
+    public void escanearArchivo(String nombreArchivo, Tabla_símbolos tabla_simbolos) throws FileNotFoundException, IOException{
         Reader reader = new BufferedReader(new FileReader(nombreArchivo));
         Lexer lexer = new Lexer(reader);
-        String resultado = "";
+        
+        System.out.println("\n");
         
         while(true){
             Tipo_token t_token = lexer.yylex();
             if(t_token == null){
-                resultado += "EOF";
-                return resultado;
+                break;
             }
-            resultado += "TOKEN " + t_token + " " + lexer.yytext() + "\n";                
-             }
+            
+            if(t_token != ERROR){
+                tabla_simbolos.agregarToken(lexer.yytext(), t_token, lexer.yyline()+1);            
+            }else{
+                System.out.println("Error '" + lexer.yytext() + "' en linea " + lexer.yyline()+1);
+            }
+        }
+        System.out.println("\n");
     }
 }
     

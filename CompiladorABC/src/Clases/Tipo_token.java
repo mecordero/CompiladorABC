@@ -10,5 +10,5 @@ package Clases;
  * @author Meli
  */
 public enum Tipo_token {
-    IDENTIFICADOR, OPERADOR, PALABRA_RESERVADA, LITERAL
+    IDENTIFICADOR, OPERADOR, PALABRA_RESERVADA, LITERAL, ERROR
 }

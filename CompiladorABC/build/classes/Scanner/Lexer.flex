@@ -5,18 +5,31 @@ import static Clases.Tipo_token.*;
 %%
 %class Lexer
 %type Tipo_token
+%line
+%ignorecase
 Letra = [a-zA-Z]
 Digito = [0-9]
 Espacio = [ \t]
-CambioLinea = [\n]
+CambioLinea = [\r\n]
 %{
-public String lexeme;
+    public String lexeme;
+
+    public int yyline() {
+    	return this.yyline;
+    }
+
 %}
 %%
+{CambioLinea} {/*Ignore*/}
 {Espacio} {/*Ignore*/}
 
+/*ERRORES*/
+//Errores de numeros
+//{Digito}+"." {return ERROR;}
+"."{Digito}+ {return ERROR;}
+
 /*Palabras reservadas*/
-"AND" { return PALABRA_RESERVADA;}
+AND { return PALABRA_RESERVADA;}
 ARRAY { return PALABRA_RESERVADA;}
 BEGIN { return PALABRA_RESERVADA;}
 BOOLEAN { return PALABRA_RESERVADA;}
@@ -67,8 +80,19 @@ WITH { return PALABRA_RESERVADA;}
 WRITE { return PALABRA_RESERVADA;}
 XOR { return PALABRA_RESERVADA;}
 
+/*Identificadores*/
+
+{Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
+
+/*Literales*/
+
+"\#[0-9]+" { System.out.println(Integer.parseInt(yytext().substring(1))); return LITERAL;}
+{Digito}+"."{Digito}+ {return LITERAL;}
+{Digito}* {return LITERAL;}
+{Digito}"."{Digito}+E-?{Digito}+ {return LITERAL;}
 
 
+/*Operadores*/
 "," { return OPERADOR;}
 ";" { return OPERADOR;}
 "++" { return OPERADOR;}
@@ -98,5 +122,8 @@ XOR { return PALABRA_RESERVADA;}
 "<<" { return OPERADOR;}
 "<<=" { return OPERADOR;} 
 ">>=" { return OPERADOR;}
-"\#[0-9]+" { System.out.println(Integer.parseInt(yytext().substring(1))); return OPERADOR;}
+
+/*ERRORES*/
+//Caracter invalido
+. {return ERROR;}
 
