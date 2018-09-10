@@ -45,7 +45,7 @@ public class Scanner {
                 return resultado;
             }
             resultado += "TOKEN " + t_token + " " + lexer.yytext() + "\n";                
-        }
+             }
     }
 }
     

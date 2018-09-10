@@ -1,10 +1,10 @@
 package Scanner;
 
-import Clases.Token;
-import static Clases.Token.*;
+import Clases.Tipo_token;
+import static Clases.Tipo_token.*;
 %%
 %class Lexer
-%type Token
+%type Tipo_token
 Letra = [a-zA-Z]
 Digito = [0-9]
 Espacio = [ \t]
@@ -98,4 +98,5 @@ XOR { return PALABRA_RESERVADA;}
 "<<" { return OPERADOR;}
 "<<=" { return OPERADOR;} 
 ">>=" { return OPERADOR;}
+"\#[0-9]+" { System.out.println(Integer.parseInt(yytext().substring(1))); return OPERADOR;}
 
