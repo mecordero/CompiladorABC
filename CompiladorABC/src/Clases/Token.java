@@ -14,13 +14,23 @@ import java.util.HashMap;
 public class Token {
     private String caracteres;
     private Tipo_token tipo;
+    private double valor;
     private HashMap<Integer, Integer> repeticiones;
+    
 
     public Token(String caracteres, Tipo_token tipo, int linea) {
         this.caracteres = caracteres;
         this.tipo = tipo;
         this.repeticiones = new HashMap<>();
         this.repeticiones.put(linea, 1);                
+    }
+    
+    public Token(String caracteres, Tipo_token tipo, int linea, double valor) {
+        this.caracteres = caracteres;
+        this.tipo = tipo;
+        this.repeticiones = new HashMap<>();
+        this.repeticiones.put(linea, 1); 
+        this.valor = valor; // para que tenga el valor numerico cuando es un literal
     }
     
     public void nuevaRepetición(int linea){

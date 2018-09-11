@@ -2,15 +2,21 @@ package Scanner;
 
 import Clases.Tipo_token;
 import static Clases.Tipo_token.*;
+import Clases.ScannerException;
 %%
 %class Lexer
 %type Tipo_token
 %line
 %ignorecase
+%yylexthrow ScannerException
 Letra = [a-zA-Z]
 Digito = [0-9]
 Espacio = [ \t]
 CambioLinea = [\r\n]
+
+ComentarioLinea = "\/\/" ({Letra}|{Digito}|{Espacio})*
+ComentarioBloque = "\*" ({Letra}|{Digito}|{Espacio}|{CambioLinea})* "\*" | "\{"({Letra}|{Digito}|{Espacio}|{CambioLinea})* "\}"
+
 %{
     public String lexeme;
 
@@ -18,15 +24,21 @@ CambioLinea = [\r\n]
     	return this.yyline;
     }
 
+    public void error(String msg, String caracteres, int linea) throws ScannerException {
+        throw new ScannerException("El caracter es inválido", caracteres, linea);
+    }
+
 %}
 %%
 {CambioLinea} {/*Ignore*/}
 {Espacio} {/*Ignore*/}
+{ComentarioLinea} {/*Ignore*/}
+{ComentarioBloque} {/*Ignore*/}
 
 /*ERRORES*/
 //Errores de numeros
 //{Digito}+"." {return ERROR;}
-"."{Digito}+ {return ERROR;}
+"\."{Digito}+ {return ERROR;}
 
 /*Palabras reservadas*/
 AND { return PALABRA_RESERVADA;}
@@ -80,22 +92,29 @@ WITH { return PALABRA_RESERVADA;}
 WRITE { return PALABRA_RESERVADA;}
 XOR { return PALABRA_RESERVADA;}
 
+
+/*STRING*/
+\"({Letra}|{Digito}|{CambioLinea}|{Espacio})*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
+
+
 /*Identificadores*/
-
-{Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
-
+{Letra}({Letra}|{Digito})*[^\!\&\#]({Letra}|{Digito})* {return IDENTIFICADOR;}
+{Letra}({Letra}|{Digito})*[\!\&\#]({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar los caracter !&# en los identificadores.", yytext(),yyline()); return ERROR;}
 /*Literales*/
 
-"\#[0-9]+" { System.out.println(Integer.parseInt(yytext().substring(1))); return LITERAL;}
-{Digito}+"."{Digito}+ {return LITERAL;}
-{Digito}* {return LITERAL;}
-{Digito}"."{Digito}+E-?{Digito}+ {return LITERAL;}
+"\#[0-9]+" { return CHAR;} /*de un caracter dentro de un string*/
+
+
+{Digito}+"\."{Digito}+ {return FLOAT;}
+{Digito}+ {return INT;} /* UNO O MAS DIGITOS*/
+{Digito}"\."{Digito}+E[+-]?{Digito}+ {return FLOAT;} 
 
 
 /*Operadores*/
 "," { return OPERADOR;}
 ";" { return OPERADOR;}
 "++" { return OPERADOR;}
+"+=" { return OPERADOR;}
 "--" { return OPERADOR;}
 ">=" { return OPERADOR;}
 ">" { return OPERADOR;}
@@ -114,7 +133,6 @@ XOR { return PALABRA_RESERVADA;}
 ":=" { return OPERADOR;}
 "." { return OPERADOR;}
 ":" { return OPERADOR;}
-"+=" { return OPERADOR;}
 "-=" { return OPERADOR;}
 "*=" { return OPERADOR;}
 "/=" { return OPERADOR;}
@@ -123,7 +141,11 @@ XOR { return PALABRA_RESERVADA;}
 "<<=" { return OPERADOR;} 
 ">>=" { return OPERADOR;}
 
+
+/*EXCEPCIONES*/
+
+
 /*ERRORES*/
 //Caracter invalido
-. {return ERROR;}
+. {error("El caracter es inválido", yytext(), yyline()); return ERROR;}
 
