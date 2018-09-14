@@ -88,14 +88,20 @@ WITH { return PALABRA_RESERVADA;}
 WRITE { return PALABRA_RESERVADA;}
 XOR { return PALABRA_RESERVADA;}
 
+//ERRORES DE STIRNG
 
 /*STRING*/
-\"({Letra}|{Digito}|{CambioLinea}|{Espacio})*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
+\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\"\.\/\,\<\>\`\~\@\$\%\^\*])*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
+
+/*CARACTERES*/
+"\#[0-9]+" { return CHAR;} /*de un caracter dentro de un string*/
 
 
 /*Identificadores*/
 {Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
-{Letra}({Letra}|{Digito})*[\!\&\#]({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar los caracter !&# en los identificadores.", yytext(),yyline()); return ERROR;}
+
+/*ERRORES IDENTIFICADOR*/
+{Letra}({Letra}|{Digito})*[\!\&\#\-\_\|\;\"\.\/\,\<\>\`\~\@\$\%\^\*]|({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar los caracter !&# en los identificadores.", yytext(),yyline()); return ERROR;}
 
 
 /*Literales*/
@@ -115,8 +121,6 @@ XOR { return PALABRA_RESERVADA;}
 ({Digito}+{Letra}+{Digito}*)+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
 
 {Digito}+"\."{Digito}+ {return FLOAT;}
-{Digito}+ {return INT;} /* UNO O MAS DIGITOS*/
-
 
 
 /*Operadores*/
