@@ -35,6 +35,10 @@ ComentarioBloque = "\*" ({Letra}|{Digito}|{Espacio}|{CambioLinea})* "\*" | "\{"(
 {ComentarioLinea} {/*Ignore*/}
 {ComentarioBloque} {/*Ignore*/}
 
+/*ERRORES*/
+//Errores de numeros
+//{Digito}+"." {return ERROR;}
+"\."{Digito}+ {return ERROR;}
 
 /*Palabras reservadas*/
 AND { return PALABRA_RESERVADA;}
@@ -94,29 +98,16 @@ XOR { return PALABRA_RESERVADA;}
 
 
 /*Identificadores*/
-{Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
+{Letra}({Letra}|{Digito})*[^\!\&\#]({Letra}|{Digito})* {return IDENTIFICADOR;}
 {Letra}({Letra}|{Digito})*[\!\&\#]({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar los caracter !&# en los identificadores.", yytext(),yyline()); return ERROR;}
-
-
 /*Literales*/
-
-//Errores de numeros
-{Digito}+"." {error("Numero erróneo: no se puede finalizar un número con punto", yytext(),yyline()); return ERROR;}
-"\."{Digito}+ {error("Numero erróneo: no se puede iniciar un número con punto", yytext(),yyline()); return ERROR;}
 
 "\#[0-9]+" { return CHAR;} /*de un caracter dentro de un string*/
 
-{Digito}"\."{Digito}+E[+-]?{Digito}+ {return FLOAT;} 
-
-//Errores de si hay letras dentro de numeros
-{Digito}"\."{Digito}+E[+-]?" " {return ERROR;} 
-{Digito}+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
-({Digito}+{Letra}+{Digito}*)+ ["\."]? {Digito}+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
-({Digito}+{Letra}+{Digito}*)+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
 
 {Digito}+"\."{Digito}+ {return FLOAT;}
 {Digito}+ {return INT;} /* UNO O MAS DIGITOS*/
-
+{Digito}"\."{Digito}+E[+-]?{Digito}+ {return FLOAT;} 
 
 
 /*Operadores*/
