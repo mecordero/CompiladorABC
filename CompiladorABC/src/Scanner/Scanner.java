@@ -9,6 +9,7 @@ import Clases.ScannerException;
 import Clases.Tabla_símbolos;
 import Clases.Tipo_token;
 import static Clases.Tipo_token.ERROR;
+import static Clases.Tipo_token.IDENTIFICADOR;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,6 +48,9 @@ public class Scanner {
                 Tipo_token t_token = lexer.yylex();
                 if (t_token == null) {
                     break;
+                }
+                if(t_token == IDENTIFICADOR && lexer.yytext().length() > 127 ) {
+                    throw new ScannerException("Error, no puede ser mayor a 127 caracteres",  lexer.yytext(), lexer.yyline());
                 }
                 if (t_token != ERROR) {
                     tabla_simbolos.agregarToken(lexer.yytext(), t_token, lexer.yyline() + 1);

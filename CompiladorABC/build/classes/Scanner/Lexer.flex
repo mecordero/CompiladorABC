@@ -25,7 +25,7 @@ ComentarioBloque = "\*" ({Letra}|{Digito}|{Espacio}|{CambioLinea})* "\*" | "\{"(
     }
 
     public void error(String msg, String caracteres, int linea) throws ScannerException {
-        throw new ScannerException("El caracter es inválido", caracteres, linea);
+        throw new ScannerException(msg, caracteres, linea+1);
     }
 
 %}
@@ -91,7 +91,7 @@ XOR { return PALABRA_RESERVADA;}
 //ERRORES DE STIRNG
 
 /*STRING*/
-\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\"\.\/\,\<\>\`\~\@\$\%\^\*])*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
+\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*])*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
 
 /*CARACTERES*/
 "\#[0-9]+" { return CHAR;} /*de un caracter dentro de un string*/
@@ -101,26 +101,7 @@ XOR { return PALABRA_RESERVADA;}
 {Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
 
 /*ERRORES IDENTIFICADOR*/
-{Letra}({Letra}|{Digito})*[\!\&\#\-\_\|\;\"\.\/\,\<\>\`\~\@\$\%\^\*]|({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar los caracter !&# en los identificadores.", yytext(),yyline()); return ERROR;}
-
-
-/*Literales*/
-
-//Errores de numeros
-{Digito}+"." {error("Numero erróneo: no se puede finalizar un número con punto", yytext(),yyline()); return ERROR;}
-"\."{Digito}+ {error("Numero erróneo: no se puede iniciar un número con punto", yytext(),yyline()); return ERROR;}
-
-"\#[0-9]+" { return CHAR;} /*de un caracter dentro de un string*/
-
-{Digito}"\."{Digito}+E[+-]?{Digito}+ {return FLOAT;} 
-
-//Errores de si hay letras dentro de numeros
-{Digito}"\."{Digito}+E[+-]?" " {return ERROR;} 
-{Digito}+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
-({Digito}+{Letra}+{Digito}*)+ ["\."]? {Digito}+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
-({Digito}+{Letra}+{Digito}*)+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
-
-{Digito}+"\."{Digito}+ {return FLOAT;}
+{Letra}  ({Letra}|{Digito})*  [\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*]+  ({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar los caracter !&# en los identificadores.", yytext(),yyline()); return ERROR;}
 
 
 /*Operadores*/
@@ -155,10 +136,31 @@ XOR { return PALABRA_RESERVADA;}
 ">>=" { return OPERADOR;}
 
 
+/*Literales*/
+
+//Errores de numeros
+{Digito}+"\." {error("Numero erróneo: no se puede finalizar un número con punto", yytext(),yyline()); return ERROR;}
+"\."{Digito}+ {error("Numero erróneo: no se puede iniciar un número con punto", yytext(),yyline()); return ERROR;}
+
+"\#[0-9]+" { return CHAR;} /*de un caracter dentro de un string*/
+
+{Digito}\.?{Digito}+[Ee][+-]?{Digito}+ {return FLOAT;} 
+
+//Errores de si hay letras dentro de numeros
+{Digito}"\."{Digito}+E[+-]?"\ " {return ERROR;} 
+{Digito}+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
+({Digito}+{Letra}+{Digito}*)+ ["\."]? {Digito}* {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
+({Digito}+{Letra}+{Digito}*)+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
+
+{Digito}+"\."{Digito}+ {return FLOAT;}
+
+0 | [1-9][0-9]* {return INTEGER;}
+
+
 /*EXCEPCIONES*/
 
 
 /*ERRORES*/
 //Caracter invalido
-. {error("El caracter es inválido", yytext(), yyline()); return ERROR;}
+ [^]   {error("El caracter es inválido", yytext(), yyline()); return ERROR;}
 
