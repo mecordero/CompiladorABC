@@ -55,10 +55,10 @@ public class Scanner {
                 if (t_token != ERROR) {
                     tabla_simbolos.agregarToken(lexer.yytext(), t_token, lexer.yyline() + 1);
                 } else {
-                    System.out.println("Error '" + lexer.yytext() + "' en linea " + lexer.yyline() + 1);
+                    System.out.println("Error '" + lexer.yytext() + "' en línea " + lexer.yyline() + 1);
                 }
             } catch (ScannerException e) {
-                System.out.println("[Lìnea: " + e.getLinea() + "]=>" + e.getCaracteres()+ ": " + e.getMessage());
+                System.out.println("[Línea: " + e.getLinea() + "]=>" + e.getCaracteres()+ ": " + e.getMessage());
             } 
         }
         System.out.println("\n");
