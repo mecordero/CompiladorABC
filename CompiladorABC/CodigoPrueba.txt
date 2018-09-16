@@ -1,6 +1,51 @@
-﻿
+﻿begin
+AND ARRAY BEGIN BOOLEAN BYTE CASE CHAR CONST DIV DO DOWNTO
+ELSE END FALSE FILE FOR FORWARD FUNCTION GOTO IF IN INLINE 
+INT LABEL LONGINT MOD NIL NOT OF OR PACKED PROCEDURE 
+PROGRAM READ REAL RECORD REPEAT SET SHORTINT STRING 
+THEN TO TRUE TYPE UNTIL VAR WHILE WITH WRITE XOR
+
+
+// Identificadores
+casa
+perro
+comida
+Comida ComIda COMida COMIDA
+ca34Sa
+
+// Errores en Identificadores
+Ca2sa
+123fkds
+esteesunidentificadorextremadamentegrandequeocupatodoeltamannopermitidoporlaespecificaciondellenguajeABCyquedebeservalidadoporelescaneresteesunidentificadorextremadamentegrandequeocupatodoeltamannopermitidoporlaespecificaciondellenguajeABCyquedebeservalidadoporelescaner
+
+// Operadores
+ca*23
+casa = df * 43 + df / rt + 32
+df
 // Comentarios
-(* Este es un comentario *)
+/* Este es un comentario */
+
+// Literales
+44
+34
+1234567890
+-12345123
+123.4556
+5.0
+0.5
+3423E123
+-1234E-123
+123e123
+123E123
+-12345e+123
+
+//Errores Literales
+.5
+5.
+
+
+
+
 
 
 
