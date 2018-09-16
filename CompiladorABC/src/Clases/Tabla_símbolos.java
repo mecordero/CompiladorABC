@@ -13,6 +13,7 @@ import java.util.HashMap;
  * @author Meli
  */
 public class Tabla_símbolos {
+    
 
     private HashMap<String, Token> tokens_encontrados;
 
@@ -36,11 +37,11 @@ public class Tabla_símbolos {
 
     @Override
     public String toString() {
-        String resultado = "TOKEN   TIPO TOKEN  LINEA \n";
+        String resultado = "TOKEN "+ "\t" +  "TIPO TOKEN " + "\t" + "LINEA"+ "\n";
 
-        for (String caracteres : tokens_encontrados.keySet()) {
+        for (String caracteres : tokens_encontrados.keySet()) { 
             Token token = tokens_encontrados.get(caracteres);
-            resultado += caracteres + "   " + token.getTipo() + "    ";
+            resultado +=  caracteres + "\t"+ token.getTipo() + "\t";
 
             boolean primero = true;
             for (Integer linea : token.getRepeticiones().keySet()) {
