@@ -2,8 +2,7 @@
 //Identificadores
 casa
 suma
-comida
-Comida ComIda COMida COMIDA
+comida Comida ComIda COMida COMIDA
 ca34Sa
 
 //Errores en Identificadores
@@ -15,16 +14,23 @@ esteesunidentificadorextremadamentegrandequeocupatodoeltamannopermitidoporlaespe
 ca*23
 casa = df * 43 + df / rt + 32
 df
-// Comentarios
-/* Este es un comentario */
+// Comentarios 
+(*Este es un comentario 
+para probar*)
+{Este comentario
+de prueba}
 
 
 //Strings
 "Arbol"
 "CIELO"
 "ARB78OL"
-"BUE" 
-"WE
+"BUENO
+MALO"
+
+#67
+
+l
 
 //ERRORES STRING
 
@@ -43,9 +49,12 @@ df
 123E123
 -12345e+123
 
+
 //Errores Literales
 .5
 5.
+
+58yui
 
 
 

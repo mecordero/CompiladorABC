@@ -50,7 +50,7 @@ public class Scanner {
                     break;
                 }
                 if(t_token == IDENTIFICADOR && lexer.yytext().length() > 127 ) {
-                    throw new ScannerException("Error, no puede ser mayor a 127 caracteres",  lexer.yytext(), lexer.yyline());
+                    throw new ScannerException("Identificador erróneo, no puede ser mayor a 127 caracteres",  lexer.yytext(), lexer.yyline());
                 }
                 if (t_token != ERROR) {
                     tabla_simbolos.agregarToken(lexer.yytext(), t_token, lexer.yyline() + 1);

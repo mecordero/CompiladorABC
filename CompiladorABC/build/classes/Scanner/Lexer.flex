@@ -45,7 +45,6 @@ BYTE { return PALABRA_RESERVADA;}
 CASE { return PALABRA_RESERVADA;}
 CHAR { return PALABRA_RESERVADA;}
 CONST { return PALABRA_RESERVADA;}
-DIV { return PALABRA_RESERVADA;}
 DO { return PALABRA_RESERVADA;}
 DOWNTO { return PALABRA_RESERVADA;}
 ELSE { return PALABRA_RESERVADA;}
@@ -62,7 +61,6 @@ INLINE { return PALABRA_RESERVADA;}
 INT { return PALABRA_RESERVADA;}
 LABEL { return PALABRA_RESERVADA;}
 LONGINT { return PALABRA_RESERVADA;}
-MOD { return PALABRA_RESERVADA;}
 NIL { return PALABRA_RESERVADA;}
 OF { return PALABRA_RESERVADA;}
 PACKED { return PALABRA_RESERVADA;}
@@ -84,21 +82,6 @@ VAR { return PALABRA_RESERVADA;}
 WHILE { return PALABRA_RESERVADA;}
 WITH { return PALABRA_RESERVADA;}
 WRITE { return PALABRA_RESERVADA;}
-XOR { return PALABRA_RESERVADA;}
-
-/*STRING*/
-\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*])*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
-
-
-/*CARACTERES*/
-"\#[0-9]+" { return CHAR;} /*de un caracter dentro de un string*/
-
-
-/*Identificadores*/
-{Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
-
-/*ERRORES IDENTIFICADOR*/
-{Letra}  ({Letra}|{Digito})*  [\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*]+  ({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar los caracter !&# en los identificadores.", yytext(),yyline()); return ERROR;}
 
 
 /*Operadores*/
@@ -131,15 +114,35 @@ XOR { return PALABRA_RESERVADA;}
 "<<" { return OPERADOR;}
 "<<=" { return OPERADOR;} 
 ">>=" { return OPERADOR;}
-AND { return OPERADOR;}
-OR { return OPERADOR;}
-NOT { return OPERADOR;}
+"AND" { return OPERADOR;}
+"OR" { return OPERADOR;}
+"NOT" { return OPERADOR;}
+"DIV" { return OPERADOR;}
+"XOR" { return OPERADOR;}
+"MOD" { return OPERADOR;}
+
+
+/*STRING*/
+\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*])*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
+
+
+/*CARACTERES*/
+\#[0-9]+ { return CHAR;} /*de un caracter dentro de un string*/
+ //{Letra}   { return CHAR;} /*de un caracter dentro de un string*/
+
+
+/*Identificadores*/
+{Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
+
+/*ERRORES IDENTIFICADOR*/
+{Letra}  ({Letra}|{Digito})*  [\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*]+  ({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar los caracter !&# en los identificadores.", yytext(),yyline()); return ERROR;}
+
+
+
 
 
 
 /*Literales*/
-
-"\#[0-9]+" { return CHAR;} /*de un caracter dentro de un string*/
 
 {Digito}\.?{Digito}+[Ee][+-]?{Digito}+ {return FLOAT;} 
 
@@ -148,20 +151,15 @@ NOT { return OPERADOR;}
 0 | [1-9][0-9]* {return INTEGER;}
 
 //Errores de numeros
-{Digito}+"\." {error("Numero erróneo: no se puede finalizar un número con punto", yytext(),yyline()); return ERROR;}
-"\."{Digito}+ {error("Numero erróneo: no se puede iniciar un número con punto", yytext(),yyline()); return ERROR;}
+{Digito}+"\." {error("Número erróneo: no se puede finalizar un número con punto", yytext(),yyline()); return ERROR;}
+"\."{Digito}+ {error("Número erróneo: no se puede iniciar un número con punto", yytext(),yyline()); return ERROR;}
 
 //Errores de si hay letras dentro de numeros
 {Digito}"\."{Digito}+E[+-]?"\ " {return ERROR;} 
-{Digito}+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
-({Digito}+{Letra}+{Digito}*)+ ["\."]? {Digito}* {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
-({Digito}+{Letra}+{Digito}*)+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
+{Digito}+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Número erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
+({Digito}+{Letra}+{Digito}*)+ ["\."]? {Digito}* {error("Número erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
+({Digito}+{Letra}+{Digito}*)+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Número erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
 
-
-/*ERRORES STRING*/
-\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*] )* {error("String erróneo: El String debe finalizar", yytext(),yyline()); return ERROR;}
-/*ERRORES STRING*/
-({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*])*\" {error("String erróneo: String de iniciar", yytext(),yyline()); return ERROR;}
 /*EXCEPCIONES*/
 
 
