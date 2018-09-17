@@ -165,5 +165,5 @@ WRITE { return PALABRA_RESERVADA;}
 
 /*ERRORES*/
 //Caracter invalido
-[^]   {error("El caracter es inválido", yytext(), yyline()); return ERROR;}
+.   {error("El caracter es inválido", yytext(), yyline()); return ERROR;}
 

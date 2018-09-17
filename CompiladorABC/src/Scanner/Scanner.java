@@ -27,8 +27,8 @@ public class Scanner {
 
     public Scanner() {
 
-        // path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
-        path = "C://Users//yanil//Google Drive//IIS.2018//COMPILADORES//PROYECTO//CompiladorABC//CompiladorABC//src//Scanner//Lexer.flex";
+        path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        //path = "C://Users//yanil//Google Drive//IIS.2018//COMPILADORES//PROYECTO//CompiladorABC//CompiladorABC//src//Scanner//Lexer.flex";
         generarLexer();
     }
 
@@ -54,10 +54,12 @@ public class Scanner {
                 }
                 if (t_token != ERROR) {
                     tabla_simbolos.agregarToken(lexer.yytext(), t_token, lexer.yyline() + 1);
-                } else {
-                    System.out.println("Error '" + lexer.yytext() + "' en línea " + lexer.yyline() + 1);
                 }
             } catch (ScannerException e) {
+                if(e.getCaracteres().length() == 1 && (int) e.getCaracteres().charAt(0) == 65279){
+                    System.out.println("ignorado");
+                    continue;
+                }
                 System.out.println("[Línea: " + e.getLinea() + "]=>" + e.getCaracteres()+ ": " + e.getMessage());
             } 
         }

@@ -30,17 +30,7 @@ public class CompiladorABC {
         scanner.escanearArchivo("CodigoPrueba.txt", tabla_simbolos);
         
         System.out.println(tabla_simbolos.toString());
-        
-        /*
-        Tabla_símbolos ts = new Tabla_símbolos();
-        
-        ts.agregarToken("and", Tipo_token.LITERAL, 4);
-        ts.agregarToken("and", Tipo_token.LITERAL, 4);
-        ts.agregarToken("and", Tipo_token.LITERAL, 4);
-        ts.agregarToken("or", Tipo_token.LITERAL, 5);
-        ts.agregarToken("and", Tipo_token.LITERAL, 7);
-        System.out.println(ts.toString());
-        */
+
         
     }
     
