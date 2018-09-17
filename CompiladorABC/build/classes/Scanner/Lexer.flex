@@ -86,10 +86,9 @@ WITH { return PALABRA_RESERVADA;}
 WRITE { return PALABRA_RESERVADA;}
 XOR { return PALABRA_RESERVADA;}
 
-//ERRORES DE STIRNG
-
 /*STRING*/
 \"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*])*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
+
 
 /*CARACTERES*/
 "\#[0-9]+" { return CHAR;} /*de un caracter dentro de un string*/
@@ -158,6 +157,11 @@ NOT { return OPERADOR;}
 ({Digito}+{Letra}+{Digito}*)+ ["\."]? {Digito}* {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
 ({Digito}+{Letra}+{Digito}*)+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Numero erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
 
+
+/*ERRORES STRING*/
+\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*] )* {error("String erróneo: El String debe finalizar", yytext(),yyline()); return ERROR;}
+/*ERRORES STRING*/
+({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*])*\" {error("String erróneo: String de iniciar", yytext(),yyline()); return ERROR;}
 /*EXCEPCIONES*/
 
 

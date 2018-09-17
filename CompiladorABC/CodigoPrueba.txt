@@ -1,21 +1,14 @@
-﻿begin
-AND ARRAY BEGIN BOOLEAN BYTE CASE CHAR CONST DIV DO DOWNTO
-ELSE END FALSE FILE FOR FORWARD FUNCTION GOTO IF IN INLINE 
-INT LABEL LONGINT MOD NIL NOT OF OR PACKED PROCEDURE 
-PROGRAM READ REAL RECORD REPEAT SET SHORTINT STRING 
-THEN TO TRUE TYPE UNTIL VAR WHILE WITH WRITE XOR
-
-
-// Identificadores
+﻿
+//Identificadores
 casa
-perro
+suma
 comida
 Comida ComIda COMida COMIDA
 ca34Sa
 
-// Errores en Identificadores
-Ca2sa
-123fkds
+//Errores en Identificadores
+	
+casa!
 esteesunidentificadorextremadamentegrandequeocupatodoeltamannopermitidoporlaespecificaciondellenguajeABCyquedebeservalidadoporelescaneresteesunidentificadorextremadamentegrandequeocupatodoeltamannopermitidoporlaespecificaciondellenguajeABCyquedebeservalidadoporelescaner
 
 // Operadores
@@ -25,7 +18,18 @@ df
 // Comentarios
 /* Este es un comentario */
 
-// Literales
+
+//Strings
+"Arbol"
+"CIELO"
+"ARB78OL"
+"BUE" 
+"WE
+
+//ERRORES STRING
+
+
+//Literales
 44
 34
 1234567890
