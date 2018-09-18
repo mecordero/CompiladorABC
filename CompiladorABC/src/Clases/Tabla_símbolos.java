@@ -28,7 +28,13 @@ public class Tabla_símbolos {
             if (tipo != CHAR) {
                 tokens_encontrados.put(caracteres.toUpperCase(), new Token(caracteres.toUpperCase(), tipo, linea));
             } else {
-                tokens_encontrados.put(caracteres.toUpperCase(), new Token(caracteres.toUpperCase(), tipo, linea, Integer.parseInt(caracteres.substring(1))));
+                if(caracteres.startsWith("#")){
+                    tokens_encontrados.put(caracteres.toUpperCase(), new Token(caracteres.toUpperCase(), tipo, linea, Integer.parseInt(caracteres.substring(1))));
+                }else{
+                    tokens_encontrados.put(caracteres.toUpperCase(), new Token(caracteres.toUpperCase(), tipo, linea));
+                    
+                }
+                
             }
         } else {
             token.nuevaRepetición(linea);
@@ -37,11 +43,11 @@ public class Tabla_símbolos {
 
     @Override
     public String toString() {
-        String resultado = "TOKEN "+ "\t" +  "TIPO TOKEN " + "\t" + "LINEA"+ "\n";
+        String resultado = "TOKEN "+ "\t\t\t" +  "TIPO TOKEN " + "\t\t\t" + "LINEA"+ "\n";
 
         for (String caracteres : tokens_encontrados.keySet()) { 
             Token token = tokens_encontrados.get(caracteres);
-            resultado +=  caracteres + "\t"+ token.getTipo() + "\t";
+            resultado +=  caracteres + "\t\t\t"+ token.getTipo() + "\t\t\t";
 
             boolean primero = true;
             for (Integer linea : token.getRepeticiones().keySet()) {

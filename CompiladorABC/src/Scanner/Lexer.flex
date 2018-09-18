@@ -121,21 +121,20 @@ WRITE { return PALABRA_RESERVADA;}
 "XOR" { return OPERADOR;}
 "MOD" { return OPERADOR;}
 
-
-/*STRING*/
-\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*])*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
-
-
 /*CARACTERES*/
 \#[0-9]+ { return CHAR;} /*de un caracter dentro de un string*/
- //{Letra}   { return CHAR;} /*de un caracter dentro de un string*/
+\".\"   { return CHAR;} /*de un caracter dentro de un string*/
+
+
+/*STRING*/
+\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*\=\+])*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
 
 
 /*Identificadores*/
 {Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
 
 /*ERRORES IDENTIFICADOR*/
-{Letra}  ({Letra}|{Digito})*  [\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*]+  ({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar los caracter !&# en los identificadores.", yytext(),yyline()); return ERROR;}
+{Letra}  ({Letra}|{Digito})*   [\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*\=\+]+  ({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar los caracter !&# en los identificadores.", yytext(),yyline()); return ERROR;}
 
 
 

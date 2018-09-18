@@ -1,4 +1,5 @@
-﻿
+﻿"A"
+"b"
 //Identificadores
 casa
 suma
@@ -30,7 +31,7 @@ MALO"
 
 #67
 
-l
+
 
 //ERRORES STRING
 
