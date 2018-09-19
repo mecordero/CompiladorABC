@@ -24,6 +24,15 @@ import java.io.Reader;
 public class Scanner {
 
     String path;
+    String listaErrores;
+
+    public String getListaErrores() {
+        return listaErrores;
+    }
+
+    public void setListaErrores(String listaErrores) {
+        this.listaErrores = listaErrores;
+    }
 
     public Scanner() {
 
@@ -60,7 +69,7 @@ public class Scanner {
                     System.out.println("ignorado");
                     continue;
                 }
-                System.out.println("[Línea: " + e.getLinea() + "]=>" + e.getCaracteres()+ ": " + e.getMessage());
+                listaErrores+=("[Línea: " + e.getLinea() + "]=>" + e.getCaracteres()+ ": " + e.getMessage()+ "\n");
             } 
         }
         System.out.println("\n");
