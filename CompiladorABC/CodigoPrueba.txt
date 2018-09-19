@@ -9,7 +9,7 @@ ca34Sa
 //Errores en Identificadores
 	
 casa!
-esteesunidentificadorextremadamentegrandequeocupatodoeltamannopermitidoporlaespecificaciondellenguajeABCyquedebeservalidadoporelescaneresteesunidentificadorextremadamentegrandequeocupatodoeltamannopermitidoporlaespecificaciondellenguajeABCyquedebeservalidadoporelescaner
+
 
 // Operadores
 ca*23
