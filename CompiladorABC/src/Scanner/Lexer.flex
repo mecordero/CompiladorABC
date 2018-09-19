@@ -130,7 +130,7 @@ WRITE { return PALABRA_RESERVADA;}
 \"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*\=\+])*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
 
 /*ERROR STRING*/
-\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*\=\+])*EOF {error("El string no está finalizado.", yytext(),yyline()); return ERROR;}
+//\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*\=\+])*EOF {error("El string no está finalizado.", yytext(),yyline()); return ERROR;}
 
 
 /*Identificadores*/
