@@ -1,65 +1,11 @@
-﻿"A"
-"b"
-//Identificadores
-casa
-suma
-comida Comida ComIda COMida COMIDA
-ca34Sa
+﻿//comentario "string"
 
-//Errores en Identificadores
-	
-casa!
+AND
 
+{bloque blablablabal "hola"
+uno}
 
-// Operadores
-ca*23
-casa = df * 43 + df / rt + 32
-df
-// Comentarios 
-(*Este es un comentario 
-para probar*)
-{Este comentario
-de prueba}
+IF
 
-
-//Strings
-"Arbol"
-"CIELO"
-"ARB78OL"
-"BUENO MALO"
-
-#67
-
-
-
-//ERRORES STRING
-
-
-//Literales
-44
-34
-1234567890
--12345123
-123.4556
-5.0
-0.5
-3423E123
--1234E-123
-123e123
-123E123
--12345e+123
-
-
-//Errores Literales
-.5
-5.
-
-58yui
-
-
-
-
-
-
-
-
+(* bloque "otro"
+dos*)

@@ -14,8 +14,8 @@ Digito = [0-9]
 Espacio = [ \t]
 CambioLinea = [\r\n]
 
-ComentarioLinea = "\/\/" ({Letra}|{Digito}|{Espacio})*
-ComentarioBloque = "\(\*" ({Letra}|{Digito}|{Espacio}|{CambioLinea})* "\*\)" | "\{"({Letra}|{Digito}|{Espacio}|{CambioLinea})* "\}"
+ComentarioLinea = "\/\/" .* {CambioLinea}
+ComentarioBloque = "\(\*" (!\*)* "\*\)" | "\{"(!})* "\}"
 
 %{
     public String lexeme;
