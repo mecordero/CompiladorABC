@@ -26,7 +26,7 @@ de prueba}
 "Arbol"
 "CIELO"
 "ARB78OL"
-"BUENO MALO"
+"BUEN*O MALO"
 
 #67
 
@@ -35,7 +35,7 @@ de prueba}
 //ERRORES STRING
 
 
-//Literales
+//Liter"Errorlitaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaae"ales
 44
 34
 1234567890
