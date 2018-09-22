@@ -29,8 +29,10 @@ public class CompiladorABC {
         
         scanner.escanearArchivo("CodigoPrueba.txt", tabla_simbolos);
         
-        //System.out.println(tabla_simbolos.toString());
         tabla_simbolos.print();
+        
+        System.out.println("\n\n");
+        
         System.out.println(scanner.getListaErrores());
         
     }

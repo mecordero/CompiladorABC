@@ -13,9 +13,10 @@ Letra = [a-zA-Z]
 Digito = [0-9]
 Espacio = [ \t]
 CambioLinea = [\r\n]
+CaracteresEspeciales = [\,\;\+\=\-\>\<\*\/\(\)\[\]\:\.\!\&\#\_\|\`\~\@\$\%\^\*ñ]
 
-ComentarioLinea = "\/\/" .* {CambioLinea}
-ComentarioBloque = "\(\*" (!\*)* "\*\)" | "\{"(!})* "\}"
+ComentarioLinea = "//".*
+ComentarioBloque = "(*" (!\*)* "*)" | "{"(!})* "}"
 
 %{
     public String lexeme;
@@ -34,6 +35,7 @@ ComentarioBloque = "\(\*" (!\*)* "\*\)" | "\{"(!})* "\}"
 {Espacio} {/*Ignore*/}
 {ComentarioLinea} {/*Ignore*/}
 {ComentarioBloque} {/*Ignore*/}
+
 
 
 /*Palabras reservadas*/
@@ -127,21 +129,16 @@ WRITE { return PALABRA_RESERVADA;}
 
 
 /*STRING*/
-\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*\=\+])*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
-
+\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|{CaracteresEspeciales})*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
 /*ERROR STRING*/
-//\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|[\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*\=\+])*<<EOF>> {error("El string no está finalizado.", yytext(),yyline()); return ERROR;}
+//\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|{CaracteresEspeciales})*<<EOF>> {error("El string no está finalizado.", yytext(),yyline()); return ERROR;}
 
 
 /*Identificadores*/
 {Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
 
 /*ERRORES IDENTIFICADOR*/
-{Letra}  ({Letra}|{Digito})*   [\!\&\#\-\_\|\;\.\/\,\<\>\`\~\@\$\%\^\*\=\+]+  ({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar caracteres especiales en los identificadores.", yytext(),yyline()); return ERROR;}
-
-
-
-
+//{Letra}  ({Letra}|{Digito})*   {CaracteresEspeciales}+  ({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar caracteres especiales en los identificadores.", yytext(),yyline()); return ERROR;}
 
 
 /*Literales*/

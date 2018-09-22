@@ -40,36 +40,6 @@ public class Tabla_símbolos {
         }
     }
 
-    @Override
-    public String toString() {
-        String resultado = "TOKEN " + "\t\t\t" + "TIPO TOKEN " + "\t\t" + "LINEA" + "\n";
-
-        for (String caracteres : tokens_encontrados.keySet()) {
-            Token token = tokens_encontrados.get(caracteres);
-            resultado += caracteres + "\t\t\t" + token.getTipo() + "\t\t";
-
-            boolean primero = true;
-            for (Integer linea : token.getRepeticiones().keySet()) {
-                Integer num = token.getRepeticiones().get(linea);
-
-                if (!primero) {
-                    resultado += ", ";
-                } else {
-                    primero = false;
-                }
-
-                if (num > 1) {
-                    resultado += linea + "(" + num + ")";
-                } else {
-                    resultado += linea;
-                }
-            }
-            resultado += "\n";
-        }
-
-        return resultado;
-    }
-
     public void print() {
         System.out.println("+--------------------------------------------------------------------------------------------------------------------------------+");
         System.out.println(String.format("|  %-30s|  %-30s|  %-60s|", "TOKEN", "Tipo del Token", "Repeticiones"));
