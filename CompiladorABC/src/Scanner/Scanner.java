@@ -33,8 +33,8 @@ public class Scanner {
 
     public Scanner() {
 
-        path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
-        //path = "C://Users//yanil//Google Drive//IIS.2018//COMPILADORES//PROYECTO//CompiladorABC//CompiladorABC//src//Scanner//Lexer.flex";
+        //path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        path = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
         listaErrores = "";
         generarLexer();
     }
