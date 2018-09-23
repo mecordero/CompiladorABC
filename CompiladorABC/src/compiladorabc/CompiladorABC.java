@@ -27,7 +27,7 @@ public class CompiladorABC {
         Scanner scanner = new Scanner();
         Tabla_símbolos tabla_simbolos = new Tabla_símbolos();
         
-        scanner.escanearArchivo("tokens.txt", tabla_simbolos);
+        scanner.escanearArchivo("errores.txt", tabla_simbolos);
         
         tabla_simbolos.print();
         

@@ -138,7 +138,7 @@ WRITE { return PALABRA_RESERVADA;}
 {Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
 
 /*ERRORES IDENTIFICADOR*/
-//{Letra}  ({Letra}|{Digito})*   {CaracteresEspeciales}+  ({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar caracteres especiales en los identificadores.", yytext(),yyline()); return ERROR;}
+{Letra}+({Letra}|{Digito})*+{CaracteresEspeciales}+({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar caracteres especiales en los identificadores.", yytext(),yyline()); return ERROR;}
 
 
 /*Literales*/
@@ -150,8 +150,12 @@ WRITE { return PALABRA_RESERVADA;}
 0 | [1-9][0-9]* {return INTEGER;}
 
 //Errores de numeros
+
+{Digito}+"\."{Digito}*+"\."{Digito}* {error("Número erróneo: número no válido", yytext(),yyline()); return ERROR;}
 {Digito}+"\." {error("Número erróneo: no se puede finalizar un número con punto", yytext(),yyline()); return ERROR;}
 "\."{Digito}+ {error("Número erróneo: no se puede iniciar un número con punto", yytext(),yyline()); return ERROR;}
+"\-"{Digito}\.?{Digito}+[Ee][+-]?{Digito}+ {error("Número erróneo: no puede ser negativo el número antes del exponente", yytext(),yyline()); return ERROR;}
+//{Digito}\.?{Digito}+[Ee][+-]?+"\."{Digito}* {error("Número erróneo: después del exponente no puede ser float", yytext(),yyline()); return ERROR;}
 
 //Errores de si hay letras dentro de numeros
 {Digito}"\."{Digito}+E[+-]?"\ " {return ERROR;} 
