@@ -22,7 +22,7 @@ lineas"
 123.345
 123. //error porque no tiene nada despues del punto
 
-123.22.22 //error
+123.22.22.325 //error
 
 .67 // No tiene nada antes del punto
 

@@ -2,15 +2,16 @@
 _ss REAL; // no hay error
  12zz:STRING;   //Aqui si hay un error porque no puede empezar con numeros
 $aa: CHAR;   //en este caso se espera que $ de un error lexico
-
+ca*sa asdfasdf
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 //este debe dar error porque es más largo que 127 caracteres
-
+{ Comentario 
 caña, hola&, adios!, mult*   //debe dar errores porque son caracteres no validos
 
 //ERRORES DE SIMBOLOS NO CONOCIDOS
   \@
     Á
   INT árbol;    º
-
-(* COMENTARIO NO CERRADO                DEBE DAR ERROR
+zxcv
+(* COMENTARIO NO CERRADO 
+               DEBE DAR ERROR casa *)
