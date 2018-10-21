@@ -13,8 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.util.Pair;
-import parser
-import Scanner.Lexer;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Reader;
@@ -31,11 +30,11 @@ public class CompiladorABC {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         Scanner scanner = new Scanner();
         
-        String nombreArchivo = "codigo.abc";
+        /*String nombreArchivo = "codigo.abc";
         Reader reader = new BufferedReader(new FileReader(nombreArchivo));
         Lexer lex = new Lexer(reader);
         Parser pars = new Parser(lex);
-        pars.parse();
+        pars.parse();*/
                 
         Tabla_símbolos tabla_simbolos = new Tabla_símbolos();
         
