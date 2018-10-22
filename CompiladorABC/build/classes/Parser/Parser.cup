@@ -14,4 +14,11 @@ terminal COMA, PUNTOYCOMA, OPERADOR_ARITMETICO, ASIGNACION, OPERADOR_POSTERIOR, 
 //Literales
 terminal CARACTER, STRING, FLOAT, INTEGER;
 //Identificadores
-terminal IDENTIDICADOR;
+terminal IDENTIFICADOR;
+
+
+non terminal noter1, noter2, noter3;
+
+noter1 ::= BEGIN noter2;
+noter2 ::= CONST noter3;
+noter3 ::= IF;

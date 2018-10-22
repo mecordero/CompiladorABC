@@ -1,4 +1,5 @@
 package Scanner;
+import Parser.sym;
 import java_cup.runtime.*;
 import Clases.ScannerException;
 %%

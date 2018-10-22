@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java_cup.runtime.*;
+import java_cup.*;
 
 /**
  *
@@ -24,7 +24,9 @@ import java_cup.runtime.*;
  */
 public class Scanner {
 
-    String path;
+    String pathLexer;
+    String pathParser;
+    String pathProyecto;
     String listaErrores;
 
     public String getListaErrores() {
@@ -34,16 +36,55 @@ public class Scanner {
 
     public Scanner() {
 
-        path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
-        //path = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        pathLexer = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        //pathLexer = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        pathParser = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
+        pathProyecto = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/";
         listaErrores = "";
-        generarLexer();
+        //generarParser();
+        //generarLexer();
     }
 
     public void generarLexer() {
-        File lexer = new File(path);
+        System.out.println("GENERA LEXER");
+        File lexer = new File(pathLexer);
         jflex.Main.generate(lexer);
     }
+    
+    public void generarParser(){
+        
+        System.out.println("genera parser");
+        
+        String [] asintactico = {"-parser", "Parser", pathParser};
+        
+        try{
+            java_cup.Main.main(asintactico);
+        }catch(Exception e){
+            System.out.println("excepcion: " + e);
+        }
+        
+    }
+    
+    public void moverArchivosParser(){
+        File sym = new File (pathProyecto + "sym.java");
+        File parser = new File (pathProyecto + "Parser.java");
+        
+        if(sym.exists()){
+            File symViejo = new File (pathProyecto + "src/Parser/sym.java");
+            symViejo.delete();
+            sym.renameTo(new File (pathProyecto + "src/Parser/sym.java"));          
+            
+        }
+        
+        if(parser.exists()){
+            File parserViejo = new File(pathProyecto + "src/Parser/Parser.java");
+            parserViejo.delete();
+            parser.renameTo(new File (pathProyecto + "src/Parser/Parser.java"));
+        }
+        
+    }
+    
+    /*
 
     public void escanearArchivo(String nombreArchivo, Tabla_símbolos tabla_simbolos) throws FileNotFoundException, IOException {
         Reader reader = new BufferedReader(new FileReader(nombreArchivo));
@@ -71,5 +112,5 @@ public class Scanner {
             } 
         }
         System.out.println("\n");
-    }
+    }*/
 }

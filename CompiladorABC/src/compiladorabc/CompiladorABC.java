@@ -13,10 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.util.Pair;
-<<<<<<< HEAD
-=======
-
->>>>>>> 47ad72c0a0d10c74b7e88a7ab09a135358477e16
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Reader;
@@ -32,7 +28,10 @@ public class CompiladorABC {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         Scanner scanner = new Scanner();
-<<<<<<< HEAD
+
+        scanner.generarLexer();
+        
+        
         /*
         String nombreArchivo = "codigo.abc";
 =======
