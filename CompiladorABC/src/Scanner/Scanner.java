@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java_cup.runtime.*;
 
 /**
  *
@@ -33,8 +34,8 @@ public class Scanner {
 
     public Scanner() {
 
-        //path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
-        path = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        path = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        //path = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
         listaErrores = "";
         generarLexer();
     }

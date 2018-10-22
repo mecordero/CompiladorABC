@@ -1,0 +1,17 @@
+package Parser;
+import java_cup.runtime.*;
+
+parser code {:
+
+
+
+:}
+
+//Palabras reservadas
+terminal BEGIN, TYPE, CONST, DO, ELSE, END, BOOL, FOR, FUNCTION, IF, PROCEDURE, PROGRAM, READ, THEN, TO, VAR, WHILE, WRITE;
+//Operadores
+terminal COMA, PUNTOYCOMA, OPERADOR_ARITMETICO, ASIGNACION, OPERADOR_POSTERIOR, OPERADOR_BOOLEANO, PARENTESIS_ABRE, PARENTESIS_CIERRA, DOS_PUNTOS;
+//Literales
+terminal CARACTER, STRING, FLOAT, INTEGER;
+//Identificadores
+terminal IDENTIDICADOR;

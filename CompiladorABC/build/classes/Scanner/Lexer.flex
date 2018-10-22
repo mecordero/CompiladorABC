@@ -1,11 +1,10 @@
 package Scanner;
-
-import Clases.Tipo_token;
-import static Clases.Tipo_token.*;
+import java_cup.runtime.*;
 import Clases.ScannerException;
 %%
 %class Lexer
-%type Tipo_token
+%cupsym sym
+%cup
 %line
 %ignorecase
 %yylexthrow ScannerException
@@ -33,6 +32,10 @@ ComentarioBloque = "(*" (!\*)* "*)" | "{"(!})* "}"
         throw new ScannerException(msg, caracteres, linea+1);
     }
 
+    private Symbol symbol(int type) {
+        return new Symbol(type, yyline);
+    }
+
 %}
 
 %state COMENTARIOS1, COMENTARIOS2, YYINITIAL
@@ -47,149 +50,149 @@ ComentarioBloque = "(*" (!\*)* "*)" | "{"(!})* "}"
     "{"              {yybegin(COMENTARIOS2);}
 
     /*Palabras reservadas*/
-    ARRAY { return PALABRA_RESERVADA;}
-    BEGIN { return PALABRA_RESERVADA;}
-    BOOLEAN { return PALABRA_RESERVADA;}
-    BYTE { return PALABRA_RESERVADA;}
-    CASE { return PALABRA_RESERVADA;}
-    CHAR { return PALABRA_RESERVADA;}
-    CONST { return PALABRA_RESERVADA;}
-    DO { return PALABRA_RESERVADA;}
-    DOWNTO { return PALABRA_RESERVADA;}
-    ELSE { return PALABRA_RESERVADA;}
-    END { return PALABRA_RESERVADA;}
-    FALSE { return PALABRA_RESERVADA;}
-    FILE { return PALABRA_RESERVADA;}
-    FOR { return PALABRA_RESERVADA;}
-    FORWARD { return PALABRA_RESERVADA;}
-    FUNCTION { return PALABRA_RESERVADA;}
-    GOTO { return PALABRA_RESERVADA;}
-    IF { return PALABRA_RESERVADA;}
-    IN { return PALABRA_RESERVADA;}
-    INLINE { return PALABRA_RESERVADA;}
-    INT { return PALABRA_RESERVADA;}
-    LABEL { return PALABRA_RESERVADA;}
-    LONGINT { return PALABRA_RESERVADA;}
-    NIL { return PALABRA_RESERVADA;}
-    OF { return PALABRA_RESERVADA;}
-    PACKED { return PALABRA_RESERVADA;}
-    PROCEDURE { return PALABRA_RESERVADA;}
-    PROGRAM { return PALABRA_RESERVADA;}
-    READ { return PALABRA_RESERVADA;}
-    REAL { return PALABRA_RESERVADA;}
-    RECORD { return PALABRA_RESERVADA;}
-    REPEAT { return PALABRA_RESERVADA;}
-    SET { return PALABRA_RESERVADA;}
-    SHORTINT { return PALABRA_RESERVADA;}
-    STRING { return PALABRA_RESERVADA;}
-    THEN { return PALABRA_RESERVADA;}
-    TO { return PALABRA_RESERVADA;}
-    TRUE { return PALABRA_RESERVADA;}
-    TYPE { return PALABRA_RESERVADA;}
-    UNTIL { return PALABRA_RESERVADA;}
-    VAR { return PALABRA_RESERVADA;}
-    WHILE { return PALABRA_RESERVADA;}
-    WITH { return PALABRA_RESERVADA;}
-    WRITE { return PALABRA_RESERVADA;}
+    //ARRAY { return PALABRA_RESERVADA;}
+    BEGIN { return symbol(sym.BEGIN);}
+    BOOLEAN { return symbol(sym.TYPE);}
+    //BYTE { return PALABRA_RESERVADA;}
+    //CASE { return PALABRA_RESERVADA;}
+    CHAR { return symbol(sym.TYPE);}
+    CONST { return symbol(sym.CONST);}
+    DO { return symbol(sym.DO);}
+    //DOWNTO { return PALABRA_RESERVADA;}
+    ELSE { return symbol(sym.ELSE);}
+    END { return symbol(sym.END);}
+    FALSE { return symbol(sym.BOOL);}
+    //FILE { return PALABRA_RESERVADA;}
+    FOR { return symbol(sym.FOR);}
+    //FORWARD { return PALABRA_RESERVADA;}
+    FUNCTION { return symbol(sym.FUNCTION);}
+    //GOTO { return PALABRA_RESERVADA;}
+    IF { return symbol(sym.IF);}
+    //IN { return PALABRA_RESERVADA;}
+    //INLINE { return PALABRA_RESERVADA;}
+    INT { return symbol(sym.TYPE);}
+    //LABEL { return PALABRA_RESERVADA;}
+    LONGINT { return symbol(sym.TYPE);}
+    //NIL { return PALABRA_RESERVADA;}
+    //OF { return PALABRA_RESERVADA;}
+    //PACKED { return PALABRA_RESERVADA;}
+    PROCEDURE { return symbol(sym.PROCEDURE);}
+    PROGRAM { return symbol(sym.PROGRAM);}
+    READ { return symbol(sym.READ);}
+    REAL { return symbol(sym.TYPE);}
+    //RECORD { return PALABRA_RESERVADA;}
+    //REPEAT { return PALABRA_RESERVADA;}
+    //SET { return PALABRA_RESERVADA;}
+    SHORTINT { return symbol(sym.TYPE);}
+    STRING { return symbol(sym.TYPE);}
+    THEN { return symbol(sym.THEN);}
+    TO { return symbol(sym.TO);}
+    TRUE { return symbol(sym.BOOL);}
+    //TYPE { return PALABRA_RESERVADA;}
+    //UNTIL { return PALABRA_RESERVADA;}
+    VAR { return symbol(sym.VAR);}
+    WHILE { return symbol(sym.WHILE);}
+    //WITH { return PALABRA_RESERVADA;}
+    WRITE { return symbol(sym.WRITE);}
 
 
     /*Operadores*/
-    "," { return OPERADOR;}
-    ";" { return OPERADOR;}
-    "++" { return OPERADOR;}
-    "+=" { return OPERADOR;}
-    "--" { return OPERADOR;}
-    ">=" { return OPERADOR;}
-    ">" { return OPERADOR;}
-    "<=" { return OPERADOR;}
-    "<" { return OPERADOR;}
-    "<>" { return OPERADOR;}
-    "=" { return OPERADOR;}
-    "+" { return OPERADOR;}
-    "-" { return OPERADOR;}
-    "*" { return OPERADOR;}
-    "/" { return OPERADOR;}
-    "(" { return OPERADOR;}
-    ")" { return OPERADOR;}
-    "[" { return OPERADOR;}
-    "]" { return OPERADOR;}
-    ":=" { return OPERADOR;}
-    "." { return OPERADOR;}
-    ":" { return OPERADOR;}
-    "-=" { return OPERADOR;}
-    "*=" { return OPERADOR;}
-    "/=" { return OPERADOR;}
-    ">>" { return OPERADOR;}
-    "<<" { return OPERADOR;}
-    "<<=" { return OPERADOR;} 
-    ">>=" { return OPERADOR;}
-    "AND" { return OPERADOR;}
-    "OR" { return OPERADOR;}
-    "NOT" { return OPERADOR;}
-    "DIV" { return OPERADOR;}
-    "XOR" { return OPERADOR;}
-    "MOD" { return OPERADOR;}
+    "," { return symbol(sym.COMA);}
+    ";" { return symbol(sym.PUNTOYCOMA);}
+    "++" { return symbol(sym.OPERADOR_POSTERIOR);}
+    "+=" { return symbol(sym.ASIGNACION);}
+    "--" { return symbol(sym.OPERADOR_POSTERIOR);}
+    ">=" { return symbol(sym.OPERADOR_BOOLEANO);}
+    ">" { return symbol(sym.OPERADOR_BOOLEANO);}
+    "<=" { return symbol(sym.OPERADOR_BOOLEANO);}
+    "<" { return symbol(sym.OPERADOR_BOOLEANO);}
+    "<>" { return symbol(sym.OPERADOR_BOOLEANO);}
+    "=" { return symbol(sym.OPERADOR_BOOLEANO);}
+    "+" { return symbol(sym.OPERADOR_ARITMETICO);}
+    "-" { return symbol(sym.OPERADOR_ARITMETICO);}
+    "*" { return symbol(sym.OPERADOR_ARITMETICO);}
+    "/" { return symbol(sym.OPERADOR_ARITMETICO);}
+    "(" { return symbol(sym.PARENTESIS_ABRE);}
+    ")" { return symbol(sym.PARENTESIS_CIERRA);}
+    //"[" { return OPERADOR;}
+    //"]" { return OPERADOR;}
+    ":=" { return symbol(sym.ASIGNACION);}
+    //"." { return OPERADOR;}
+    ":" { return symbol(sym.DOS_PUNTOS);}
+    "-=" { return symbol(sym.ASIGNACION);}
+    "*=" { return symbol(sym.ASIGNACION);}
+    "/=" { return symbol(sym.ASIGNACION);}
+    //">>" { return OPERADOR;}
+    //"<<" { return OPERADOR;}
+    //"<<=" { return OPERADOR;} 
+    //">>=" { return OPERADOR;}
+    "AND" { return symbol(sym.OPERADOR_BOOLEANO);}
+    "OR" { return symbol(sym.OPERADOR_BOOLEANO);}
+    "NOT" { return symbol(sym.OPERADOR_BOOLEANO);}
+    "DIV" { return symbol(sym.OPERADOR_ARITMETICO);}
+    //"XOR" { return OPERADOR;}
+    "MOD" { return symbol(sym.OPERADOR_ARITMETICO);}
 
     /*CARACTERES*/
-    \#[0-9]+ { return CHAR;} /*de un caracter dentro de un string*/
-    \".\"   { return CHAR;} /*de un caracter dentro de un string*/
+    \#[0-9]+ { return symbol(sym.CARACTER);} /*de un caracter dentro de un string*/
+    \".\"   { return symbol(sym.CARACTER);} /*de un caracter dentro de un string*/
 
 
     /*STRING*/
-    \"({Letra}|{Digito}|{CambioLinea}|{Espacio}|{CaracteresEspeciales})*\" {return STRING;} // String puede tener letras, digitos, espacios o cambios de linea ""
+    \"({Letra}|{Digito}|{CambioLinea}|{Espacio}|{CaracteresEspeciales})*\" {return symbol(sym.STRING);} // String puede tener letras, digitos, espacios o cambios de linea ""
     /*ERROR STRING*/
-    //\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|{CaracteresEspeciales})*<<EOF>> {error("El string no está finalizado.", yytext(),yyline()); return ERROR;}
+    //\"({Letra}|{Digito}|{CambioLinea}|{Espacio}|{CaracteresEspeciales})*<<EOF>> {error("El string no está finalizado.", yytext(),yyline());}// return ERROR;}
 
 
     /*Identificadores*/
-    {Letra}({Letra}|{Digito})* {return IDENTIFICADOR;}
+    {Letra}({Letra}|{Digito})* {return symbol(sym.IDENTIFICADOR);}
 
     /*ERRORES IDENTIFICADOR*/
-    {Letra}+({Letra}|{Digito})*+{CaracteresEspecialesId}+({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar caracteres especiales en los identificadores.", yytext(),yyline()); return ERROR;}
+    {Letra}+({Letra}|{Digito})*+{CaracteresEspecialesId}+({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar caracteres especiales en los identificadores.", yytext(),yyline());}//; return ERROR;}
 
 
     /*Literales*/
 
-    {Digito}\.?{Digito}+[Ee][+-]?{Digito}+ {return FLOAT;} 
+    {Digito}\.?{Digito}+[Ee][+-]?{Digito}+ {return symbol(sym.FLOAT);} 
 
-    {Digito}+"\."{Digito}+ {return FLOAT;}
+    {Digito}+"\."{Digito}+ {return symbol(sym.FLOAT);}
 
-    0 | [1-9][0-9]* {return INTEGER;}
+    0 | [1-9][0-9]* {return symbol(sym.INTEGER);}
 
     //Errores de numeros
 
-    {Digito}+"\."{Digito}*("\."{Digito}*)+ {error("Número erróneo: número no válido", yytext(),yyline()); return ERROR;}
-    {Digito}+"\." {error("Número erróneo: no se puede finalizar un número con punto", yytext(),yyline()); return ERROR;}
-    "\."{Digito}+ {error("Número erróneo: no se puede iniciar un número con punto", yytext(),yyline()); return ERROR;}
-    "\-"{Digito}\.?{Digito}+[Ee][+-]?{Digito}+ {error("Número erróneo: no puede ser negativo el número antes del exponente", yytext(),yyline()); return ERROR;}
-    //{Digito}\.?{Digito}+[Ee][+-]?+"\."{Digito}* {error("Número erróneo: después del exponente no puede ser float", yytext(),yyline()); return ERROR;}
+    {Digito}+"\."{Digito}*("\."{Digito}*)+ {error("Número erróneo: número no válido", yytext(),yyline());}// return ERROR;}
+    {Digito}+"\." {error("Número erróneo: no se puede finalizar un número con punto", yytext(),yyline());}// return ERROR;}
+    "\."{Digito}+ {error("Número erróneo: no se puede iniciar un número con punto", yytext(),yyline());}// return ERROR;}
+    "\-"{Digito}\.?{Digito}+[Ee][+-]?{Digito}+ {error("Número erróneo: no puede ser negativo el número antes del exponente", yytext(),yyline());}// return ERROR;}
+    //{Digito}\.?{Digito}+[Ee][+-]?+"\."{Digito}* {error("Número erróneo: después del exponente no puede ser float", yytext(),yyline());}// return ERROR;}
 
     //Errores de si hay letras dentro de numeros
-    {Digito}"\."{Digito}+E[+-]?"\ " {return ERROR;} 
-    {Digito}+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Número erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
-    ({Digito}+{Letra}+{Digito}*)+ ["\."]? {Digito}* {error("Número erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
-    ({Digito}+{Letra}+{Digito}*)+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Número erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline()); return ERROR;}
+    {Digito}"\."{Digito}+E[+-]?"\ " {error("Número erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline());}//return ERROR;} 
+    {Digito}+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Número erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline());}// return ERROR;}
+    ({Digito}+{Letra}+{Digito}*)+ ["\."]? {Digito}* {error("Número erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline());}// return ERROR;}
+    ({Digito}+{Letra}+{Digito}*)+ ["\."]? ({Digito}*{Letra}+{Digito}*)+ {error("Número erróneo: no se puede ingresar letras dentro de un número.", yytext(),yyline());}// return ERROR;}
 
     /*EXCEPCIONES*/
 
 }
 
 <COMENTARIOS1> {
-    "*)"      {System.out.println("Entr'oooooooo"); yybegin(YYINITIAL);}
+    "*)"      { yybegin(YYINITIAL);}
     [^*]+      {/*Ignore*/}
     "*"        {/*Ignore*/} 
-    <<EOF>>   {yybegin(YYINITIAL); error("Comentario sin finalizar.", yytext(),yyline()); return ERROR;}
+    <<EOF>>   {yybegin(YYINITIAL); error("Comentario sin finalizar.", yytext(),yyline()); }//return ERROR;}
 }
 
 <COMENTARIOS2> {
-    "}"      {System.out.println("Entr'oooooooo"); yybegin(YYINITIAL);}
+    "}"      {yybegin(YYINITIAL);}
     [^}]+      {/*Ignore*/}
-    <<EOF>>   {yybegin(YYINITIAL); error("Comentario sin finalizar.", yytext(),yyline()); return ERROR;}
+    <<EOF>>   {yybegin(YYINITIAL); error("Comentario sin finalizar.", yytext(),yyline());}// return ERROR;}
 }
 /*ERRORES*/
 //Caracter invalido
-.   {error("El caracter es inválido", yytext(), yyline()); return ERROR;}
+.   {error("El caracter es inválido", yytext(), yyline());}// return ERROR;}
 
 
 
-<<EOF>>   {return null;}
+<<EOF>>   {}//return null;}

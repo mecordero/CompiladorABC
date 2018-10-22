@@ -13,7 +13,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.util.Pair;
+<<<<<<< HEAD
+=======
 
+>>>>>>> 47ad72c0a0d10c74b7e88a7ab09a135358477e16
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Reader;
@@ -29,22 +32,27 @@ public class CompiladorABC {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         Scanner scanner = new Scanner();
+<<<<<<< HEAD
+        /*
+        String nombreArchivo = "codigo.abc";
+=======
         
         /*String nombreArchivo = "codigo.abc";
+>>>>>>> 47ad72c0a0d10c74b7e88a7ab09a135358477e16
         Reader reader = new BufferedReader(new FileReader(nombreArchivo));
         Lexer lex = new Lexer(reader);
         Parser pars = new Parser(lex);
         pars.parse();*/
                 
-        Tabla_símbolos tabla_simbolos = new Tabla_símbolos();
+        //Tabla_símbolos tabla_simbolos = new Tabla_símbolos();
         
-        scanner.escanearArchivo("literales.txt", tabla_simbolos);
+        //scanner.escanearArchivo("CodigoPrueba.txt", tabla_simbolos);
         
-        tabla_simbolos.print();
+        //tabla_simbolos.print();
         
-        System.out.println("\n\n");
+       //System.out.println("\n\n");
         
-        System.out.println(scanner.getListaErrores());
+        //System.out.println(scanner.getListaErrores());
         
     }
     
