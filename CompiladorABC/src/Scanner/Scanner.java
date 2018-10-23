@@ -36,10 +36,12 @@ public class Scanner {
 
     public Scanner() {
 
-        pathLexer = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
-        //pathLexer = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
-        pathParser = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
-        pathProyecto = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/";
+        //pathLexer = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        pathLexer = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        //pathParser = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
+        pathParser = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
+        //pathProyecto = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/";
+        pathProyecto = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/";
         listaErrores = "";
         //generarParser();
         //generarLexer();
