@@ -27,21 +27,43 @@ public class sym {
   public static final int BEGIN = 2;
   public static final int CARACTER = 29;
   public static final int OPERADOR_BOOLEANO = 25;
+  public static final int OpMAYOR_IGUAL = 25;
+  public static final int OpMAYOR = 25;
+  public static final int OpMENOR_IGUAL = 25;
+  public static final int OpMENOR = 25;
+  public static final int OpDIFERENTE = 25;
+  public static final int OpIGUAL = 25;
+  public static final int OpAND = 25;
+  public static final int OpOR = 25;
   public static final int STRING = 30;
   public static final int COMA = 20;
   public static final int TYPE = 3;
   public static final int ASIGNACION = 23;
+  public static final int OprASIG_MAS = 23;
+  public static final int OprASIG_RESTA = 23;
+  public static final int OprASIG_MUL = 23;
+  public static final int OprASIG_DIV = 23;
   public static final int FLOAT = 31;
   public static final int EOF = 0;
   public static final int OPERADOR_ARITMETICO = 22;
+  public static final int OpSUMA = 22;
+  public static final int OpRESTA = 22;
+  public static final int OpMUL = 22;
+  public static final int OpDIV = 22;
+  public static final int Op_DIV = 22;
+  public static final int OpMOD = 22;
   public static final int CONST = 4;
   public static final int error = 1;
   public static final int IDENTIFICADOR = 33;
   public static final int BOOL = 8;
   public static final int INTEGER = 32;
-  public static final int OPERADOR_POSTERIOR = 24;
+  public static final int OpINC = 24;
+  public static final int OpDEC = 24;
+  public static final int OpNOT = 24;
   public static final int FOR = 9;
   public static final int TO = 16;
   public static final int VAR = 17;
+  
+  
 }
 
