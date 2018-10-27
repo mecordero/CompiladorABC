@@ -1041,7 +1041,7 @@ class Lexer implements java_cup.runtime.Scanner {
             }
           case 65: break;
           case 23: 
-            { return symbol(sym.OPERADOR_POSTERIOR);
+            { return symbol(sym.Op_INC);
             }
           case 66: break;
           case 24: 
