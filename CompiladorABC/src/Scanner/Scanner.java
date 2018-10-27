@@ -36,15 +36,13 @@ public class Scanner {
 
     public Scanner() {
 
-        //pathLexer = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
-        pathLexer = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
-        //pathParser = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
-        pathParser = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
+        pathLexer = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        //pathLexer = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        pathParser = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
+        //pathParser = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
         //pathProyecto = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/";
-        pathProyecto = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/";
+        pathProyecto = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/";
         listaErrores = "";
-        //generarParser();
-        //generarLexer();
     }
 
     public void generarLexer() {
@@ -55,7 +53,7 @@ public class Scanner {
     
     public void generarParser(){
         
-        System.out.println("genera parser");
+        System.out.println("GENERA PARSER");
         
         String [] asintactico = {"-parser", "Parser", pathParser};
         
@@ -68,6 +66,7 @@ public class Scanner {
     }
     
     public void moverArchivosParser(){
+        System.out.println("MUEVE ARCHIVOS");
         File sym = new File (pathProyecto + "sym.java");
         File parser = new File (pathProyecto + "Parser.java");
         
