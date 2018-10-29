@@ -16,6 +16,8 @@ import javafx.util.Pair;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Reader;
+import java_cup.Lexer;
+import java_cup.parser;
 
 /**
  *
@@ -27,32 +29,18 @@ public class CompiladorABC {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        Scanner scanner = new Scanner();
-
-        scanner.generarLexer();
-        
-        
-        /*
-        String nombreArchivo = "codigo.abc";
-=======
-        
-        /*String nombreArchivo = "codigo.abc";
->>>>>>> 47ad72c0a0d10c74b7e88a7ab09a135358477e16
+        String nombreArchivo = "CodigoPrueba.txt";
         Reader reader = new BufferedReader(new FileReader(nombreArchivo));
-        Lexer lex = new Lexer(reader);
-        Parser pars = new Parser(lex);
-        pars.parse();*/
-                
-        //Tabla_símbolos tabla_simbolos = new Tabla_símbolos();
-        
-        //scanner.escanearArchivo("CodigoPrueba.txt", tabla_simbolos);
-        
-        //tabla_simbolos.print();
-        
-       //System.out.println("\n\n");
-        
-        //System.out.println(scanner.getListaErrores());
-        
-    }
-    
+        try{
+            System.out.println("linea 1");
+            parser p = new parser(new Lexer(reader));
+            System.out.println("linea 2");
+            p.parse();
+            p.parse();
+            System.out.println("\n*** Resultados finales ***");
+        }catch(Exception e){
+            System.out.println("Excepcion: " + e.toString());
+        }
+        System.out.println("Termina el parseo");
+    }   
 }

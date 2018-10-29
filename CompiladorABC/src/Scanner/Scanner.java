@@ -35,14 +35,13 @@ public class Scanner {
 
     public Scanner() {
 
-        //pathLexer = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
-        pathLexer = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
-        //pathParser = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
-        pathParser = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
-        //pathProyecto = "C:/Users/Meli/Desktop/CompiladorABC/CompiladorABC/";
-        pathProyecto = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/";
+        pathLexer = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        //pathLexer = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Scanner/Lexer.flex";
+        pathParser = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
+        //pathParser = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/src/Parser/Parser.cup";
+        pathProyecto = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/";
+        //pathProyecto = "C:/Users/yanil/Documents/COMPILADORABC/CompiladorABC/CompiladorABC/";
 
-        //pathProyecto = "C:/Users/Meli/Documents/TEC/2018 2do Sem/Compiladores e Interpretes/Proyecto/CompiladorABC/CompiladorABC/";
         listaErrores = "";
     }
 
@@ -86,20 +85,27 @@ public class Scanner {
         
     }
     
-    /*
+    
 
-    public void escanearArchivo(String nombreArchivo, Tabla_símbolos tabla_simbolos) throws FileNotFoundException, IOException {
+    public void escanearArchivo(String nombreArchivo) throws FileNotFoundException, IOException {
         Reader reader = new BufferedReader(new FileReader(nombreArchivo));
         Lexer lexer = new Lexer(reader);
 
         System.out.println("\n");
-
+        
+        
+        
+        
+        /*
         while (true) {
+           
+            
             try {
                 Tipo_token t_token = lexer.yylex();
                 if (t_token == null) {
                     break;
                 }
+                
                 if(t_token == IDENTIFICADOR && lexer.yytext().length() > 127 ) {
                     throw new ScannerException("Identificador erróneo, no puede ser mayor a 127 caracteres",  lexer.yytext(), lexer.yyline());
                 }
@@ -113,6 +119,6 @@ public class Scanner {
                 listaErrores+=("[Línea: " + e.getLinea() + "]=>" + e.getCaracteres()+ ": " + e.getMessage()+ "\n");
             } 
         }
-        System.out.println("\n");
-    }*/
+        System.out.println("\n");*/
+    }
 }

@@ -3,7 +3,9 @@ import java_cup.runtime.*;
 
 parser code {:
 
-
+    public void report_error(String message, Object info) {
+        System.out.println("ERROR:" + message);
+      }
 
 :}
 
@@ -13,7 +15,8 @@ terminal IDENTIFICADOR, FLOAT, INTEGER, PARENTESIS_ABRE, PARENTESIS_CIERRA, OpIN
 
 non terminal TERMINO, NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS;
 
-SENTENCIA ::= CONDICION | EXP;
+SENTENCIA ::= CONDICION {: System.out.println("cond");  :}
+              | EXP {: System.out.println("exp");  :};
 
 EXP ::= ADITIVOS 
       | STRING;

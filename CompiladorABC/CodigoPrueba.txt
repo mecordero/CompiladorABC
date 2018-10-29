@@ -1,3 +1,1 @@
-﻿VAR
-Nombre, apellido:STRING;
-contador: INT;
+﻿2
