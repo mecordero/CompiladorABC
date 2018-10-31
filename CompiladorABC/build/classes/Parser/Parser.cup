@@ -9,60 +9,69 @@ parser code {:
 
 :}
 
-terminal IDENTIFICADOR, FLOAT, INTEGER, PARENTESIS_ABRE, PARENTESIS_CIERRA, OpINC, OpDEC, OpMUL, OpDIV, Op_DIV,Op_MOD, 
+terminal CONST, PUNTOYCOMA, IDENTIFICADOR, FLOAT, INTEGER, PARENTESIS_ABRE, PARENTESIS_CIERRA, OpINC, OpDEC, OpMUL, OpDIV, Op_DIV,Op_MOD, 
          OpSUMA, OpRESTA, OpIGUAL, OpMAYOR, OpMAYOR_IGUAL, OpMENOR, OpMENOR_IGUAL, OpDIFERENTE, Op_NOT, Op_AND, Op_OR, 
          STRING, COMA;
 
-non terminal TERMINO, NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS;
+non terminal TEMPORAL, CONSTANTES, CONSTANTES2, CONSTANTE, TERMINO, NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS;
 
-start with SENTENCIA;
+start with TEMPORAL;
 
-SENTENCIA ::= CONDICION {: System.out.println("cond");  :}
-              | EXP {: System.out.println("Exp");  :};
+TEMPORAL ::= SENTENCIA {: System.out.println(" temp 1 "); :}
+             | CONSTANTES {: System.out.println(" temp 2 "); :};
 
-EXP ::= ADITIVOS
-      | STRING;
+CONSTANTES          ::= CONST CONSTANTES2 {: System.out.println(" constantes "); :};
+CONSTANTES2          ::= CONSTANTE PUNTOYCOMA CONSTANTES2 {: System.out.println(" constantes 1 "); :}
+                      | CONSTANTE PUNTOYCOMA {: System.out.println(" constantes 2 "); :};
+CONSTANTE           ::= IDENTIFICADOR OpIGUAL EXP {: System.out.println("constante"); :};
 
-CONDICION ::=	CONDICION Op_OR COND_AND
-	      | COND_AND;
+SENTENCIA ::= CONDICION {: System.out.println(" sentencia 1 "); :}
+              | EXP {: System.out.println(" sentencia 2 "); :};
 
-COND_AND ::=	COND_AND Op_AND COND_NOT 
-	      | COND_NOT;
+EXP ::= ADITIVOS {: System.out.println(" exp 1 "); :}
+      | STRING {: System.out.println(" exp 2 "); :};
 
-COND_NOT ::=  Op_NOT COND_REL
-            | COND_REL;
+CONDICION ::=	CONDICION Op_OR COND_AND {: System.out.println(" condicion 1 "); :}
+	      | COND_AND {: System.out.println(" condicion 2 "); :};
 
-COND_REL ::= 	ADITIVOS OpIGUAL 	ADITIVOS
-	      | ADITIVOS OpMAYOR	ADITIVOS
-	      | ADITIVOS OpMAYOR_IGUAL  ADITIVOS
-	      | ADITIVOS OpMENOR 	ADITIVOS
-	      | ADITIVOS OpMENOR_IGUAL  ADITIVOS
-	      | ADITIVOS OpDIFERENTE	ADITIVOS;
+COND_AND ::=	COND_AND Op_AND COND_NOT {: System.out.println(" cond_and 1 "); :}
+	      | COND_NOT {: System.out.println(" cond_and 2 "); :};
+
+COND_NOT ::=  Op_NOT COND_REL {: System.out.println(" cond_not 1 "); :}
+            | COND_REL {: System.out.println(" cond_not 2 "); :};
+
+COND_REL ::= 	ADITIVOS OpIGUAL 	ADITIVOS {: System.out.println(" cond_rel 1 "); :}
+	      | ADITIVOS OpMAYOR	ADITIVOS {: System.out.println(" cond_rel 2 "); :}
+	      | ADITIVOS OpMAYOR_IGUAL  ADITIVOS {: System.out.println(" cond_rel 3 "); :}
+	      | ADITIVOS OpMENOR 	ADITIVOS {: System.out.println(" cond_rel 4 "); :}
+	      | ADITIVOS OpMENOR_IGUAL  ADITIVOS {: System.out.println(" cond_rel 5 "); :}
+	      | ADITIVOS OpDIFERENTE	ADITIVOS {: System.out.println(" cond_rel 6 "); :};
 
 
 
-ADITIVOS ::=	ADITIVOS OpSUMA	MULTIPLICATIVOS
-	      | ADITIVOS OpRESTA MULTIPLICATIVOS
-	      | MULTIPLICATIVOS;
+ADITIVOS ::=	ADITIVOS OpSUMA	MULTIPLICATIVOS {: System.out.println(" aditivos 1 "); :}
+	      | ADITIVOS OpRESTA MULTIPLICATIVOS {: System.out.println(" aditivos 2 "); :}
+	      | MULTIPLICATIVOS {: System.out.println(" aditivos 3 "); :};
 
-MULTIPLICATIVOS ::=	MULTIPLICATIVOS OpMUL UNARIO
-		      | MULTIPLICATIVOS OpDIV UNARIO
-		      | MULTIPLICATIVOS Op_DIV UNARIO
-		      | MULTIPLICATIVOS Op_MOD UNARIO	
-		      | UNARIO;
+MULTIPLICATIVOS ::=	MULTIPLICATIVOS OpMUL UNARIO {: System.out.println(" multiplicativos 1 "); :}
+		      | MULTIPLICATIVOS OpDIV UNARIO {: System.out.println(" multiplicativos 2 "); :}
+		      | MULTIPLICATIVOS Op_DIV UNARIO {: System.out.println(" multiplicativos 3 "); :}
+		      | MULTIPLICATIVOS Op_MOD UNARIO {: System.out.println(" multiplicativos 4 "); :}
+		      | UNARIO {: System.out.println(" multiplicativos 5 "); :};
 
-UNARIO	 ::=	OpINC TERMINO
-	      | OpDEC TERMINO
-	      | TERMINO;
+UNARIO	 ::=	OpINC TERMINO {: System.out.println(" unario 1 "); :}
+	      | OpDEC TERMINO {: System.out.println(" unario 2 "); :}
+	      | TERMINO {: System.out.println(" unario 3 "); :};
 
-TERMINO  ::=	PARENTESIS_ABRE EXP PARENTESIS_CIERRA
-	      | NUMERO {: System.out.println(" Numero "); :} 
-	      | IDENTIFICADOR
-              | FUNCION;
+TERMINO  ::=	PARENTESIS_ABRE EXP PARENTESIS_CIERRA {: System.out.println(" termino 1 "); :}
+	      | NUMERO {: System.out.println(" termino 2 "); :}
+	      | IDENTIFICADOR {: System.out.println(" termino 3 "); :}
+              | FUNCION {: System.out.println(" termino 4 "); :};
 
-NUMERO	 ::=  FLOAT | INTEGER;
+NUMERO	 ::=  FLOAT {: System.out.println(" numero 1 "); :}
+            | INTEGER {: System.out.println(" numero 2 "); :};
 
-FUNCION  ::=  IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA;
+FUNCION  ::=  IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA {: System.out.println(" funcion "); :};
 
-ARGUMENTOS ::=	EXP COMA ARGUMENTOS
-	      | EXP;
+ARGUMENTOS ::=	EXP COMA ARGUMENTOS {: System.out.println(" argumentos 1 "); :}
+	      | EXP {: System.out.println(" argumentos 2 "); :};

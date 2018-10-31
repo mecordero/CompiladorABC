@@ -61,7 +61,7 @@ ComentarioLinea = "//".*
     //BYTE { return PALABRA_RESERVADA;}
     //CASE { return PALABRA_RESERVADA;}
     //CHAR { return symbol(sym.TYPE_CHAR);}
-    //CONST { return symbol(sym.CONST);}
+    CONST { return symbol(sym.CONST);}
     //DO { return symbol(sym.DO);}
     //DOWNTO { return PALABRA_RESERVADA;}
     //ELSE { return symbol(sym.ELSE);}
@@ -103,7 +103,7 @@ ComentarioLinea = "//".*
 
     /*Operadores*/
     "," { return symbol(sym.COMA);}
-    //";" { return symbol(sym.PUNTOYCOMA);}
+    ";" { return symbol(sym.PUNTOYCOMA);}
     //"++" { return symbol(sym.Op_INC);}
     //"+=" { return symbol(sym.OprASIG_MAS);}
     //"--" { return symbol(sym.Op_DEC);}

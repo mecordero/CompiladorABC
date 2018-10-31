@@ -298,7 +298,6 @@ public class Lexer implements java_cup.runtime.Scanner {
     }
 
     private Symbol symbol(int type) {
-        System.out.println(yytext());
         return new Symbol(type, yyline);
     }
 

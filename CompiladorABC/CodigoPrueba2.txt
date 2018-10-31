@@ -1,4 +1,3 @@
-
-abc + iub
-
-
+CONST 
+PI = "HOLA";
+x = 3;
