@@ -3,12 +3,18 @@ import Parser.sym;
 import java_cup.runtime.*;
 import Clases.ScannerException;
 %%
+
 %class Lexer
 %cupsym sym
 %cup
 %line
 %ignorecase
 %yylexthrow ScannerException
+%public
+
+%eofval{
+  return symbol(sym.EOF);
+%eofval}
 
 Letra = [a-zA-Z]
 Digito = [0-9]
@@ -198,4 +204,4 @@ ComentarioLinea = "//".*
 
 
 
-<<EOF>>   {return null;}
+<<EOF>>   {return symbol(sym.EOF);}

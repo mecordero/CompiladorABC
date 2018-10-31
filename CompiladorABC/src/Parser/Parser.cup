@@ -15,10 +15,12 @@ terminal IDENTIFICADOR, FLOAT, INTEGER, PARENTESIS_ABRE, PARENTESIS_CIERRA, OpIN
 
 non terminal TERMINO, NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS;
 
-SENTENCIA ::= CONDICION {: System.out.println("cond");  :}
-              | EXP {: System.out.println("exp");  :};
+start with SENTENCIA;
 
-EXP ::= ADITIVOS 
+SENTENCIA ::= CONDICION {: System.out.println("cond");  :}
+              | EXP {: System.out.println("Exp");  :};
+
+EXP ::= ADITIVOS
       | STRING;
 
 CONDICION ::=	CONDICION Op_OR COND_AND
@@ -54,7 +56,7 @@ UNARIO	 ::=	OpINC TERMINO
 	      | TERMINO;
 
 TERMINO  ::=	PARENTESIS_ABRE EXP PARENTESIS_CIERRA
-	      | NUMERO
+	      | NUMERO {: System.out.println(" Numero "); :} 
 	      | IDENTIFICADOR
               | FUNCION;
 
