@@ -11,15 +11,26 @@ parser code {:
 
 terminal CONST, PUNTOYCOMA, IDENTIFICADOR, FLOAT, INTEGER, PARENTESIS_ABRE, PARENTESIS_CIERRA, OpINC, OpDEC, OpMUL, OpDIV, Op_DIV,Op_MOD, 
          OpSUMA, OpRESTA, OpIGUAL, OpMAYOR, OpMAYOR_IGUAL, OpMENOR, OpMENOR_IGUAL, OpDIFERENTE, Op_NOT, Op_AND, Op_OR, 
-         STRING, COMA, VAR, DOS_PUNTOS, TYPE_INT, TYPE_LONGINT, TYPE_SHORTINT, TYPE_CHAR, TYPE_STRING, TYPE_BOOLEAN, TYPE_REAL;
+         STRING, COMA, VAR, DOS_PUNTOS, TYPE_INT, TYPE_LONGINT, TYPE_SHORTINT, TYPE_CHAR, TYPE_STRING, TYPE_BOOLEAN, TYPE_REAL, BEGIN, END,
+         OprASIGNACION, OprASIG_MAS, OprASIG_RESTA, OprASIG_MUL, OprASIG_DIV, FOR, WHILE, IF, FUNCTION;
 
-non terminal TIPO, TEMPORAL, DECLARAR_CONSTANTES, DECLARAR_VARIABLES, VARIABLES, VARIABLE, IDENTIFICADORES, CONSTANTES, CONSTANTE, TERMINO, NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS;
+non terminal TIPO, TEMPORAL, DECLARAR_CONSTANTES, DECLARAR_VARIABLES, VARIABLES, VARIABLE, IDENTIFICADORES, CONSTANTES, CONSTANTE, TERMINO, 
+         NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS, FUNCIONES, 
+         LINEAS_CUERPO, LINEA_CUERPO, LLAMADA_FUNCION, ASIGNACION, SENTENCIAS;
 
 start with TEMPORAL;
 
-TEMPORAL ::= SENTENCIA {: System.out.println(" temp 1 "); :}
-             | DECLARAR_CONSTANTES {: System.out.println(" temp 2 "); :}
-             | DECLARAR_VARIABLES {: System.out.println(" temp 3 "); :};
+TEMPORAL ::= FUNCIONES {: System.out.println(" temp 1 "); :};
+
+FUNCIONES   ::=  FUNCION FUNCIONES {: System.out.println(" funciones 1 "); :}
+               | FUNCION {: System.out.println(" funciones 2 "); :};
+
+FUNCION     ::=  FUNCTION IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA DOS_PUNTOS TIPO BEGIN DECLARAR_CONSTANTES DECLARAR_VARIABLES LINEAS_CUERPO;// END {: System.out.println(" funcion "); :};
+
+LINEAS_CUERPO ::= LINEA_CUERPO LINEAS_CUERPO {: System.out.println(" lineas_cuerpo 1 "); :}
+                | LINEA_CUERPO {: System.out.println(" lineas_cuerpo 2 "); :};
+
+LINEA_CUERPO ::=  EXP {: System.out.println(" linea_cuerpo 1 "); :};
 
 DECLARAR_CONSTANTES ::= CONST CONSTANTES {: System.out.println(" declarar_constantes "); :};
 CONSTANTES          ::= CONSTANTE PUNTOYCOMA CONSTANTES {: System.out.println(" constantes 1 "); :}
@@ -32,9 +43,6 @@ VARIABLES          ::= VARIABLE PUNTOYCOMA VARIABLES {: System.out.println(" var
 VARIABLE           ::= IDENTIFICADORES DOS_PUNTOS TIPO {: System.out.println(" variable "); :};
 IDENTIFICADORES    ::= IDENTIFICADOR COMA IDENTIFICADORES {: System.out.println(" identificadores 1 "); :}
                        | IDENTIFICADOR {: System.out.println(" identificadores 2 "); :};
-
-SENTENCIA ::= CONDICION {: System.out.println(" sentencia 1 "); :}
-              | EXP {: System.out.println(" sentencia 2 "); :};
 
 EXP ::= ADITIVOS {: System.out.println(" exp 1 "); :}
       | STRING {: System.out.println(" exp 2 "); :};
@@ -74,15 +82,15 @@ UNARIO	 ::=	OpINC TERMINO {: System.out.println(" unario 1 "); :}
 TERMINO  ::=	PARENTESIS_ABRE EXP PARENTESIS_CIERRA {: System.out.println(" termino 1 "); :}
 	      | NUMERO {: System.out.println(" termino 2 "); :}
 	      | IDENTIFICADOR {: System.out.println(" termino 3 "); :}
-              | FUNCION {: System.out.println(" termino 4 "); :};
+              | LLAMADA_FUNCION {: System.out.println(" termino 4 "); :};
 
 NUMERO	 ::=  FLOAT {: System.out.println(" numero 1 "); :}
             | INTEGER {: System.out.println(" numero 2 "); :};
 
-FUNCION  ::=  IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA {: System.out.println(" funcion "); :};
+LLAMADA_FUNCION  ::=  IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA {: System.out.println(" funcion "); :};
 
-ARGUMENTOS ::=	EXP COMA ARGUMENTOS {: System.out.println(" argumentos 1 "); :}
-	      | EXP {: System.out.println(" argumentos 2 "); :};
+ARGUMENTOS ::=	TIPO IDENTIFICADOR COMA ARGUMENTOS {: System.out.println(" argumentos 1 "); :}
+	      | TIPO IDENTIFICADOR {: System.out.println(" argumentos 2 "); :};
 
 TIPO        ::=   TYPE_INT {: System.out.println(" tipo 1 "); :}
                 | TYPE_LONGINT {: System.out.println(" tipo 2 "); :}
@@ -91,3 +99,18 @@ TIPO        ::=   TYPE_INT {: System.out.println(" tipo 1 "); :}
                 | TYPE_STRING {: System.out.println(" tipo 5 "); :}
                 | TYPE_BOOLEAN {: System.out.println(" tipo 6 "); :}
                 | TYPE_REAL {: System.out.println(" tipo 7 "); :};
+
+ASIGNACION  ::= IDENTIFICADOR OprASIGNACION EXP {: System.out.println(" asignacion 1 "); :}
+              | IDENTIFICADOR OprASIG_MAS EXP {: System.out.println(" asignacion 2 "); :}
+              | IDENTIFICADOR OprASIG_RESTA EXP {: System.out.println(" asignacion 3 "); :}
+              | IDENTIFICADOR OprASIG_MUL EXP {: System.out.println(" asignacion 4 "); :}
+              | IDENTIFICADOR OprASIG_DIV EXP {: System.out.println(" asignacion 5 "); :};
+
+SENTENCIAS  ::= SENTENCIA SENTENCIAS {: System.out.println(" sentencias 1 "); :}
+              | SENTENCIA {: System.out.println(" sentencias 2 "); :};
+
+SENTENCIA   ::=  FOR {: System.out.println(" sentencia 1 "); :}
+               | WHILE {: System.out.println(" sentencia 2 "); :}
+               | IF {: System.out.println(" sentencia 3 "); :}
+               | ASIGNACION PUNTOYCOMA {: System.out.println(" sentencia 4 "); :}
+               | PUNTOYCOMA {: System.out.println(" sentencia 5 "); :};

@@ -56,7 +56,7 @@ ComentarioLinea = "//".*
 
     /*Palabras reservadas*/
     //ARRAY { return PALABRA_RESERVADA;}
-    //BEGIN { return symbol(sym.BEGIN);}
+    BEGIN { return symbol(sym.BEGIN);}
     BOOLEAN { return symbol(sym.TYPE_BOOLEAN);}
     //BYTE { return PALABRA_RESERVADA;}
     //CASE { return PALABRA_RESERVADA;}
@@ -65,12 +65,12 @@ ComentarioLinea = "//".*
     //DO { return symbol(sym.DO);}
     //DOWNTO { return PALABRA_RESERVADA;}
     //ELSE { return symbol(sym.ELSE);}
-    //END { return symbol(sym.END);}
+    END { return symbol(sym.END);}
     //FALSE { return symbol(sym.BOOL);}
     //FILE { return PALABRA_RESERVADA;}
     //FOR { return symbol(sym.FOR);}
     //FORWARD { return PALABRA_RESERVADA;}
-    //FUNCTION { return symbol(sym.FUNCTION);}
+    FUNCTION { return symbol(sym.FUNCTION);}
     //GOTO { return PALABRA_RESERVADA;}
     //IF { return symbol(sym.IF);}
     //IN { return PALABRA_RESERVADA;}

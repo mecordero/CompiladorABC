@@ -1,3 +1,8 @@
-var
-contador, OTRO: INT;
-NOMBRE, APELLIDO: sTRING;
+FUNCTION uno (int x, string y ): int
+begin
+CONST
+PI = 3.1415;
+VAR
+R : INT ;
+TUAUSY : STRING ;
+A+B
