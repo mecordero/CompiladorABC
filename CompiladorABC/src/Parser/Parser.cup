@@ -11,19 +11,27 @@ parser code {:
 
 terminal CONST, PUNTOYCOMA, IDENTIFICADOR, FLOAT, INTEGER, PARENTESIS_ABRE, PARENTESIS_CIERRA, OpINC, OpDEC, OpMUL, OpDIV, Op_DIV,Op_MOD, 
          OpSUMA, OpRESTA, OpIGUAL, OpMAYOR, OpMAYOR_IGUAL, OpMENOR, OpMENOR_IGUAL, OpDIFERENTE, Op_NOT, Op_AND, Op_OR, 
-         STRING, COMA;
+         STRING, COMA, VAR, DOS_PUNTOS, TYPE_INT, TYPE_LONGINT, TYPE_SHORTINT, TYPE_CHAR, TYPE_STRING, TYPE_BOOLEAN, TYPE_REAL;
 
-non terminal TEMPORAL, CONSTANTES, CONSTANTES2, CONSTANTE, TERMINO, NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS;
+non terminal TIPO, TEMPORAL, DECLARAR_CONSTANTES, DECLARAR_VARIABLES, VARIABLES, VARIABLE, IDENTIFICADORES, CONSTANTES, CONSTANTE, TERMINO, NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS;
 
 start with TEMPORAL;
 
 TEMPORAL ::= SENTENCIA {: System.out.println(" temp 1 "); :}
-             | CONSTANTES {: System.out.println(" temp 2 "); :};
+             | DECLARAR_CONSTANTES {: System.out.println(" temp 2 "); :}
+             | DECLARAR_VARIABLES {: System.out.println(" temp 3 "); :};
 
-CONSTANTES          ::= CONST CONSTANTES2 {: System.out.println(" constantes "); :};
-CONSTANTES2          ::= CONSTANTE PUNTOYCOMA CONSTANTES2 {: System.out.println(" constantes 1 "); :}
+DECLARAR_CONSTANTES ::= CONST CONSTANTES {: System.out.println(" declarar_constantes "); :};
+CONSTANTES          ::= CONSTANTE PUNTOYCOMA CONSTANTES {: System.out.println(" constantes 1 "); :}
                       | CONSTANTE PUNTOYCOMA {: System.out.println(" constantes 2 "); :};
 CONSTANTE           ::= IDENTIFICADOR OpIGUAL EXP {: System.out.println("constante"); :};
+
+DECLARAR_VARIABLES ::= VAR VARIABLES {: System.out.println(" declarar_variables "); :};
+VARIABLES          ::= VARIABLE PUNTOYCOMA VARIABLES {: System.out.println(" variables 1 "); :}
+                      | VARIABLE PUNTOYCOMA {: System.out.println(" variables 2"); :};
+VARIABLE           ::= IDENTIFICADORES DOS_PUNTOS TIPO {: System.out.println(" variable "); :};
+IDENTIFICADORES    ::= IDENTIFICADOR COMA IDENTIFICADORES {: System.out.println(" identificadores 1 "); :}
+                       | IDENTIFICADOR {: System.out.println(" identificadores 2 "); :};
 
 SENTENCIA ::= CONDICION {: System.out.println(" sentencia 1 "); :}
               | EXP {: System.out.println(" sentencia 2 "); :};
@@ -75,3 +83,11 @@ FUNCION  ::=  IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA {: Syst
 
 ARGUMENTOS ::=	EXP COMA ARGUMENTOS {: System.out.println(" argumentos 1 "); :}
 	      | EXP {: System.out.println(" argumentos 2 "); :};
+
+TIPO        ::=   TYPE_INT {: System.out.println(" tipo 1 "); :}
+                | TYPE_LONGINT {: System.out.println(" tipo 2 "); :}
+                | TYPE_SHORTINT {: System.out.println(" tipo 3 "); :}
+                | TYPE_CHAR {: System.out.println(" tipo 4 "); :}
+                | TYPE_STRING {: System.out.println(" tipo 5 "); :}
+                | TYPE_BOOLEAN {: System.out.println(" tipo 6 "); :}
+                | TYPE_REAL {: System.out.println(" tipo 7 "); :};
