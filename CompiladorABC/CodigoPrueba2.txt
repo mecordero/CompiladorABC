@@ -1,3 +1,4 @@
-CONST
-Min = 0;
+FUNCTION F (INT X, STRING Y,) : INT
+BEGIN
+END
 

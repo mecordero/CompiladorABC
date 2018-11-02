@@ -21,17 +21,17 @@ non terminal TIPO, TEMPORAL, DECLARAR_CONSTANTES, DECLARAR_VARIABLES, VARIABLES,
 
 start with TEMPORAL;
 
-TEMPORAL ::=  FUNCIONES | DECLARAR_VARIABLES | DECLARAR_CONSTANTES;
+TEMPORAL ::=  FUNCION | DECLARAR_VARIABLES | DECLARAR_CONSTANTES;
 
-FUNCIONES   ::=  FUNCION FUNCIONES {: System.out.println(" funciones 1 "); :}
-               | FUNCION {: System.out.println(" funciones 2 "); :};
+//FUNCIONES   ::=  FUNCION FUNCIONES {: System.out.println(" funciones 1 "); :}
+               //| FUNCION {: System.out.println(" funciones 2 "); :};
 
 FUNCION     ::=  FUNCTION IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA DOS_PUNTOS TIPO 
-                 DECLARAR_CONSTANTES DECLARAR_VARIABLES BEGIN SENTENCIAS END {: System.out.println(" funcion "); :};
+                 BEGIN END {: System.out.println(" funcion "); :};
 
 
-ARGUMENTOS ::=  TIPO IDENTIFICADOR COMA ARGUMENTOS {: System.out.println(" argumentos 1 "); :}
-               | TIPO  IDENTIFICADOR {: System.out.println(" argumentos 2 "); :};
+ARGUMENTOS ::=  TIPO IDENTIFICADOR COMA   ARGUMENTOS  {: System.out.println(" argumentos 1 "); :}
+               | TIPO  IDENTIFICADOR   COMA {: System.out.println(" argumentos 2 "); :};
 
 DECLARAR_CONSTANTES ::= CONST CONSTANTES {: System.out.println(" declarar_constantes "); :};
 CONSTANTES          ::= CONSTANTE PUNTOYCOMA CONSTANTES {: System.out.println(" constantes 1 "); :}
