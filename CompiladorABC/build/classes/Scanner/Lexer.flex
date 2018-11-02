@@ -81,7 +81,7 @@ ComentarioLinea = "//".*
     //NIL { return PALABRA_RESERVADA;}
     //OF { return PALABRA_RESERVADA;}
     //PACKED { return PALABRA_RESERVADA;}
-    //PROCEDURE { return symbol(sym.PROCEDURE);}
+     PROCEDURE { return symbol(sym.PROCEDURE);}
     //PROGRAM { return symbol(sym.PROGRAM);}
     //READ { return symbol(sym.READ);}
     REAL { return symbol(sym.TYPE_REAL);}
