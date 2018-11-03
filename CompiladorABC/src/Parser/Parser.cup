@@ -12,27 +12,40 @@ parser code {:
 terminal CONST, PUNTOYCOMA, IDENTIFICADOR, FLOAT, INTEGER, PARENTESIS_ABRE, PARENTESIS_CIERRA, OpINC, OpDEC, OpMUL, OpDIV, Op_DIV,Op_MOD, 
          OpSUMA, OpRESTA, OpIGUAL, OpMAYOR, OpMAYOR_IGUAL, OpMENOR, OpMENOR_IGUAL, OpDIFERENTE, Op_NOT, Op_AND, Op_OR, 
          STRING, COMA, VAR, DOS_PUNTOS, TYPE_INT, TYPE_LONGINT, TYPE_SHORTINT, TYPE_CHAR, TYPE_STRING, TYPE_BOOLEAN, TYPE_REAL, BEGIN, END,
-         OprASIGNACION, OprASIG_MAS, OprASIG_RESTA, OprASIG_MUL, OprASIG_DIV, FOR, WHILE, IF, FUNCTION;
+         OprASIGNACION, OprASIG_MAS, OprASIG_RESTA, OprASIG_MUL, OprASIG_DIV, FOR, WHILE, IF, FUNCTION, PROCEDURE, TO, DO;
 
 non terminal TIPO, TEMPORAL, DECLARAR_CONSTANTES, DECLARAR_VARIABLES, VARIABLES, VARIABLE, IDENTIFICADORES, CONSTANTES, CONSTANTE, TERMINO, 
          NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS, FUNCIONES, 
          PROCEDIMIENTO, PROCEDIMIENTOS, ARGUMENTOS_P,
-         LLAMADA_FUNCION, ASIGNACION, SENTENCIAS;
+         LLAMADA_FUNCION, ASIGNACION, SENTENCIAS, BLOQUE_DECLARACIONES, ESTR_FOR;
 
 start with TEMPORAL;
 
-TEMPORAL ::=  FUNCION | DECLARAR_VARIABLES | DECLARAR_CONSTANTES;
+TEMPORAL ::=  PROCEDIMIENTOS | DECLARAR_VARIABLES | DECLARAR_CONSTANTES | ESTR_FOR;
 
-//FUNCIONES   ::=  FUNCION FUNCIONES {: System.out.println(" funciones 1 "); :}
-               //| FUNCION {: System.out.println(" funciones 2 "); :};
+PROCEDIMIENTOS   ::=  PROCEDIMIENTO PROCEDIMIENTOS {: System.out.println(" procedimientos 1 "); :}
+               | PROCEDIMIENTO {: System.out.println(" procedimiento 2 "); :};
+
+PROCEDIMIENTO     ::=  PROCEDURE IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA  
+                 BLOQUE_DECLARACIONES BEGIN SENTENCIA END {: System.out.println(" procedimiento "); :};
+
+FUNCIONES   ::=  FUNCION FUNCIONES {: System.out.println(" funciones 1 "); :}
+               | FUNCION {: System.out.println(" funciones 2 "); :};
 
 FUNCION     ::=  FUNCTION IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA DOS_PUNTOS TIPO 
-                 BEGIN END {: System.out.println(" funcion "); :};
+                 BLOQUE_DECLARACIONES BEGIN SENTENCIA END {: System.out.println(" funcion "); :};
 
+BLOQUE_DECLARACIONES::= DECLARAR_VARIABLES DECLARAR_CONSTANTES
+                      | DECLARAR_CONSTANTES DECLARAR_VARIABLES
+                      | DECLARAR_VARIABLES
+                      | DECLARAR_CONSTANTES; 
 
 ARGUMENTOS ::=  TIPO IDENTIFICADOR ARGUMENTOS_P  {: System.out.println(" argumentos 1 "); :};
 
 ARGUMENTOS_P ::= COMA ARGUMENTOS | ;
+
+ESTR_FOR    ::=  FOR ASIGNACION TO EXP DO BEGIN SENTENCIA END{: System.out.println(" BE  1 "); :}; 
+//TO EXP DO BEGIN SENTENCIAS END;
 
 DECLARAR_CONSTANTES ::= CONST CONSTANTES {: System.out.println(" declarar_constantes "); :};
 CONSTANTES          ::= CONSTANTE PUNTOYCOMA CONSTANTES {: System.out.println(" constantes 1 "); :}
@@ -43,7 +56,7 @@ CONSTANTE           ::= IDENTIFICADOR OpIGUAL NUMERO {: System.out.println("cons
 
 DECLARAR_VARIABLES ::= VAR VARIABLES {: System.out.println(" declarar_variables1 "); :};
 VARIABLES          ::= VARIABLE PUNTOYCOMA VARIABLES  {: System.out.println(" variables 2"); :}
-                    |  VARIABLE;
+                    |  VARIABLE PUNTOYCOMA;
 
 VARIABLE           ::= IDENTIFICADORES DOS_PUNTOS TIPO {: System.out.println(" variable "); :};
 IDENTIFICADORES    ::= IDENTIFICADORES COMA IDENTIFICADOR       {: System.out.println(" identificadores 1 "); :}
@@ -110,11 +123,11 @@ ASIGNACION  ::= IDENTIFICADOR OprASIGNACION EXP {: System.out.println(" asignaci
 SENTENCIAS  ::= SENTENCIA  SENTENCIAS {: System.out.println(" sentencias 1 "); :}
               | SENTENCIA {: System.out.println(" sentencias 2 "); :};
 
-SENTENCIA   ::=  FOR {: System.out.println(" sentencia 1 "); :}
+SENTENCIA   ::= ESTR_FOR {: System.out.println(" sentencia 1 "); :}
               | WHILE {: System.out.println(" sentencia 2 "); :}
               | IF {: System.out.println(" sentencia 3 "); :}
               | ASIGNACION PUNTOYCOMA{: System.out.println(" sentencia 4 "); :}
               | PUNTOYCOMA {: System.out.println(" sentencia 5 "); :}
               | LLAMADA_FUNCION PUNTOYCOMA
-             //| PROCEDIMIENTOS
+              | PROCEDIMIENTOS
                ;
