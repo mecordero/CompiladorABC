@@ -3,9 +3,28 @@ import java_cup.runtime.*;
 
 parser code {:
 
+    /* Reporte de error encontrado. */
     public void report_error(String message, Object info) {
-        System.out.println("ERROR:" + message);
-      }
+        StringBuilder m = new StringBuilder("Error");
+        if (info instanceof java_cup.runtime.Symbol) {
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+            if (s.left >= 0) {                
+                m.append(" in line "+(s.left+1));
+                if (s.right >= 0)
+                    m.append(", column "+(s.right+1));
+            }
+        }
+        m.append(" : "+message);
+        System.err.println(m);
+    }
+   
+    /* Cuando se encuentra un error de donde el sistema no puede
+        recuperarse, se lanza un error fatal. Se despliega el mensaje
+        de error y se finaliza la ejecucion. */
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        System.exit(1);
+    }
 
 :}
 
@@ -16,24 +35,24 @@ terminal CONST, PUNTOYCOMA, IDENTIFICADOR, FLOAT, INTEGER, PARENTESIS_ABRE, PARE
 
 non terminal TIPO, TEMPORAL, DECLARAR_CONSTANTES, DECLARAR_VARIABLES, VARIABLES, VARIABLE, IDENTIFICADORES, CONSTANTES, CONSTANTE, TERMINO, 
          NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS, FUNCIONES, 
-         PROCEDIMIENTO, PROCEDIMIENTOS, ARGUMENTOS_P,
-         LLAMADA_FUNCION, ASIGNACION, SENTENCIAS, BLOQUE_DECLARACIONES, ESTR_FOR;
+         PROCEDIMIENTO, PROCEDIMIENTOS, ARGUMENTOS_P, SENTENCIA_PUNTOYCOMA, SENTENCIA_END,
+         LLAMADA_FUNCION, ASIGNACION, SENTENCIAS, BLOQUE_DECLARACIONES, ESTR_FOR, ESTR_WHILE;
 
 start with TEMPORAL;
 
-TEMPORAL ::=  PROCEDIMIENTOS | DECLARAR_VARIABLES | DECLARAR_CONSTANTES | ESTR_FOR;
+TEMPORAL ::=  PROCEDIMIENTOS | DECLARAR_VARIABLES | DECLARAR_CONSTANTES | ESTR_FOR END | ESTR_WHILE END;
 
-PROCEDIMIENTOS   ::=  PROCEDIMIENTO PROCEDIMIENTOS {: System.out.println(" procedimientos 1 "); :}
-               | PROCEDIMIENTO {: System.out.println(" procedimiento 2 "); :};
+PROCEDIMIENTOS   ::=  PROCEDIMIENTO END PROCEDIMIENTOS {: System.out.println(" procedimientos 1 "); :}
+               | {: System.out.println(" procedimiento 2 "); :};
 
 PROCEDIMIENTO     ::=  PROCEDURE IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA  
                  BLOQUE_DECLARACIONES BEGIN SENTENCIA END {: System.out.println(" procedimiento "); :};
 
-FUNCIONES   ::=  FUNCION FUNCIONES {: System.out.println(" funciones 1 "); :}
-               | FUNCION {: System.out.println(" funciones 2 "); :};
+FUNCIONES   ::=  FUNCION END FUNCIONES {: System.out.println(" funciones 1 "); :}
+               | {: System.out.println(" funciones 2 "); :};
 
 FUNCION     ::=  FUNCTION IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA DOS_PUNTOS TIPO 
-                 BLOQUE_DECLARACIONES BEGIN SENTENCIA END {: System.out.println(" funcion "); :};
+                 BLOQUE_DECLARACIONES BEGIN SENTENCIAS  {: System.out.println(" funcion "); :};
 
 BLOQUE_DECLARACIONES::= DECLARAR_VARIABLES DECLARAR_CONSTANTES
                       | DECLARAR_CONSTANTES DECLARAR_VARIABLES
@@ -44,8 +63,9 @@ ARGUMENTOS ::=  TIPO IDENTIFICADOR ARGUMENTOS_P  {: System.out.println(" argumen
 
 ARGUMENTOS_P ::= COMA ARGUMENTOS | ;
 
-ESTR_FOR    ::=  FOR ASIGNACION TO EXP DO BEGIN SENTENCIA END{: System.out.println(" BE  1 "); :}; 
-//TO EXP DO BEGIN SENTENCIAS END;
+ESTR_FOR    ::=  FOR ASIGNACION TO EXP DO BEGIN SENTENCIAS{: System.out.println(" BE  1 "); :}; 
+
+ESTR_WHILE  ::=  WHILE CONDICION DO BEGIN SENTENCIAS;
 
 DECLARAR_CONSTANTES ::= CONST CONSTANTES {: System.out.println(" declarar_constantes "); :};
 CONSTANTES          ::= CONSTANTE PUNTOYCOMA CONSTANTES {: System.out.println(" constantes 1 "); :}
@@ -120,14 +140,17 @@ ASIGNACION  ::= IDENTIFICADOR OprASIGNACION EXP {: System.out.println(" asignaci
               | IDENTIFICADOR OprASIG_DIV EXP {: System.out.println(" asignacion 5 "); :};
 
 
-SENTENCIAS  ::= SENTENCIA  SENTENCIAS {: System.out.println(" sentencias 1 "); :}
-              | SENTENCIA {: System.out.println(" sentencias 2 "); :};
+SENTENCIAS  ::= SENTENCIA_PUNTOYCOMA PUNTOYCOMA  SENTENCIAS {: System.out.println(" sentencias 1 "); :}
+              | SENTENCIA_END END SENTENCIAS {: System.out.println(" sentencias 2 "); :}
+              | ;
 
-SENTENCIA   ::= ESTR_FOR {: System.out.println(" sentencia 1 "); :}
-              | WHILE {: System.out.println(" sentencia 2 "); :}
-              | IF {: System.out.println(" sentencia 3 "); :}
-              | ASIGNACION PUNTOYCOMA{: System.out.println(" sentencia 4 "); :}
-              | PUNTOYCOMA {: System.out.println(" sentencia 5 "); :}
-              | LLAMADA_FUNCION PUNTOYCOMA
-              | PROCEDIMIENTOS
-               ;
+SENTENCIA_PUNTOYCOMA  ::= ASIGNACION{: System.out.println(" sentencia 4 "); :}
+                         | PUNTOYCOMA {: System.out.println(" sentencia 5 "); :}
+                         | LLAMADA_FUNCION;
+                         
+               
+
+SENTENCIA_END ::= ESTR_FOR {: System.out.println(" sentencia end 1 "); :}
+              | ESTR_WHILE {: System.out.println(" sentencia end 2 "); :}
+              | IF {: System.out.println(" sentencia end 3 "); :};
+             /* | PROCEDIMIENTOS; */

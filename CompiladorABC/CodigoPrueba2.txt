@@ -1,1 +1,4 @@
-FOR X:=3 TO 4 DO BEGIN  A:=8; END
+WHILE 5 > 3 DO
+BEGIN
+A:= 4;
+END

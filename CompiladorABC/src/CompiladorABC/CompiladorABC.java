@@ -27,3 +27,15 @@ public class CompiladorABC {
         }
     }   
 }
+
+
+
+/*
+
+Lo que tenía del if
+
+ESTR_IF     ::=  IF CONDICION THEN BEGIN SENTENCIAS ESTR_ELSE;
+
+ESTR_ELSE ::= END ELSE BEGIN SENTENCIAS | ;
+
+*/
