@@ -1,4 +1,11 @@
-WHILE 5 > 3 DO
+IF 5 > 3 THEN 
 BEGIN
-A:= 4;
+A:= 4; 
+END
+ELSE
+BEGIN
+A:= 7+8; 
+d:=96;
+y:=67;
+END
 END

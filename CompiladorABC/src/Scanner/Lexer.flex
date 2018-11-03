@@ -64,7 +64,7 @@ ComentarioLinea = "//".*
     CONST { return symbol(sym.CONST);}
     DO { return symbol(sym.DO);}
     //DOWNTO { return PALABRA_RESERVADA;}
-    //ELSE { return symbol(sym.ELSE);}
+    ELSE { return symbol(sym.ELSE);}
     END { return symbol(sym.END);}
     //FALSE { return symbol(sym.BOOL);}
     //FILE { return PALABRA_RESERVADA;}
@@ -72,7 +72,7 @@ ComentarioLinea = "//".*
     //FORWARD { return PALABRA_RESERVADA;}
     FUNCTION { return symbol(sym.FUNCTION);}
     //GOTO { return PALABRA_RESERVADA;}
-    //IF { return symbol(sym.IF);}
+    IF { return symbol(sym.IF);}
     //IN { return PALABRA_RESERVADA;}
     //INLINE { return PALABRA_RESERVADA;}
     INT { return symbol(sym.TYPE_INT);}
@@ -90,13 +90,13 @@ ComentarioLinea = "//".*
     //SET { return PALABRA_RESERVADA;}
     SHORTINT { return symbol(sym.TYPE_SHORTINT);}
     STRING { return symbol(sym.TYPE_STRING);}
-    //THEN { return symbol(sym.THEN);}
+    THEN { return symbol(sym.THEN);}
     TO { return symbol(sym.TO);}
     //TRUE { return symbol(sym.BOOL);}
     //TYPE { return PALABRA_RESERVADA;}
     //UNTIL { return PALABRA_RESERVADA;}
     VAR { return symbol(sym.VAR);}
-    //WHILE { return symbol(sym.WHILE);}
+    WHILE { return symbol(sym.WHILE);}
     //WITH { return PALABRA_RESERVADA;}
     //WRITE { return symbol(sym.WRITE);}
 
