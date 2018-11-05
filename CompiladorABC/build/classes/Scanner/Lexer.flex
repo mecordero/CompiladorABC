@@ -82,8 +82,8 @@ ComentarioLinea = "//".*
     //OF { return PALABRA_RESERVADA;}
     //PACKED { return PALABRA_RESERVADA;}
     PROCEDURE { return symbol(sym.PROCEDURE);}
-    //PROGRAM { return symbol(sym.PROGRAM);}
-    //READ { return symbol(sym.READ);}
+    PROGRAM { return symbol(sym.PROGRAM);}
+    READ { return symbol(sym.READ);}
     REAL { return symbol(sym.TYPE_REAL);}
     //RECORD { return PALABRA_RESERVADA;}
     //REPEAT { return PALABRA_RESERVADA;}
@@ -98,16 +98,15 @@ ComentarioLinea = "//".*
     VAR { return symbol(sym.VAR);}
     WHILE { return symbol(sym.WHILE);}
     //WITH { return PALABRA_RESERVADA;}
-    //WRITE { return symbol(sym.WRITE);}
+    WRITE { return symbol(sym.WRITE);}
 
 
     /*Operadores*/
     "," { return symbol(sym.COMA);}
     ";" { return symbol(sym.PUNTOYCOMA);}
-    //"++" { return symbol(sym.Op_INC);}
-    //"+=" { return symbol(sym.OprASIG_MAS);}
-    //"--" { return symbol(sym.Op_DEC);}
-
+    "++" { return symbol(sym.Op_INC);}
+    "+=" { return symbol(sym.OprASIG_MAS);}
+    "--" { return symbol(sym.Op_DEC);}
     ">=" { return symbol(sym.OpMAYOR_IGUAL);}
     ">" { return symbol(sym.OpMAYOR);}
     "<=" { return symbol(sym.OpMENOR_IGUAL);}
@@ -126,21 +125,21 @@ ComentarioLinea = "//".*
     ":=" { return symbol(sym.OprASIGNACION);}
     //"." { return OPERADOR;}
     ":" { return symbol(sym.DOS_PUNTOS);}
-    //"-=" { return symbol(sym.OprASIG_RESTA);}
-    //"*=" { return symbol(sym.OprASIG_MUL);}
-    //"/=" { return symbol(sym.OprASIG_DIV);}
+    "-=" { return symbol(sym.OprASIG_RESTA);}
+    "*=" { return symbol(sym.OprASIG_MUL);}
+    "/=" { return symbol(sym.OprASIG_DIV);}
     //">>" { return OPERADOR;}
     //"<<" { return OPERADOR;}
     //"<<=" { return OPERADOR;} 
     //">>=" { return OPERADOR;}
 
-    //"AND" { return symbol(sym.OpAND);}
-    //"OR" { return symbol(sym.OpOR);}
-    //"NOT" { return symbol(sym.OpNOT);}
+    "AND" { return symbol(sym.OpAND);}
+    "OR" { return symbol(sym.OpOR);}
+    "NOT" { return symbol(sym.OpNOT);}
 
     "DIV" { return symbol(sym.Op_DIV);}
     //"XOR" { return OPERADOR;}
-    //"MOD" { return symbol(sym.OpMOD);}
+    "MOD" { return symbol(sym.Op_MOD);}
 
     /*CARACTERES*/
     //\#[0-9]+ { return symbol(sym.CARACTER);} /*de un caracter dentro de un string*/

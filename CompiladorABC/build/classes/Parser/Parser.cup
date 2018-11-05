@@ -28,139 +28,165 @@ parser code {:
 
 :}
 
-terminal CONST, PUNTOYCOMA, IDENTIFICADOR, FLOAT, INTEGER, PARENTESIS_ABRE, PARENTESIS_CIERRA, OpINC, OpDEC, OpMUL, OpDIV, Op_DIV,Op_MOD, 
-         OpSUMA, OpRESTA, OpIGUAL, OpMAYOR, OpMAYOR_IGUAL, OpMENOR, OpMENOR_IGUAL, OpDIFERENTE, Op_NOT, Op_AND, Op_OR, 
+terminal CONST, PUNTOYCOMA, IDENTIFICADOR, FLOAT, INTEGER, PARENTESIS_ABRE, PARENTESIS_CIERRA, OpMUL, OpDIV, Op_DIV,Op_MOD, 
+         OpSUMA, OpRESTA, OpIGUAL, OpMAYOR, OpMAYOR_IGUAL, OpMENOR, OpMENOR_IGUAL, OpDIFERENTE, OpNOT, OpAND, OpOR, 
          STRING, COMA, VAR, DOS_PUNTOS, TYPE_INT, TYPE_LONGINT, TYPE_SHORTINT, TYPE_CHAR, TYPE_STRING, TYPE_BOOLEAN, TYPE_REAL, BEGIN, END,
-         OprASIGNACION, OprASIG_MAS, OprASIG_RESTA, OprASIG_MUL, OprASIG_DIV, FOR, WHILE, IF, FUNCTION, PROCEDURE, TO, DO, THEN, ELSE;
+         OprASIGNACION, OprASIG_MAS, OprASIG_RESTA, OprASIG_MUL, OprASIG_DIV, FOR, WHILE, IF, FUNCTION, PROCEDURE, TO, DO, THEN, ELSE,
+         PROGRAM, Op_INC, Op_DEC, READ, WRITE;
 
-non terminal TIPO, TEMPORAL, DECLARAR_CONSTANTES, DECLARAR_VARIABLES, VARIABLES, VARIABLE, IDENTIFICADORES, CONSTANTES, CONSTANTE, TERMINO, 
-         NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, SENTENCIA, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS, FUNCIONES, 
-         PROCEDIMIENTO, PROCEDIMIENTOS, ARGUMENTOS_P, SENTENCIA_PUNTOYCOMA, SENTENCIA_END,
-         LLAMADA_FUNCION, ASIGNACION, SENTENCIAS, BLOQUE_DECLARACIONES, ESTR_FOR, ESTR_WHILE, ESTR_IF, ESTR_ELSE;
+non terminal TIPO, DECLARAR_CONSTANTES, DECLARAR_VARIABLES, VARIABLES, VARIABLE, IDENTIFICADORES, CONSTANTES, CONSTANTE, TERMINO, 
+         NUMERO, UNARIO, MULTIPLICATIVOS, ADITIVOS, COND_REL, COND_AND, COND_NOT, EXP, CONDICION, FUNCION, ARGUMENTOS, FUNCIONES, 
+         PROCEDIMIENTO, PROCEDIMIENTOS, ARGUMENTOS_P, SENTENCIA_PUNTOYCOMA, SENTENCIA_END,BLOQUE_FUNCIONES_PROCEDIMIENTOS,
+         LLAMADA_FUNCION, ASIGNACION, SENTENCIAS, BLOQUE_DECLARACIONES, ESTR_FOR, ESTR_WHILE, ESTR_IF, ESTR_ELSE, ESTRUCTURA_PROGRAMA,
+         INC_DEC, ARGUMENTOS_NO_VACIO, ARGUMENTO, PARAMETRO_READ, PARAMETROS_NO_VACIOS, PARAMETROS;
 
-start with TEMPORAL;
+start with ESTRUCTURA_PROGRAMA;
 
+ESTRUCTURA_PROGRAMA ::= PROGRAM IDENTIFICADOR BLOQUE_DECLARACIONES BLOQUE_FUNCIONES_PROCEDIMIENTOS BEGIN SENTENCIAS END;
 
-TEMPORAL ::=  ESTRUCTURA_PROGRAMA | DECLARAR_VARIABLES | DECLARAR_CONSTANTES | ESTR_FOR END | ESTR_WHILE END | ESTR_IF;
+BLOQUE_FUNCIONES_PROCEDIMIENTOS ::= PROCEDIMIENTO END BLOQUE_FUNCIONES_PROCEDIMIENTOS 
+                                  | FUNCION END BLOQUE_FUNCIONES_PROCEDIMIENTOS 
+                                  | ;
 
-
-PROCEDIMIENTOS   ::=  PROCEDIMIENTO END PROCEDIMIENTOS {: System.out.println(" procedimientos 1 "); :}
-               | {: System.out.println(" procedimiento 2 "); :};
+PROCEDIMIENTOS   ::=  PROCEDIMIENTO END PROCEDIMIENTOS 
+               | ;
 
 PROCEDIMIENTO     ::=  PROCEDURE IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA  
-                 BLOQUE_DECLARACIONES BEGIN SENTENCIA END {: System.out.println(" procedimiento "); :};
+                 BLOQUE_DECLARACIONES BEGIN SENTENCIAS;
 
-FUNCIONES   ::=  FUNCION END FUNCIONES {: System.out.println(" funciones 1 "); :}
-               | {: System.out.println(" funciones 2 "); :};
+FUNCIONES   ::=  FUNCION END FUNCIONES
+               | ;
 
 FUNCION     ::=  FUNCTION IDENTIFICADOR PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA DOS_PUNTOS TIPO 
-                 BLOQUE_DECLARACIONES BEGIN SENTENCIAS  {: System.out.println(" funcion "); :};
+                 BLOQUE_DECLARACIONES BEGIN SENTENCIAS;
 
-BLOQUE_DECLARACIONES::= DECLARAR_VARIABLES DECLARAR_CONSTANTES
-                      | DECLARAR_CONSTANTES DECLARAR_VARIABLES
+BLOQUE_DECLARACIONES::= DECLARAR_VARIABLES DECLARAR_CONSTANTES                      
                       | DECLARAR_VARIABLES
-                      | DECLARAR_CONSTANTES; 
+                      | DECLARAR_CONSTANTES
+                      | ; 
 
-ARGUMENTOS ::=  TIPO IDENTIFICADOR ARGUMENTOS_P  {: System.out.println(" argumentos 1 "); :};
+ARGUMENTOS ::=  ARGUMENTOS_NO_VACIO | ;
+
+ARGUMENTOS_NO_VACIO ::=  ARGUMENTO ARGUMENTOS_P;
 
 ARGUMENTOS_P ::= COMA ARGUMENTOS | ;
 
+ARGUMENTO ::= TIPO IDENTIFICADOR;
 
-ESTR_IF     ::=  IF CONDICION THEN BEGIN SENTENCIAS END {: System.out.println(" ELSE BEGIN SENTENCIAS END"); :} | IF CONDICION THEN BEGIN SENTENCIAS END ESTR_ELSE END{: System.out.println(" if CON ELSE"); :};
-
-
-ESTR_ELSE ::= ELSE BEGIN SENTENCIAS END {: System.out.println(" ELSE BEGIN SENTENCIAS END"); :} ;
-
+ESTR_IF     ::=  IF CONDICION THEN BEGIN SENTENCIAS END
+               | IF CONDICION THEN BEGIN SENTENCIAS END ESTR_ELSE END;
 
 
-ESTR_FOR    ::=  FOR ASIGNACION TO EXP DO BEGIN SENTENCIAS{: System.out.println(" BE  1 "); :}; 
+ESTR_ELSE ::= ELSE BEGIN SENTENCIAS END ;
+
+
+
+ESTR_FOR    ::=  FOR ASIGNACION TO EXP DO BEGIN SENTENCIAS
+                 |error END {: System.out.println("Error sintáctico: ERROR EN FOR"); :}; 
 
 ESTR_WHILE  ::=  WHILE CONDICION DO BEGIN SENTENCIAS;
 
-DECLARAR_CONSTANTES ::= CONST CONSTANTES {: System.out.println(" declarar_constantes "); :};
-CONSTANTES          ::= CONSTANTE PUNTOYCOMA CONSTANTES {: System.out.println(" constantes 1 "); :}
-                      | CONSTANTE PUNTOYCOMA{: System.out.println(" constantes 2 "); :};
+DECLARAR_CONSTANTES ::= CONST CONSTANTES ;
+CONSTANTES          ::= CONSTANTE PUNTOYCOMA CONSTANTES
+                      | CONSTANTE PUNTOYCOMA;
 
-CONSTANTE           ::= IDENTIFICADOR OpIGUAL NUMERO {: System.out.println("constante"); :}
-                      | IDENTIFICADOR OpIGUAL STRING {: System.out.println("constante"); :};
+CONSTANTE           ::= IDENTIFICADOR OpIGUAL NUMERO 
+                      | IDENTIFICADOR OpIGUAL STRING ;
 
-DECLARAR_VARIABLES ::= VAR VARIABLES {: System.out.println(" declarar_variables1 "); :};
-VARIABLES          ::= VARIABLE PUNTOYCOMA VARIABLES  {: System.out.println(" variables 2"); :}
+DECLARAR_VARIABLES ::= VAR VARIABLES;
+
+VARIABLES          ::= VARIABLE PUNTOYCOMA VARIABLES
                     |  VARIABLE PUNTOYCOMA;
 
-VARIABLE           ::= IDENTIFICADORES DOS_PUNTOS TIPO {: System.out.println(" variable "); :};
-IDENTIFICADORES    ::= IDENTIFICADORES COMA IDENTIFICADOR       {: System.out.println(" identificadores 1 "); :}
-                    |  IDENTIFICADOR {: System.out.println(" identificadores 2 "); :};
+VARIABLE           ::= IDENTIFICADORES DOS_PUNTOS TIPO;
 
-EXP ::= ADITIVOS {: System.out.println(" exp 1 "); :}
-      | STRING {: System.out.println(" exp 2 "); :};
+IDENTIFICADORES    ::= IDENTIFICADORES COMA IDENTIFICADOR 
+                              |  IDENTIFICADOR;
 
-CONDICION ::=	CONDICION Op_OR COND_AND {: System.out.println(" condicion 1 "); :}
-	      | COND_AND {: System.out.println(" condicion 2 "); :};
+EXP ::= ADITIVOS
+      | STRING;
 
-COND_AND ::=	COND_AND Op_AND COND_NOT {: System.out.println(" cond_and 1 "); :}
-	      | COND_NOT {: System.out.println(" cond_and 2 "); :};
+CONDICION ::=	CONDICION OpOR COND_AND 
+	      | COND_AND ;
 
-COND_NOT ::=  Op_NOT COND_REL {: System.out.println(" cond_not 1 "); :}
-            | COND_REL {: System.out.println(" cond_not 2 "); :};
+COND_AND ::=	COND_AND OpAND COND_NOT 
+	      | COND_NOT;
 
-COND_REL ::= 	ADITIVOS OpIGUAL 	ADITIVOS {: System.out.println(" cond_rel 1 "); :}
-	      | ADITIVOS OpMAYOR	ADITIVOS {: System.out.println(" cond_rel 2 "); :}
-	      | ADITIVOS OpMAYOR_IGUAL  ADITIVOS {: System.out.println(" cond_rel 3 "); :}
-	      | ADITIVOS OpMENOR 	ADITIVOS {: System.out.println(" cond_rel 4 "); :}
-	      | ADITIVOS OpMENOR_IGUAL  ADITIVOS {: System.out.println(" cond_rel 5 "); :}
-	      | ADITIVOS OpDIFERENTE	ADITIVOS {: System.out.println(" cond_rel 6 "); :};
+COND_NOT ::=  OpNOT COND_REL
+            | COND_REL;
 
-ADITIVOS ::=	ADITIVOS OpSUMA	MULTIPLICATIVOS {: System.out.println(" aditivos 1 "); :}
-	      | ADITIVOS OpRESTA MULTIPLICATIVOS {: System.out.println(" aditivos 2 "); :}
-	      | MULTIPLICATIVOS {: System.out.println(" aditivos 3 "); :};
+COND_REL ::= 	ADITIVOS OpIGUAL 	ADITIVOS 
+	      | ADITIVOS OpMAYOR	ADITIVOS 
+	      | ADITIVOS OpMAYOR_IGUAL  ADITIVOS 
+	      | ADITIVOS OpMENOR 	ADITIVOS 
+	      | ADITIVOS OpMENOR_IGUAL  ADITIVOS 
+	      | ADITIVOS OpDIFERENTE	ADITIVOS 
+              | ADITIVOS;
 
-MULTIPLICATIVOS ::=	MULTIPLICATIVOS OpMUL UNARIO {: System.out.println(" multiplicativos 1 "); :}
-		      | MULTIPLICATIVOS OpDIV UNARIO {: System.out.println(" multiplicativos 2 "); :}
-		      | MULTIPLICATIVOS Op_DIV UNARIO {: System.out.println(" multiplicativos 3 "); :}
-		      | MULTIPLICATIVOS Op_MOD UNARIO {: System.out.println(" multiplicativos 4 "); :}
-		      | UNARIO {: System.out.println(" multiplicativos 5 "); :};
+ADITIVOS ::=	ADITIVOS OpSUMA	MULTIPLICATIVOS 
+	      | ADITIVOS OpRESTA MULTIPLICATIVOS 
+	      | MULTIPLICATIVOS;
 
-UNARIO	 ::=	OpINC TERMINO {: System.out.println(" unario 1 "); :}
-	      | OpDEC TERMINO {: System.out.println(" unario 2 "); :}
-	      | TERMINO {: System.out.println(" unario 3 "); :};
+MULTIPLICATIVOS ::=	MULTIPLICATIVOS OpMUL UNARIO 
+		      | MULTIPLICATIVOS OpDIV UNARIO 
+		      | MULTIPLICATIVOS Op_DIV UNARIO 
+		      | MULTIPLICATIVOS Op_MOD UNARIO 
+		      | UNARIO ;
 
-TERMINO  ::=	PARENTESIS_ABRE EXP PARENTESIS_CIERRA {: System.out.println(" termino 1 "); :}
-	      | NUMERO {: System.out.println(" termino 2 "); :}
-	      | IDENTIFICADOR {: System.out.println(" termino 3 "); :}
-              | LLAMADA_FUNCION {: System.out.println(" termino 4 "); :};
+UNARIO	 ::=	INC_DEC 
+	      | TERMINO;
 
-NUMERO	 ::=  FLOAT {: System.out.println(" numero 1 "); :}
-            | INTEGER {: System.out.println(" numero 2 "); :};
+INC_DEC  ::=   Op_INC TERMINO 
+             | Op_DEC TERMINO 
+             | TERMINO Op_INC 
+             | TERMINO Op_DEC ;
 
-LLAMADA_FUNCION  ::=  IDENTIFICADOR PARENTESIS_ABRE IDENTIFICADORES PARENTESIS_CIERRA {: System.out.println(" funcion "); :};
+TERMINO  ::=	PARENTESIS_ABRE EXP PARENTESIS_CIERRA 
+	      | NUMERO 
+	      | IDENTIFICADOR 
+              | LLAMADA_FUNCION ;
 
-TIPO        ::=   TYPE_INT {: System.out.println(" tipo 1 "); :}
-                | TYPE_LONGINT {: System.out.println(" tipo 2 "); :}
-                | TYPE_SHORTINT {: System.out.println(" tipo 3 "); :}
-                | TYPE_CHAR {: System.out.println(" tipo 4 "); :}
-                | TYPE_STRING {: System.out.println(" tipo 5 "); :}
-                | TYPE_BOOLEAN {: System.out.println(" tipo 6 "); :}
-                | TYPE_REAL {: System.out.println(" tipo 7 "); :};
+NUMERO	 ::=  FLOAT 
+            | INTEGER ;
 
-ASIGNACION  ::= IDENTIFICADOR OprASIGNACION EXP {: System.out.println(" asignacion 1 "); :}
-              | IDENTIFICADOR OprASIG_MAS EXP {: System.out.println(" asignacion 2 "); :}
-              | IDENTIFICADOR OprASIG_RESTA EXP {: System.out.println(" asignacion 3 "); :}
-              | IDENTIFICADOR OprASIG_MUL EXP {: System.out.println(" asignacion 4 "); :}
-              | IDENTIFICADOR OprASIG_DIV EXP {: System.out.println(" asignacion 5 "); :};
+LLAMADA_FUNCION  ::=  READ PARENTESIS_ABRE PARAMETRO_READ
+                    | WRITE PARENTESIS_ABRE PARAMETROS_NO_VACIOS PARENTESIS_CIERRA
+                    | IDENTIFICADOR PARENTESIS_ABRE PARAMETROS PARENTESIS_CIERRA ;
 
+PARAMETRO_READ ::= PARENTESIS_CIERRA | TERMINO PARENTESIS_CIERRA 
+                 //| error PARENTESIS_CIERRA {: parser.report_error("La funcion solo acepta 1 parámetro", null); :}
+                   | error PARENTESIS_CIERRA {: System.out.println("Error sintáctico: La funcion solo acepta 1 parámetro"); :};
 
-SENTENCIAS  ::= SENTENCIA_PUNTOYCOMA PUNTOYCOMA  SENTENCIAS {: System.out.println(" sentencias 1 "); :}
-              | SENTENCIA_END END SENTENCIAS {: System.out.println(" sentencias 2 "); :}
+PARAMETROS ::= PARAMETROS_NO_VACIOS | ;
+
+PARAMETROS_NO_VACIOS ::= TERMINO COMA PARAMETROS_NO_VACIOS | TERMINO;
+
+TIPO        ::=   TYPE_INT 
+                | TYPE_LONGINT 
+                | TYPE_SHORTINT
+                | TYPE_CHAR
+                | TYPE_STRING
+                | TYPE_BOOLEAN
+                | TYPE_REAL ;
+
+ASIGNACION  ::= IDENTIFICADOR OprASIGNACION EXP 
+              | IDENTIFICADOR OprASIG_MAS EXP 
+              | IDENTIFICADOR OprASIG_RESTA EXP 
+              | IDENTIFICADOR OprASIG_MUL EXP 
+              | IDENTIFICADOR OprASIG_DIV EXP;
+              
+
+SENTENCIAS  ::= SENTENCIA_PUNTOYCOMA SENTENCIAS
+              | SENTENCIA_END  SENTENCIAS 
               | ;
 
-SENTENCIA_PUNTOYCOMA  ::= ASIGNACION{: System.out.println(" sentencia 4 "); :}
-                         | PUNTOYCOMA {: System.out.println(" sentencia 5 "); :}
-                         | LLAMADA_FUNCION;
-                         
-               
+SENTENCIA_PUNTOYCOMA  ::= ASIGNACION PUNTOYCOMA
+                         | INC_DEC  PUNTOYCOMA
+                         | LLAMADA_FUNCION PUNTOYCOMA 
+                         | error PUNTOYCOMA {: System.out.println("Error sintáctico: ERROR EN SENTENCIA"); :};                         
+                
 
-SENTENCIA_END ::= ESTR_FOR {: System.out.println(" sentencia end 1 "); :}
-              | ESTR_WHILE {: System.out.println(" sentencia end 2 "); :}
-              | ESTR_IF {: System.out.println(" sentencia end 3 "); :};
+SENTENCIA_END ::= ESTR_FOR END
+              | ESTR_WHILE END
+              | ESTR_IF END;
              /* | PROCEDIMIENTOS; */
