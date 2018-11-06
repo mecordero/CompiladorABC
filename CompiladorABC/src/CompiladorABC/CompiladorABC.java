@@ -1,5 +1,6 @@
 package compiladorabc;
 
+import Clases.ScannerException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileReader;
@@ -22,7 +23,11 @@ public class CompiladorABC {
             Parser parser = new Parser(l);
             parser.parse();                   
             System.out.println("FINALIZA EL PARSERO");
-        } catch (Exception ex) {
+        } 
+        catch (ScannerException e) {
+                System.out.println("[Línea: " + e.getLinea() + "]=>" + e.getCaracteres()+ ": " + e.getMessage()+ "\n");
+        } 
+        catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }   

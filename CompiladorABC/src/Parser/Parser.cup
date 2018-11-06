@@ -73,16 +73,15 @@ ARGUMENTOS_P ::= COMA ARGUMENTOS | ;
 
 ARGUMENTO ::= TIPO IDENTIFICADOR;
 
-ESTR_IF     ::=  IF CONDICION THEN BEGIN SENTENCIAS END
-               | IF CONDICION THEN BEGIN SENTENCIAS END ESTR_ELSE END;
+ESTR_IF     ::=  IF CONDICION THEN SENTENCIAS
+               | IF CONDICION THEN SENTENCIAS ESTR_ELSE;
 
 
-ESTR_ELSE ::= ELSE BEGIN SENTENCIAS END ;
+ESTR_ELSE ::= ELSE SENTENCIAS ;
 
 
 
-ESTR_FOR    ::=  FOR ASIGNACION TO EXP DO BEGIN SENTENCIAS
-                 |error END {: System.out.println("Error sintáctico: ERROR EN FOR"); :}; 
+ESTR_FOR    ::=  FOR ASIGNACION TO EXP DO BEGIN SENTENCIAS; 
 
 ESTR_WHILE  ::=  WHILE CONDICION DO BEGIN SENTENCIAS;
 
@@ -91,15 +90,18 @@ CONSTANTES          ::= CONSTANTE PUNTOYCOMA CONSTANTES
                       | CONSTANTE PUNTOYCOMA;
 
 CONSTANTE           ::= IDENTIFICADOR OpIGUAL NUMERO 
-                      | IDENTIFICADOR OpIGUAL STRING ;
+                      | IDENTIFICADOR OpIGUAL STRING 
+                      | error NUMERO {: System.out.println("Error sintáctico: ERROR EN DECLARACION DE CONSTANTE"); :}
+                      | error STRING {: System.out.println("Error sintáctico: ERROR EN DECLARACION DE CONSTANTE"); :};
 
 DECLARAR_VARIABLES ::= VAR VARIABLES;
 
 VARIABLES          ::= VARIABLE PUNTOYCOMA VARIABLES
                     |  VARIABLE PUNTOYCOMA;
 
-VARIABLE           ::= IDENTIFICADORES DOS_PUNTOS TIPO;
-
+VARIABLE           ::= IDENTIFICADORES DOS_PUNTOS TIPO
+                       | error TIPO {: System.out.println("Error sintáctico: ERROR EN DECLARACION DE VARIABLE"); :};
+                      
 IDENTIFICADORES    ::= IDENTIFICADORES COMA IDENTIFICADOR 
                               |  IDENTIFICADOR;
 
@@ -154,7 +156,6 @@ LLAMADA_FUNCION  ::=  READ PARENTESIS_ABRE PARAMETRO_READ
                     | IDENTIFICADOR PARENTESIS_ABRE PARAMETROS PARENTESIS_CIERRA ;
 
 PARAMETRO_READ ::= PARENTESIS_CIERRA | TERMINO PARENTESIS_CIERRA 
-                 //| error PARENTESIS_CIERRA {: parser.report_error("La funcion solo acepta 1 parámetro", null); :}
                    | error PARENTESIS_CIERRA {: System.out.println("Error sintáctico: La funcion solo acepta 1 parámetro"); :};
 
 PARAMETROS ::= PARAMETROS_NO_VACIOS | ;
@@ -183,10 +184,10 @@ SENTENCIAS  ::= SENTENCIA_PUNTOYCOMA SENTENCIAS
 SENTENCIA_PUNTOYCOMA  ::= ASIGNACION PUNTOYCOMA
                          | INC_DEC  PUNTOYCOMA
                          | LLAMADA_FUNCION PUNTOYCOMA 
-                         | error PUNTOYCOMA {: System.out.println("Error sintáctico: ERROR EN SENTENCIA"); :};                         
+                         | error PUNTOYCOMA {: System.out.println("Error sintáctico: ERROR EN SENTENCIA ASIGNACION, LLAMADA A FUNCION O EXPRESION"); :};                         
                 
 
 SENTENCIA_END ::= ESTR_FOR END
               | ESTR_WHILE END
-              | ESTR_IF END;
-             /* | PROCEDIMIENTOS; */
+              | ESTR_IF END
+              | error END {: System.out.println("Error sintáctico: ERROR EN SENTENCIA IF, WHILE O FOR"); :};

@@ -42,7 +42,7 @@ public class ScannerException extends Exception {
     }
     public ScannerException(String msg, String caracteres, int linea) {
         super(msg);
-        this.caracteres = caracteres;
+        this.caracteres = caracteres ;
         this.linea = linea;
     }
 }
