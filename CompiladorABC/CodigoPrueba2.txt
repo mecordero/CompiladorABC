@@ -1,35 +1,11 @@
-PROGRAM P1
-
-
-VAR 
-
-T : INT;
-
-CONST
-X = "HOLA";
-T = "" ;
-
-
-BEGIN
-
-
-X := 5;
-
-i ++;
- 
-
-IF A 
-THEN
-I ++;
-ELSE
-
-for f := 2 to 9
-do
-begin
-t+=20;
-end
-
-END
-
-
+PROGRAM P1 
+BEGIN 
+X := 5; 
+FOR x:= 3 TO 10 DO 
+BEGIN 
+WHILE NOT b DO
+BEGIN 
+READ (5);
+END 
+END 
 END
