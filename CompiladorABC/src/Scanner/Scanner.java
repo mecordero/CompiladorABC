@@ -49,6 +49,7 @@ public class Scanner {
         System.out.println("GENERA LEXER");
         File lexer = new File(pathLexer);
         jflex.Main.generate(lexer);
+        
     }
     
     public void generarParser(){
