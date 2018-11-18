@@ -22,7 +22,7 @@ public class CompiladorABC {
             Lexer l = new Lexer(new FileReader(nombreArchivo));
             Parser parser = new Parser(l);
             parser.parse();                   
-            System.out.println("FINALIZA EL PARSERO");
+            System.out.println("FINALIZA EL PARSEO");
         } 
         catch (ScannerException e) {
                 System.out.println("[Línea: " + e.getLinea() + "]=>" + e.getCaracteres()+ ": " + e.getMessage()+ "\n");

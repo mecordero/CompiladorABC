@@ -1,11 +1,32 @@
-///Se quiere probar la estructura del PROGRAMa
-// Este codigo contiene varios  ejemplos de estructura que se deben probar.
-
-
 
 PROGRAM Prueba
-begin
-a:=8
-a:=7;
+
+VAR 
+NOMBRE,APELLIDO:STRING;
+INT1:INT;
+
+CONST
+PI= 3.14;
+X= "HOLAHAOSA";
+
+PROCEDURE P()
+BEGIN
+X:=1;
+END
+
+FUNCTION F (STRING F, INT T3): INT
+VAR
+VAR1:INT;
+CONST
+CONST1 = 78;
+BEGIN
+VAR1:= 5;
+F:= VAR1;
+END
+BEGIN
+
+RESULTADO := F("",1);
+
+
 end
 

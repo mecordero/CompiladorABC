@@ -156,7 +156,7 @@ ComentarioLinea = "//".*
     {Letra}({Letra}|{Digito})* {return symbol(sym.IDENTIFICADOR);}
 
     /*ERRORES IDENTIFICADOR*/
-    {Letra}+({Letra}|{Digito})*+{CaracteresEspecialesId}+({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar caracteres especiales en los identificadores.", yytext(),yyline());}//; return ERROR;}
+    //{Letra}+({Letra}|{Digito})*+{CaracteresEspecialesId}+({Letra}|{Digito})* {error("Identificador erróneo: no se puede utilizar caracteres especiales en los identificadores.", yytext(),yyline());}//; return ERROR;}
 
 
     /*Literales*/
