@@ -82,6 +82,10 @@ public class Simbolo {
         this.argumentos = argumentos;
     }
     
+    public String toString() {
+        return nombre + "->[" + tipo + "]";
+    }
+    
     
     
 }

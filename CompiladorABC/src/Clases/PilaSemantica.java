@@ -29,6 +29,13 @@ public class PilaSemantica {
         return null;
     }
     
+    public RegistroSemantico verTop(){
+        if(pila.size()>0)
+            return pila.get(pila.size()-1);
+        return null;
+        
+    }
+    
     public RegistroSemantico buscar(String nombreTipo){
         for (int i = pila.size()-1; i != -1; i--) {
             RegistroSemantico actual = pila.get(i);

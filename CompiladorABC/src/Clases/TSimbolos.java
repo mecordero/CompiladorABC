@@ -7,6 +7,8 @@ package Clases;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -16,69 +18,77 @@ public class TSimbolos {
 
     private HashMap<String, Simbolo> tablaSimbolos;
     private int contDireccion;
-    
+
     public TSimbolos() {
         tablaSimbolos = new HashMap<>();
         contDireccion = 0;
     }
-    
-            public int agregarFuncion(String nombre, String tipo, ArrayList argumentos){
+
+    public int agregarFuncion(String nombre, String tipo, ArrayList argumentos) {
         // buscar si existe en t simbolos y si esta devuelve error
-        if (tablaSimbolos.containsKey(nombre)){
+        if (tablaSimbolos.containsKey(nombre)) {
             return -1;
         }
-        
+
         //generar direccion
         contDireccion = contDireccion + 1;
-        
+
         //agregar var a t simbolo
-        Simbolo s = new Simbolo( nombre, tipo, contDireccion, argumentos);
+        Simbolo s = new Simbolo(nombre, tipo, contDireccion, argumentos);
         tablaSimbolos.put(nombre, s);
-        
+
         return 0;
     }
-    
-    public int agregarVariable(String nombre, String tipo){
+
+    public int agregarVariable(String nombre, String tipo) {
         // buscar si existe en t simbolos y si esta devuelve error
-        if (tablaSimbolos.containsKey(nombre)){
+        if (tablaSimbolos.containsKey(nombre)) {
             return -1;
         }
-        
+
         //generar direccion
         contDireccion = contDireccion + 1;
-        
+
         //agregar var a t simbolo
-        Simbolo s = new Simbolo( nombre, tipo, contDireccion);
+        Simbolo s = new Simbolo(nombre, tipo, contDireccion);
         tablaSimbolos.put(nombre, s);
-        
+
         return 0;
     }
-    
-        public int agregarConstante(String nombre, String tipo, Object valor){
+
+    public int agregarConstante(String nombre, String tipo, Object valor) {
         // buscar si existe en t simbolos y si esta devuelve error
-        if (tablaSimbolos.containsKey(nombre)){
+        if (tablaSimbolos.containsKey(nombre)) {
             return -1;
         }
-        
+
         //generar direccion
         contDireccion = contDireccion + 1;
-        
+
         //agregar var a t simbolo
-        Simbolo s = new Simbolo( nombre, tipo, contDireccion, valor);
+        Simbolo s = new Simbolo(nombre, tipo, contDireccion, valor);
         tablaSimbolos.put(nombre, s);
-        
+
         return 0;
     }
-     
-    
-   public void eliminarSimbolo(String nombre){
-       tablaSimbolos.remove(nombre);
-   }
-   
-   
-   public boolean buscarSimbolo (String nombre){
-       return tablaSimbolos.containsKey(nombre);
-   }
-    
+
+    public void eliminarSimbolo(String nombre) {
+        tablaSimbolos.remove(nombre);
+    }
+
+    public boolean buscarSimbolo(String nombre) {
+        return tablaSimbolos.containsKey(nombre);
+    }
+
+    @Override
+    public String toString() {
+        String result = "Tabla de Simbolos \n-------------------\n";
+        Iterator it = tablaSimbolos.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            result +=  pair.getValue().toString() + "\n" ;
+        }
+        return result ;
+    }
 
 }

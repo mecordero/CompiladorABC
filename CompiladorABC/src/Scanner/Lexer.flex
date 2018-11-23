@@ -38,7 +38,7 @@ ComentarioLinea = "//".*
     }
 
     private Symbol symbol(int type) {
-        return new Symbol(type, yyline);
+        return new Symbol(type, yytext());
     }
 
 %}

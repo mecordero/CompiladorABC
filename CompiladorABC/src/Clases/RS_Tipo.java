@@ -20,5 +20,12 @@ public class RS_Tipo extends RegistroSemantico{
     public String getTipo() {
         return tipo;
     }  
+
+    @Override
+    public String toString() {
+        return "RS_Tipo{" + "tipo=" + tipo + '}';
+    }
+    
+    
     
 }

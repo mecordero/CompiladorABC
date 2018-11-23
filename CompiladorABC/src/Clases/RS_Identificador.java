@@ -9,8 +9,8 @@ package Clases;
  *
  * @author Meli
  */
-public class RS_Identificador extends RegistroSemantico{
-    
+public class RS_Identificador extends RegistroSemantico {
+
     private String nombre;
 
     public RS_Identificador(String nombre) {
@@ -19,6 +19,10 @@ public class RS_Identificador extends RegistroSemantico{
 
     public String getNombre() {
         return nombre;
-    }  
- 
+    }
+
+    @Override
+    public String toString() {
+        return "RS_Ident{" + "Iden=" + nombre + '}';
+    }
 }

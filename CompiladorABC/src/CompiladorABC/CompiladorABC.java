@@ -21,7 +21,8 @@ public class CompiladorABC {
             String nombreArchivo = "CodigoPrueba2.txt";
             Lexer l = new Lexer(new FileReader(nombreArchivo));
             Parser parser = new Parser(l);
-            parser.parse();                   
+            parser.parse();  
+            System.out.println(parser.getCoder().toString());
             System.out.println("FINALIZA EL PARSEO");
         } 
         catch (ScannerException e) {
