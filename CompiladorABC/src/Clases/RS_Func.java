@@ -9,7 +9,6 @@ package Clases;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Clases;
 
 public class RS_Func extends RegistroSemantico {
 

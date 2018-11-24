@@ -33,7 +33,7 @@ public class Coder {
         pila.pushRegistro(new RS_Tipo(tipo));
     }
     
-    public void recordarDO(String nombreVariable, Object valor){
+    public void recordarDO(String nombreVariable, String valor){
         System.out.println("Recuerda DO " + nombreVariable);
         pila.pushRegistro(new RS_DO(nombreVariable,valor));        
     }
@@ -85,6 +85,7 @@ public class Coder {
         tsimbolo.agregarConstante(nombre, tipo, valor);
     }
     
+    /*
     public void evalOperacion(){
         System.out.println("Evalúa operacion");
         RegistroSemantico top = pila.verTop();
@@ -97,31 +98,124 @@ public class Coder {
                 pila.pushRegistro(resultado);
             }
         }
-    }
+    }*/
 
-    public RegistroSemantico evalBinaria(){
+    public void evalBinaria(){
+        System.out.println("Evalúa operacion binaria");
         RS_DO operando2 = (RS_DO) pila.popRegistro();
         RS_Operacion operador = (RS_Operacion) pila.popRegistro();
         RS_DO operando1 = (RS_DO) pila.popRegistro();
         
+        if(!isOperacion(operador.getOperador())){
+            //si no es una operacion binaria lo devuelve a como estaba
+            pila.pushRegistro(operando1);
+            pila.pushRegistro(operador);
+            pila.pushRegistro(operando2);
+            return;
+        }        
         //validar tipos
         if(operando1.getNombreVariable().equals(operando2.getNombreVariable())){
             //son del mismo tipo, o son el mismo identificador
             //se asume que son el mismo tipo
             String tipo = operando1.getNombreVariable();
             
-            if(tipo.equals("Int")){
+            if(tipo.equals("Int") && operando1.getValor() != null){
                 int operando1Int = (int) operando1.getValor();
                 int operando2Int = (int) operando2.getValor();
-            }else if(tipo.equals("Float")){
+                int resultado = realizarOperacion(operando1Int, operando2Int, operador.getOperador());
+                pila.pushRegistro(new RS_DO("Int", resultado));
+                return;
+            }else if(tipo.equals("Float") && operando1.getValor() != null){
+                Float operando1Float = (Float) operando1.getValor();
+                Float operando2Float = (Float) operando2.getValor();
                 
+                Float resultado = realizarOperacion(operando1Float, operando2Float, operador.getOperador());
+                pila.pushRegistro(new RS_DO("Float", resultado));
+                return;
             }
             
+        } 
+
+        //es una operacion que tiene identificadores
+
+        //validar que existen
+
+        //validar tipos
+
+        //generar codigo
+        codigo += "mov ax, ";
+        if((operando1.getNombreVariable().equals("Int") || operando1.getNombreVariable().equals("Float") ) && operando1.getValor() != null){
+            //primer operador es un entero o un flotante
+            codigo += operando1.getValor().toString() + "\n";
+        }else{
+            codigo += operando1.getNombreVariable() + "\n";
         }
-        //else generar codigo
+        
+        codigo += "add ax, ";
+        if((operando2.getNombreVariable().equals("Int") || operando2.getNombreVariable().equals("Float") ) && operando2.getValor() != null){
+            //segunfo operador es un entero o un flotante
+            codigo += operando2.getValor().toString() + "\n";            
+        }else{
+            codigo += operando2.getNombreVariable() + "\n";
+        }
+        
         //crear rs_do resultado
-        //return rs_do resultado
-        return null;
+        //push pila
+        recordarDO("ax", null);      
+       
+    }
+    
+    private boolean isOperacion(String operador){
+        return operador.equals("+") || operador.equals("-") || operador.equals("*") || operador.equals("/") ||
+                operador.equals("DIV") || operador.equals("MOD");
+    }
+    
+    private int realizarOperacion(int op1, int op2, String operador){
+        switch(operador){
+            case "+":
+                return op1 + op2;
+            case "-":
+                return op1 - op2;
+            case "*":
+                return op1 * op2;
+            case "/":
+            case "DIV":
+                return op1 / op2;
+            case "MOD":
+                return op1 % op2;
+        }        
+        return 0;
+    }
+    
+    private Float realizarOperacion(Float op1, Float op2, String operador){
+        switch(operador){
+            case "+":
+                return op1 + op2;
+            case "-":
+                return op1 - op2;
+            case "*":
+                return op1 * op2;
+            case "/":
+            case "DIV":
+                return op1 / op2;
+            case "MOD":
+                return op1 % op2;
+        }        
+        return 0F;
+    }
+    
+    public void generarCodigoAsignacion(){
+        RS_DO valorAsignar = (RS_DO) pila.popRegistro();
+        RS_Operacion operadorAsignacion = (RS_Operacion) pila.popRegistro();
+        RS_DO identificador = (RS_DO) pila.popRegistro();
+        codigo += "mov " + identificador.getNombreVariable() + ", ";  
+        if(valorAsignar.getValor() != null){
+            codigo += String.valueOf(valorAsignar.getValor());
+        }else{
+            codigo += valorAsignar.getNombreVariable();
+        }
+        System.out.println("\n Codigo:");
+        System.out.println(codigo);
     }
     
     public void start_if(){
