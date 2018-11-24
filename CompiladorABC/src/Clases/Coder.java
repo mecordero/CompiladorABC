@@ -5,6 +5,8 @@
  */
 package Clases;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author yanil
@@ -13,11 +15,13 @@ public class Coder {
     public String codigo;
     public TSimbolos tsimbolo;
     public PilaSemantica pila;
+    public GeneradorLabels generadorLabels;
 
     public Coder() {
         codigo = ".model tiny \n";
         pila = new PilaSemantica();
         tsimbolo = new TSimbolos();
+        generadorLabels = new GeneradorLabels();
     }
     
     public void recordarIdentificador(String id) {
@@ -40,10 +44,30 @@ public class Coder {
     }
     
     public void guardarFuncionEnTsimbolo(String nombre) {
-        RegistroSemantico top;
-        while((top = pila.popRegistro())!=null) {
-            System.out.println(top.toString());
+        System.out.println("Guarda variables en ts");
+        ArrayList<Simbolo> argumentos = new ArrayList<>();
+        
+        RegistroSemantico tipo = pila.popRegistro();
+        RegistroSemantico top = pila.verTop();
+        
+        int pos = 0;
+        
+        while(!(top instanceof RS_Func)) {
+            pos++;
+            // top es un identificador
+            pila.popRegistro();
+            // el que viene es el tipo
+            RegistroSemantico tipoArg = pila.popRegistro();
+            Simbolo s  = new Simbolo(((RS_Identificador)top).getNombre(),((RS_Tipo)tipoArg).getTipo(), pos );
+            argumentos.add(s);
+            top = pila.verTop();
         }
+        
+        tsimbolo.agregarFuncion( nombre, ((RS_Tipo)tipo).getTipo(), argumentos);
+    }
+    
+    public void recordarFuncion() {
+        pila.pushRegistro(new RS_Func());
     }
     
     public void guardarVariablesEnTSimbolos(String tipo) {
@@ -98,6 +122,51 @@ public class Coder {
         //crear rs_do resultado
         //return rs_do resultado
         return null;
+    }
+    
+    public void start_if(){
+        // Se crea RS de If y se generan las etiquetas
+        RS_If rs = new RS_If();
+        pila.pushRegistro(rs);  
+    }
+    
+    public void evalExp_if() {
+        // TODO Falta generar codigo del condicional
+        RegistroSemantico rs = pila.buscar("RS_If");
+        codigo += "     jz " + ((RS_If)rs).getElse_label() + "\n"; 
+        pila.popRegistro();
+    }
+    
+    public void else_if() {
+        RegistroSemantico rs = pila.buscar("RS_If");
+        // se agrega el salto
+         codigo += "     jmp " + ((RS_If)rs).getExit_label() + "\n";
+         // Se agrega la etiqueta del Else
+         codigo += " " + ((RS_If)rs).getElse_label()+ ":\n";
+    }
+    
+    public void end_if(){
+        RegistroSemantico rs = pila.popRegistro();
+        codigo += " " + ((RS_If)rs).getExit_label() + ":\n";
+    }
+    
+    public void start_while(){
+        RS_While rs = new RS_While();
+        codigo += " " + rs.getStart_label()+ ":\n";
+        pila.pushRegistro(rs);
+    }
+    
+    public void evalExp_While(){
+        // TODO Falta generar codigo del condicional
+        RegistroSemantico rs = pila.buscar("RS_While");
+        codigo += "     jz " + ((RS_If)rs).getExit_label()+ "\n"; 
+        pila.popRegistro();
+    }
+    
+    public void end_while(){
+       RegistroSemantico rs = pila.popRegistro();
+       codigo += "     jz " + ((RS_While)rs).getStart_label()+ "\n";
+       codigo += " " + ((RS_While)rs).getExit_label()+ ":\n";
     }
     
     @Override

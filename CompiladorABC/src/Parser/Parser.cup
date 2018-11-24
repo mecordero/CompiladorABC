@@ -64,7 +64,7 @@ PROCEDIMIENTO_BLOQUE    ::= PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA
                           | error PUNTOYCOMA {: System.out.println("Error sintáctico: ERROR EN PROCEDIMIENTO"); :};
 
 
-FUNCION     ::=  FUNCTION IDENTIFICADOR:i FUNCION_BLOQUE {: parser.getCoder().guardarFuncionEnTsimbolo((String)i);:};
+FUNCION     ::=  FUNCTION {: parser.getCoder().recordarFuncion();:} IDENTIFICADOR:i FUNCION_BLOQUE {: parser.getCoder().guardarFuncionEnTsimbolo((String)i);:};
 
 FUNCION_BLOQUE ::= PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA DOS_PUNTOS TIPO:t {: parser.getCoder().recordarTipo((String)t);:}
                    BLOQUE_DECLARACIONES BEGIN SENTENCIAS 
@@ -84,8 +84,8 @@ ARGUMENTOS_P ::= COMA ARGUMENTOS | ;
 
 ARGUMENTO ::= TIPO:t {: parser.getCoder().recordarTipo((String)t);:} IDENTIFICADOR:i {: parser.getCoder().recordarIdentificador((String)i);:};
 
-ESTR_IF     ::=  IF  CONDICION  THEN SENTENCIAS 
-               | IF CONDICION THEN SENTENCIAS ESTR_ELSE;
+ESTR_IF     ::=  IF {: parser.getCoder().start_if(); :}  CONDICION  THEN {: parser.getCoder().evalExp_if(); :}  SENTENCIAS {: parser.getCoder().else_if(); :}
+               | IF {: parser.getCoder().start_if(); :}  CONDICION THEN  {: parser.getCoder().evalExp_if(); :}  SENTENCIAS {: parser.getCoder().else_if(); :} ESTR_ELSE {: parser.getCoder().exit_if(); :};
 
 
 ESTR_ELSE ::= ELSE SENTENCIAS ;
@@ -94,7 +94,7 @@ ESTR_ELSE ::= ELSE SENTENCIAS ;
 
 ESTR_FOR    ::=  FOR ASIGNACION TO EXP DO BEGIN SENTENCIAS; 
 
-ESTR_WHILE  ::=  WHILE CONDICION DO BEGIN SENTENCIAS;
+ESTR_WHILE  ::=  WHILE {: parser.getCoder().start_while(); :} CONDICION DO {: parser.getCoder().evalExp_While(); :} BEGIN SENTENCIAS {: parser.getCoder().end_while(); :};
 
 DECLARAR_CONSTANTES ::= CONST CONSTANTES ;
 CONSTANTES          ::= CONSTANTE PUNTOYCOMA CONSTANTES
@@ -153,7 +153,7 @@ UNARIO	 ::=	INC_DEC
 INC_DEC  ::=   Op_INC TERMINO 
              | Op_DEC TERMINO 
              | TERMINO Op_INC 
-             | TERMINO Op_DEC ;
+             | TERMINO Op_DEC  ;
 
 TERMINO  ::=	PARENTESIS_ABRE EXP PARENTESIS_CIERRA 
 	      | NUMERO:n {: RESULT = n; :}

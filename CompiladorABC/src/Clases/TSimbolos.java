@@ -27,6 +27,7 @@ public class TSimbolos {
     public int agregarFuncion(String nombre, String tipo, ArrayList argumentos) {
         // buscar si existe en t simbolos y si esta devuelve error
         if (tablaSimbolos.containsKey(nombre)) {
+            System.out.println("Ya existe un símbolo con el nombre " + nombre);
             return -1;
         }
 
@@ -43,6 +44,7 @@ public class TSimbolos {
     public int agregarVariable(String nombre, String tipo) {
         // buscar si existe en t simbolos y si esta devuelve error
         if (tablaSimbolos.containsKey(nombre)) {
+            System.out.println("Ya existe un símbolo con el nombre " + nombre);
             return -1;
         }
 
@@ -59,6 +61,7 @@ public class TSimbolos {
     public int agregarConstante(String nombre, String tipo, Object valor) {
         // buscar si existe en t simbolos y si esta devuelve error
         if (tablaSimbolos.containsKey(nombre)) {
+            System.out.println("Ya existe un símbolo con el nombre " + nombre);
             return -1;
         }
 
@@ -86,9 +89,21 @@ public class TSimbolos {
         Iterator it = tablaSimbolos.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
-            result +=  pair.getValue().toString() + "\n" ;
+            result += pair.getValue().toString() + "\n";
         }
-        return result ;
+        return result;
+    }
+
+    public void generarCodigo() {
+        String codigo = ".data \n";
+        Iterator it = tablaSimbolos.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            if ( ((Simbolo)pair.getValue()).getEsVariable() ) {
+               codigo += pair.getKey() + " " +  ((Simbolo)pair.getValue()).getNombre()+ " 4" + "\n";
+            }
+        }
+
     }
 
 }
