@@ -84,7 +84,7 @@ ARGUMENTOS_P ::= COMA ARGUMENTOS | ;
 
 ARGUMENTO ::= TIPO:t {: parser.getCoder().recordarTipo((String)t);:} IDENTIFICADOR:i {: parser.getCoder().recordarIdentificador((String)i);:};
 
-ESTR_IF     ::=  IF  CONDICION  THEN SENTENCIAS {: System.out.println("Condicional"); :}
+ESTR_IF     ::=  IF  CONDICION  THEN SENTENCIAS 
                | IF CONDICION THEN SENTENCIAS ESTR_ELSE;
 
 
@@ -116,7 +116,7 @@ VARIABLE           ::= IDENTIFICADORES DOS_PUNTOS TIPO:tipo {: parser.getCoder()
 IDENTIFICADORES    ::= IDENTIFICADORES COMA IDENTIFICADOR:i {: parser.getCoder().recordarIdentificador((String)i);:}
                               |  IDENTIFICADOR:i {: parser.getCoder().recordarIdentificador((String)i); :};
 
-EXP ::= ADITIVOS
+EXP ::= ADITIVOS 
       | STRING;
 
 CONDICION ::=	CONDICION OpOR COND_AND 
@@ -137,14 +137,14 @@ COND_REL ::= 	ADITIVOS OpIGUAL 	ADITIVOS
 	      | ADITIVOS OpDIFERENTE	ADITIVOS 
               | PARENTESIS_ABRE CONDICION PARENTESIS_CIERRA;
 
-ADITIVOS ::=	ADITIVOS OpSUMA	MULTIPLICATIVOS 
-	      | ADITIVOS OpRESTA MULTIPLICATIVOS 
+ADITIVOS ::=	ADITIVOS OpSUMA:o {: parser.getCoder().recordarOperacion((String)o); :}	MULTIPLICATIVOS 
+	      | ADITIVOS OpRESTA:o {: parser.getCoder().recordarOperacion((String)o); :} MULTIPLICATIVOS 
 	      | MULTIPLICATIVOS;
 
-MULTIPLICATIVOS ::=	MULTIPLICATIVOS OpMUL UNARIO 
-		      | MULTIPLICATIVOS OpDIV UNARIO 
-		      | MULTIPLICATIVOS Op_DIV UNARIO 
-		      | MULTIPLICATIVOS Op_MOD UNARIO 
+MULTIPLICATIVOS ::=	MULTIPLICATIVOS OpMUL:o {: parser.getCoder().recordarOperacion((String)o); :} UNARIO 
+		      | MULTIPLICATIVOS OpDIV:o {: parser.getCoder().recordarOperacion((String)o); :} UNARIO 
+		      | MULTIPLICATIVOS Op_DIV:o {: parser.getCoder().recordarOperacion((String)o); :} UNARIO 
+		      | MULTIPLICATIVOS Op_MOD:o {: parser.getCoder().recordarOperacion((String)o); :} UNARIO 
 		      | UNARIO ;
 
 UNARIO	 ::=	INC_DEC 
@@ -160,8 +160,8 @@ TERMINO  ::=	PARENTESIS_ABRE EXP PARENTESIS_CIERRA
 	      | IDENTIFICADOR:i {: RESULT = i; :}
               | LLAMADA_FUNCION;
 
-NUMERO	 ::=  FLOAT:f {: RESULT = f; :}
-            | INTEGER:i {: RESULT = i; :} ;
+NUMERO	 ::=  FLOAT:f {: RESULT = f; parser.getCoder().recordarDO("Float", f); :}
+            | INTEGER:i {: RESULT = i; parser.getCoder().recordarDO("Int",  i); :} ;
 
 LLAMADA_FUNCION  ::=  READ PARENTESIS_ABRE PARAMETRO_READ
                     | WRITE PARENTESIS_ABRE PARAMETROS_NO_VACIOS PARENTESIS_CIERRA
@@ -183,11 +183,11 @@ TIPO        ::=   TYPE_INT:t           {: RESULT = t; :}
                 | TYPE_BOOLEAN:t       {: RESULT = t; :}
                 | TYPE_REAL:t          {: RESULT = t; :} ;
 
-ASIGNACION  ::= IDENTIFICADOR OprASIGNACION EXP 
-              | IDENTIFICADOR OprASIG_MAS EXP 
-              | IDENTIFICADOR OprASIG_RESTA EXP 
-              | IDENTIFICADOR OprASIG_MUL EXP 
-              | IDENTIFICADOR OprASIG_DIV EXP;
+ASIGNACION  ::= IDENTIFICADOR:i {: parser.getCoder().recordarDO((String)i, null); :} OprASIGNACION:o {: parser.getCoder().recordarOperacion((String)o); :}  EXP 
+              | IDENTIFICADOR:i {: parser.getCoder().recordarDO((String)i, null); :} OprASIG_MAS:o {: parser.getCoder().recordarOperacion((String)o); :} EXP
+              | IDENTIFICADOR:i {: parser.getCoder().recordarDO((String)i, null); :} OprASIG_RESTA:o {: parser.getCoder().recordarOperacion((String)o); :} EXP
+              | IDENTIFICADOR:i {: parser.getCoder().recordarDO((String)i, null); :} OprASIG_MUL:o {: parser.getCoder().recordarOperacion((String)o); :} EXP
+              | IDENTIFICADOR:i {: parser.getCoder().recordarDO((String)i, null); :} OprASIG_DIV:o {: parser.getCoder().recordarOperacion((String)o); :} EXP;
               
 
 SENTENCIAS  ::= SENTENCIA_PUNTOYCOMA SENTENCIAS

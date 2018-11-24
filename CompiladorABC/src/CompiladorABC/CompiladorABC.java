@@ -18,10 +18,12 @@ public class CompiladorABC {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         try {
+            
             String nombreArchivo = "CodigoPrueba2.txt";
             Lexer l = new Lexer(new FileReader(nombreArchivo));
             Parser parser = new Parser(l);
             parser.parse();  
+            System.out.println("");
             System.out.println(parser.getCoder().toString());
             System.out.println("FINALIZA EL PARSEO");
         } 
@@ -34,14 +36,3 @@ public class CompiladorABC {
     }   
 }
 
-
-
-/*
-
-Lo que tenía del if
-
-ESTR_IF     ::=  IF CONDICION THEN BEGIN SENTENCIAS ESTR_ELSE;
-
-ESTR_ELSE ::= END ELSE BEGIN SENTENCIAS | ;
-
-*/
