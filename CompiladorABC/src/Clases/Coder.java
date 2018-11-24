@@ -12,10 +12,16 @@ import java.util.ArrayList;
  * @author yanil
  */
 public class Coder {
-    public String codigo;
-    public TSimbolos tsimbolo;
-    public PilaSemantica pila;
-    public GeneradorLabels generadorLabels;
+    private String codigo;
+    private TSimbolos tsimbolo;
+    private PilaSemantica pila;
+    private GeneradorLabels generadorLabels;
+
+    public String getCodigo() {
+        return codigo;
+    }
+    
+    
 
     public Coder() {
         codigo = ".model tiny \n";
@@ -142,7 +148,7 @@ public class Coder {
         //validar tipos
 
         //generar codigo
-        codigo += "mov ax, ";
+        codigo += "     mov ax, ";
         if((operando1.getNombreVariable().equals("Int") || operando1.getNombreVariable().equals("Float") ) && operando1.getValor() != null){
             //primer operador es un entero o un flotante
             codigo += operando1.getValor().toString() + "\n";
@@ -227,31 +233,54 @@ public class Coder {
         RS_DO valorAsignar = (RS_DO) pila.popRegistro();
         RS_Operacion operadorAsignacion = (RS_Operacion) pila.popRegistro();
         RS_DO identificador = (RS_DO) pila.popRegistro();
-        codigo += "mov " + identificador.getNombreVariable() + ", ";  
+        codigo += "     mov " + identificador.getNombreVariable() + ", ";  
         if(valorAsignar.getValor() != null){
             codigo += String.valueOf(valorAsignar.getValor());
         }else{
             codigo += valorAsignar.getNombreVariable();
         }
-        System.out.println("\n Codigo:");
-        System.out.println(codigo);
+    }
+    
+    public void preIncDec(){
+        RS_DO operando = (RS_DO) pila.popRegistro();
+        RS_Operacion operador = (RS_Operacion) pila.popRegistro();
+        generarCodigoIncDec(operando, operador);
+        recordarDO(operando.getNombreVariable(), null);
+    }
+    
+    public void postIncDec(){
+        RS_Operacion operador = (RS_Operacion) pila.popRegistro();
+        RS_DO operando = (RS_DO) pila.popRegistro();
+        generarCodigoIncDec(operando, operador);
+        recordarDO(operando.getNombreVariable(), null);
+    }
+    
+    private void generarCodigoIncDec(RS_DO operando, RS_Operacion operador){
+        System.out.println("genera codigo inc dec");
+        switch(operador.getOperador()){
+            case "++":
+                codigo += "     inc " + operando.getNombreVariable() + "\n";                
+                break;
+            case "--":
+                codigo += "     dec " + operando.getNombreVariable() + "\n";
+        }
     }
     
     public void start_if(){
         // Se crea RS de If y se generan las etiquetas
         RS_If rs = new RS_If();
+        System.out.println("Recuerda if");
         pila.pushRegistro(rs);  
     }
     
     public void evalExp_if() {
         // TODO Falta generar codigo del condicional
-        RegistroSemantico rs = pila.buscar("RS_If");
-        codigo += "     jz " + ((RS_If)rs).getElse_label() + "\n"; 
-        pila.popRegistro();
+        RS_If rs =(RS_If) pila.buscar("Clases.RS_If");
+        codigo += "     jz " + rs.getElse_label() + "\n"; 
     }
     
     public void else_if() {
-        RegistroSemantico rs = pila.buscar("RS_If");
+        RegistroSemantico rs = pila.buscar("Clases.RS_If");
         // se agrega el salto
          codigo += "     jmp " + ((RS_If)rs).getExit_label() + "\n";
          // Se agrega la etiqueta del Else
@@ -260,6 +289,9 @@ public class Coder {
     
     public void end_if(){
         RegistroSemantico rs = pila.popRegistro();
+        while(!(rs instanceof RS_If)){
+            rs = pila.popRegistro();
+        }
         codigo += " " + ((RS_If)rs).getExit_label() + ":\n";
     }
     
@@ -267,6 +299,34 @@ public class Coder {
         RS_While rs = new RS_While();
         codigo += " " + rs.getStart_label()+ ":\n";
         pila.pushRegistro(rs);
+    }
+    
+    public void evalCondicion(){
+
+        RS_DO operando2 = (RS_DO) pila.popRegistro();
+        RS_Operacion operador = (RS_Operacion) pila.popRegistro();
+        RS_DO operando1 = (RS_DO) pila.popRegistro();
+        
+        codigo += "     mov ax, ";
+        if((operando1.getNombreVariable().equals("Int") || operando1.getNombreVariable().equals("Float") ) && operando1.getValor() != null){
+            //primer operando es un entero o un flotante
+            codigo+= operando1.getValor().toString() + "\n";
+        }else{
+            codigo+= operando1.getNombreVariable() + "\n";
+        }
+        
+        codigo += "     mov bx, ";
+        
+        if((operando2.getNombreVariable().equals("Int") || operando2.getNombreVariable().equals("Float") ) && operando2.getValor() != null){
+            //segundo operando es un entero o un flotante
+            codigo+= operando2.getValor().toString() + "\n";
+        }else{
+            codigo+= operando2.getNombreVariable() + "\n";
+        }
+        
+        codigo += "     cmp ax, bx \n";
+        
+        
     }
     
     public void evalExp_While(){

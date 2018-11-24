@@ -84,13 +84,10 @@ ARGUMENTOS_P ::= COMA ARGUMENTOS | ;
 
 ARGUMENTO ::= TIPO:t {: parser.getCoder().recordarTipo((String)t);:} IDENTIFICADOR:i {: parser.getCoder().recordarIdentificador((String)i);:};
 
-ESTR_IF     ::=  IF  CONDICION  THEN SENTENCIAS 
-               | IF CONDICION THEN SENTENCIAS ESTR_ELSE;
+ESTR_IF     ::=  IF {: parser.getCoder().start_if(); :} CONDICION {: parser.getCoder().evalCondicion(); :} THEN {: parser.getCoder().evalExp_if(); :} SENTENCIAS {: parser.getCoder().else_if(); :} ESTR_ELSE {: parser.getCoder().end_if(); :};
 
 
-ESTR_ELSE ::= ELSE SENTENCIAS ;
-
-
+ESTR_ELSE ::= ELSE SENTENCIAS | ;
 
 ESTR_FOR    ::=  FOR ASIGNACION TO EXP DO BEGIN SENTENCIAS; 
 
@@ -129,7 +126,7 @@ COND_NOT ::=  OpNOT COND_REL
             | COND_REL
             ;
 
-COND_REL ::= 	ADITIVOS OpIGUAL 	ADITIVOS 
+COND_REL ::= 	ADITIVOS OpIGUAL:o {:  parser.getCoder().recordarOperacion((String)o); :} ADITIVOS 
 	      | ADITIVOS OpMAYOR	ADITIVOS 
 	      | ADITIVOS OpMAYOR_IGUAL  ADITIVOS 
 	      | ADITIVOS OpMENOR 	ADITIVOS 
@@ -150,10 +147,10 @@ MULTIPLICATIVOS ::=	MULTIPLICATIVOS OpMUL:o {: parser.getCoder().recordarOperaci
 UNARIO	 ::=	INC_DEC 
 	      | TERMINO;
 
-INC_DEC  ::=   Op_INC TERMINO 
-             | Op_DEC TERMINO 
-             | TERMINO Op_INC 
-             | TERMINO Op_DEC ;
+INC_DEC  ::=   Op_INC:o {: parser.getCoder().recordarOperacion((String)o); :} TERMINO {: parser.getCoder().preIncDec(); :}
+             | Op_DEC:o {: parser.getCoder().recordarOperacion((String)o); :} TERMINO {: parser.getCoder().preIncDec(); :}
+             | TERMINO Op_INC:o {: parser.getCoder().recordarOperacion((String)o); parser.getCoder().postIncDec(); :} 
+             | TERMINO Op_DEC:o {: parser.getCoder().recordarOperacion((String)o); parser.getCoder().postIncDec(); :} ;
 
 TERMINO  ::=	PARENTESIS_ABRE EXP PARENTESIS_CIERRA
 	      | NUMERO:n {: RESULT = n; :}
@@ -202,5 +199,5 @@ SENTENCIA_PUNTOYCOMA  ::= ASIGNACION PUNTOYCOMA
 
 SENTENCIA_END ::= ESTR_FOR END
               | ESTR_WHILE END
-              | ESTR_IF END
+              | ESTR_IF END 
               | error END {: System.out.println("Error sintáctico: ERROR EN SENTENCIA IF, WHILE O FOR"); :};

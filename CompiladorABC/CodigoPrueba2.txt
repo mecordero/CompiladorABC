@@ -3,8 +3,9 @@ PROGRAM Prueba
 
 BEGIN
 
-RESULTADO := x mod y ;
-
+if x = 5 then
+i++;
+end
 
 end
 

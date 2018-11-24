@@ -26,6 +26,8 @@ public class CompiladorABC {
             System.out.println("");
             System.out.println(parser.getCoder().toString());
             System.out.println("FINALIZA EL PARSEO");
+            System.out.println("\n Codigo:");
+            System.out.println(parser.getCoder().getCodigo());
         } 
         catch (ScannerException e) {
                 System.out.println("[Línea: " + e.getLinea() + "]=>" + e.getCaracteres()+ ": " + e.getMessage()+ "\n");
