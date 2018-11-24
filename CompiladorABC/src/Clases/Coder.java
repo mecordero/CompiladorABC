@@ -113,7 +113,6 @@ public class Coder {
             pila.pushRegistro(operando2);
             return;
         }        
-        //validar tipos
         if(operando1.getNombreVariable().equals(operando2.getNombreVariable())){
             //son del mismo tipo, o son el mismo identificador
             //se asume que son el mismo tipo
@@ -151,7 +150,23 @@ public class Coder {
             codigo += operando1.getNombreVariable() + "\n";
         }
         
-        codigo += "add ax, ";
+        switch(operador.getOperador().toUpperCase()){
+            case "+":
+                codigo += "add ax, ";
+                break;
+            case "-":
+                codigo += "sub ax, ";
+                break;
+            case "*":
+                codigo += "mul ";
+                break;
+            case "/":
+            case "DIV":
+            case "MOD":
+                codigo += "div ";
+                
+        }
+       
         if((operando2.getNombreVariable().equals("Int") || operando2.getNombreVariable().equals("Float") ) && operando2.getValor() != null){
             //segunfo operador es un entero o un flotante
             codigo += operando2.getValor().toString() + "\n";            
@@ -159,6 +174,10 @@ public class Coder {
             codigo += operando2.getNombreVariable() + "\n";
         }
         
+        if(operador.getOperador().toUpperCase().equals("MOD")){
+            recordarDO("dx", null);
+            return;
+        }
         //crear rs_do resultado
         //push pila
         recordarDO("ax", null);      
@@ -167,7 +186,7 @@ public class Coder {
     
     private boolean isOperacion(String operador){
         return operador.equals("+") || operador.equals("-") || operador.equals("*") || operador.equals("/") ||
-                operador.equals("DIV") || operador.equals("MOD");
+                operador.toUpperCase().equals("DIV") || operador.toUpperCase().equals("MOD");
     }
     
     private int realizarOperacion(int op1, int op2, String operador){

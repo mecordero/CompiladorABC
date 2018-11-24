@@ -3,7 +3,7 @@ PROGRAM Prueba
 
 BEGIN
 
-RESULTADO := x + y ;
+RESULTADO := x mod y ;
 
 
 end
