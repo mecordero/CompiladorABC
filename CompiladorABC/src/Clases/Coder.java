@@ -272,12 +272,7 @@ public class Coder {
         System.out.println("Recuerda if");
         pila.pushRegistro(rs);  
     }
-    
-    public void evalExp_if() {
-        // TODO Falta generar codigo del condicional
-        RS_If rs =(RS_If) pila.buscar("Clases.RS_If");
-        codigo += "     jz " + rs.getElse_label() + "\n"; 
-    }
+
     
     public void else_if() {
         RegistroSemantico rs = pila.buscar("Clases.RS_If");
@@ -301,7 +296,7 @@ public class Coder {
         pila.pushRegistro(rs);
     }
     
-    public void evalCondicion(){
+    public void evalExp_if(){
 
         RS_DO operando2 = (RS_DO) pila.popRegistro();
         RS_Operacion operador = (RS_Operacion) pila.popRegistro();
@@ -325,6 +320,29 @@ public class Coder {
         }
         
         codigo += "     cmp ax, bx \n";
+        
+        RS_If rs = (RS_If) pila.buscar("Clases.RS_If");
+        
+        switch(operador.getOperador()){
+            case "=":
+                codigo += "     je " + rs.getElse_label() + "\n"; 
+                break;
+            case ">":
+                codigo += "     jg " + rs.getElse_label() + "\n"; 
+                break; 
+            case ">=":
+                codigo += "     jge " + rs.getElse_label() + "\n"; 
+                break; 
+            case "<":
+                codigo += "     jl " + rs.getElse_label() + "\n"; 
+                break; 
+            case "<=":
+                codigo += "     jle " + rs.getElse_label() + "\n"; 
+                break; 
+            case "<>":
+                codigo += "     jne " + rs.getElse_label() + "\n"; 
+                break; 
+        }
         
         
     }

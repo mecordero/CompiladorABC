@@ -5,6 +5,8 @@ BEGIN
 
 if x = 5 then
 i++;
+else
+i--;
 end
 
 end

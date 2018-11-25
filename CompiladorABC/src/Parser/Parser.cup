@@ -84,7 +84,7 @@ ARGUMENTOS_P ::= COMA ARGUMENTOS | ;
 
 ARGUMENTO ::= TIPO:t {: parser.getCoder().recordarTipo((String)t);:} IDENTIFICADOR:i {: parser.getCoder().recordarIdentificador((String)i);:};
 
-ESTR_IF     ::=  IF {: parser.getCoder().start_if(); :} CONDICION {: parser.getCoder().evalCondicion(); :} THEN {: parser.getCoder().evalExp_if(); :} SENTENCIAS {: parser.getCoder().else_if(); :} ESTR_ELSE {: parser.getCoder().end_if(); :};
+ESTR_IF     ::=  IF {: parser.getCoder().start_if(); :} CONDICION THEN {: parser.getCoder().evalExp_if(); :} SENTENCIAS {: parser.getCoder().else_if(); :} ESTR_ELSE {: parser.getCoder().end_if(); :};
 
 
 ESTR_ELSE ::= ELSE SENTENCIAS | ;
@@ -117,7 +117,7 @@ EXP ::= ADITIVOS
       | STRING;
 
 CONDICION ::=	CONDICION OpOR COND_AND 
-	      | COND_AND ;
+	      | COND_AND;
 
 COND_AND ::=	COND_AND OpAND COND_NOT 
 	      | COND_NOT;
@@ -127,11 +127,11 @@ COND_NOT ::=  OpNOT COND_REL
             ;
 
 COND_REL ::= 	ADITIVOS OpIGUAL:o {:  parser.getCoder().recordarOperacion((String)o); :} ADITIVOS 
-	      | ADITIVOS OpMAYOR	ADITIVOS 
-	      | ADITIVOS OpMAYOR_IGUAL  ADITIVOS 
-	      | ADITIVOS OpMENOR 	ADITIVOS 
-	      | ADITIVOS OpMENOR_IGUAL  ADITIVOS 
-	      | ADITIVOS OpDIFERENTE	ADITIVOS 
+	      | ADITIVOS OpMAYOR:o {:  parser.getCoder().recordarOperacion((String)o); :}	ADITIVOS 
+	      | ADITIVOS OpMAYOR_IGUAL:o {:  parser.getCoder().recordarOperacion((String)o); :}  ADITIVOS 
+	      | ADITIVOS OpMENOR:o {:  parser.getCoder().recordarOperacion((String)o); :} 	ADITIVOS 
+	      | ADITIVOS OpMENOR_IGUAL:o {:  parser.getCoder().recordarOperacion((String)o); :}  ADITIVOS 
+	      | ADITIVOS OpDIFERENTE:o {:  parser.getCoder().recordarOperacion((String)o); :}	ADITIVOS 
               | PARENTESIS_ABRE CONDICION PARENTESIS_CIERRA;
 
 ADITIVOS ::=	ADITIVOS OpSUMA:o {: parser.getCoder().recordarOperacion((String)o); :}	MULTIPLICATIVOS 
