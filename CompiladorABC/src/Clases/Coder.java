@@ -296,8 +296,8 @@ public class Coder {
         pila.pushRegistro(rs);
     }
     
-    public void evalExp_if(){
-
+    private RS_Operacion generarCodigoCmp(){
+        
         RS_DO operando2 = (RS_DO) pila.popRegistro();
         RS_Operacion operador = (RS_Operacion) pila.popRegistro();
         RS_DO operando1 = (RS_DO) pila.popRegistro();
@@ -321,42 +321,56 @@ public class Coder {
         
         codigo += "     cmp ax, bx \n";
         
+        return operador;
+    }
+    
+    public void evalExp_if(){
+        RS_Operacion operador = generarCodigoCmp();     
+        
         RS_If rs = (RS_If) pila.buscar("Clases.RS_If");
         
-        switch(operador.getOperador()){
-            case "=":
-                codigo += "     je " + rs.getElse_label() + "\n"; 
-                break;
-            case ">":
-                codigo += "     jg " + rs.getElse_label() + "\n"; 
-                break; 
-            case ">=":
-                codigo += "     jge " + rs.getElse_label() + "\n"; 
-                break; 
-            case "<":
-                codigo += "     jl " + rs.getElse_label() + "\n"; 
-                break; 
-            case "<=":
-                codigo += "     jle " + rs.getElse_label() + "\n"; 
-                break; 
-            case "<>":
-                codigo += "     jne " + rs.getElse_label() + "\n"; 
-                break; 
-        }
-        
+        generarCodigoJump(operador.getOperador(), rs.getElse_label());
         
     }
     
+    private void generarCodigoJump(String operador,String label){
+        switch(operador){
+            case "=":
+                codigo += "     jne " + label + "\n"; 
+                break;
+            case ">":
+                codigo += "     jng " + label + "\n"; 
+                break; 
+            case ">=":
+                codigo += "     jnge " + label + "\n"; 
+                break; 
+            case "<":
+                codigo += "     jnl " + label + "\n"; 
+                break; 
+            case "<=":
+                codigo += "     jnle " + label + "\n"; 
+                break; 
+            case "<>":
+                codigo += "     je " + label + "\n"; 
+                break; 
+        }
+    }
+    
     public void evalExp_While(){
-        // TODO Falta generar codigo del condicional
-        RegistroSemantico rs = pila.buscar("RS_While");
-        codigo += "     jz " + ((RS_If)rs).getExit_label()+ "\n"; 
-        pila.popRegistro();
+        System.out.println("eval exp while");
+        RS_Operacion operador = generarCodigoCmp();       
+        
+        RS_While rs = (RS_While) pila.buscar("Clases.RS_While");        
+        generarCodigoJump(operador.getOperador(), rs.getExit_label());
+
     }
     
     public void end_while(){
        RegistroSemantico rs = pila.popRegistro();
-       codigo += "     jz " + ((RS_While)rs).getStart_label()+ "\n";
+        while(!(rs instanceof RS_While)){
+            rs = pila.popRegistro();
+        }
+       codigo += "     jmp " + ((RS_While)rs).getStart_label()+ "\n";
        codigo += " " + ((RS_While)rs).getExit_label()+ ":\n";
     }
     

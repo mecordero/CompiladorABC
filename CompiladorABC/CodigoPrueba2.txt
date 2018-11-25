@@ -3,10 +3,9 @@ PROGRAM Prueba
 
 BEGIN
 
-if x = 5 then
+while (x = 5) do
+begin
 i++;
-else
-i--;
 end
 
 end
