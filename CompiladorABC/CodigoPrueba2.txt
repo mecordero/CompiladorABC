@@ -1,16 +1,25 @@
 
 PROGRAM Prueba
-
 VAR
 x,y: shortint;
 z:REAL;
-
+asig: INT;
 T:STRING;
-BEGIN
 
+CONST
+r = 8;
+t = 10;
+
+function fun ( INT x ) : int
+begin
+asig:= 4;
+end
+
+BEGIN
 while (x = 5) do
 begin
-i++;
+r := 45;
+asig := 6;
 end
 
 end

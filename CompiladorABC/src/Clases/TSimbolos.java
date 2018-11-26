@@ -79,8 +79,12 @@ public class TSimbolos {
         tablaSimbolos.remove(nombre);
     }
 
-    public boolean buscarSimbolo(String nombre) {
-        return tablaSimbolos.containsKey(nombre);
+    public Simbolo buscarSimbolo(String nombre) {
+        if (tablaSimbolos.containsKey(nombre)) {
+            return tablaSimbolos.get(nombre);
+        } else {
+            return null;
+        }
     }
 
     @Override

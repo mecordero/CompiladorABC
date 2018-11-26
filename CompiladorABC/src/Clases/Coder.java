@@ -12,112 +12,140 @@ import java.util.ArrayList;
  * @author yanil
  */
 public class Coder {
+
     private String codigo;
     private TSimbolos tsimbolo;
     private PilaSemantica pila;
     private GeneradorLabels generadorLabels;
+    private Boolean generarCodigo;
+    private String codTemp;
+    private int contFunc;
 
     public String getCodigo() {
         return codigo;
     }
-    
-    
 
     public Coder() {
         codigo = ".model tiny \n";
         pila = new PilaSemantica();
         tsimbolo = new TSimbolos();
         generadorLabels = new GeneradorLabels();
+        generarCodigo = true;
+        codTemp = "";
+        contFunc = 1;
     }
-    
+
     public void recordarIdentificador(String id) {
         System.out.println("Recuerda identificador");
         pila.pushRegistro(new RS_Identificador(id));
     }
-    
+
     public void recordarTipo(String tipo) {
         pila.pushRegistro(new RS_Tipo(tipo));
     }
-    
-    public void recordarDO(String nombreVariable, String valor){
+
+    public void recordarDO(String nombreVariable, String valor) {
         System.out.println("Recuerda DO " + nombreVariable);
-        pila.pushRegistro(new RS_DO(nombreVariable,valor));        
+        pila.pushRegistro(new RS_DO(nombreVariable, valor));
     }
-    
-    public void recordarOperacion(String operador){
+
+    public void recordarOperacion(String operador) {
         System.out.println("Recuerda Operación " + operador);
         pila.pushRegistro(new RS_Operacion(operador));
     }
-    
+
     public void guardarFuncionEnTsimbolo(String nombre) {
         System.out.println("Guarda variables en ts");
         ArrayList<Simbolo> argumentos = new ArrayList<>();
-        
+
         RegistroSemantico tipo = pila.popRegistro();
         RegistroSemantico top = pila.verTop();
-        
+
         int pos = 0;
-        
-        while(!(top instanceof RS_Func)) {
+
+        while (top != null && !(top instanceof RS_Func)) {
             pos++;
             // top es un identificador
             pila.popRegistro();
             // el que viene es el tipo
             RegistroSemantico tipoArg = pila.popRegistro();
-            Simbolo s  = new Simbolo(((RS_Identificador)top).getNombre(),((RS_Tipo)tipoArg).getTipo(), pos );
+            Simbolo s = new Simbolo(((RS_Identificador) top).getNombre(), ((RS_Tipo) tipoArg).getTipo(), pos);
             argumentos.add(s);
             top = pila.verTop();
         }
-        
-        tsimbolo.agregarFuncion( nombre, ((RS_Tipo)tipo).getTipo(), argumentos);
+
+        int resultado = tsimbolo.agregarFuncion(nombre, ((RS_Tipo) tipo).getTipo(), argumentos);
+
+        if (resultado == -1) {
+            generarCodigo = false;
+        }else{
+            codTemp += "\n\n function_" + contFunc + ":\n";
+            contFunc++;
+            codTemp += codigo;
+            codTemp += "     ret\n\n";
+            codigo = codTemp;
+            codTemp = "";
+        }
+
     }
-    
+    public void startFunction(){
+        codTemp = codigo;
+        codigo = "";
+        
+    }
     public void recordarFuncion() {
         pila.pushRegistro(new RS_Func());
     }
-    
+
     public void guardarVariablesEnTSimbolos(String tipo) {
         System.out.println("Guarda variables en ts");
-               
+
         RegistroSemantico top = pila.verTop();
-        while(top instanceof RS_Identificador) {
-            tsimbolo.agregarVariable(((RS_Identificador)top).getNombre(), tipo);
-            pila.popRegistro();            
-            codigo += ((RS_Identificador)top).getNombre() + "\t resb  \t";
-            
-            if(tipo.toUpperCase().equals("INT"))
-                codigo +=" 4 \n";
-            else if(tipo.toUpperCase().equals("SHORTINT"))
-                codigo +=" 2 \n";
-            else if(tipo.toUpperCase().equals("LONGTINT"))
-                codigo +=" 6 \n";
-            else if(tipo.toUpperCase().equals("CHAR"))
-                codigo +=" 1 \n";
-            else if(tipo.toUpperCase().equals("BOOLEAN"))
-                codigo +=" 1 \n";
-            else if(tipo.toUpperCase().equals("REAL"))
-                codigo +=" 4 \n";
-            else if(tipo.toUpperCase().equals("STRING"))
-                codigo +=" 30 \n";
-            
-            
+        while (top instanceof RS_Identificador) {
+            int resultado = tsimbolo.agregarVariable(((RS_Identificador) top).getNombre(), tipo);
+            if (resultado == -1) {
+                generarCodigo = false;
+            }
+            pila.popRegistro();
+            codigo += ((RS_Identificador) top).getNombre() + "\t resb  \t";
+
+            if (tipo.toUpperCase().equals("INT")) {
+                codigo += " 4 \n";
+            } else if (tipo.toUpperCase().equals("SHORTINT")) {
+                codigo += " 2 \n";
+            } else if (tipo.toUpperCase().equals("LONGTINT")) {
+                codigo += " 6 \n";
+            } else if (tipo.toUpperCase().equals("CHAR")) {
+                codigo += " 1 \n";
+            } else if (tipo.toUpperCase().equals("BOOLEAN")) {
+                codigo += " 1 \n";
+            } else if (tipo.toUpperCase().equals("REAL")) {
+                codigo += " 4 \n";
+            } else if (tipo.toUpperCase().equals("STRING")) {
+                codigo += " 30 \n";
+            }
+
             top = pila.verTop();
         }
     }
-    
-    public void iniciarVar(){
+
+    public void iniciarVar() {
         codigo += ".UDATA \n";
     }
-    
-    public void iniciarCode(){
+
+    public void iniciarCode() {
         codigo += ".CODE \n";
     }
-    
-    public void guardarConstanteEnTSimbolos(String nombre, String tipo, Object valor){
+
+    public void guardarConstanteEnTSimbolos(String nombre, String tipo, Object valor) {
         System.out.println("Gurda constante en ts");
-        tsimbolo.agregarConstante(nombre, tipo, valor);
+        int resultado = tsimbolo.agregarConstante(nombre, tipo, valor);
+        pila.popRegistro();
+        if (resultado == -1) {
+            generarCodigo = false;
+        }
     }
-    
+
     /*
     public void evalOperacion(){
         System.out.println("Evalúa operacion");
@@ -132,58 +160,54 @@ public class Coder {
             }
         }
     }*/
-
-    public void evalBinaria(){
+    public void evalBinaria() {
         System.out.println("Evalúa operacion binaria");
         RS_DO operando2 = (RS_DO) pila.popRegistro();
         RS_Operacion operador = (RS_Operacion) pila.popRegistro();
         RS_DO operando1 = (RS_DO) pila.popRegistro();
-        
-        if(!isOperacion(operador.getOperador())){
+
+        if (!isOperacion(operador.getOperador())) {
             //si no es una operacion binaria lo devuelve a como estaba
             pila.pushRegistro(operando1);
             pila.pushRegistro(operador);
             pila.pushRegistro(operando2);
             return;
-        }        
-        if(operando1.getNombreVariable().equals(operando2.getNombreVariable())){
+        }
+        if (operando1.getNombreVariable().equals(operando2.getNombreVariable())) {
             //son del mismo tipo, o son el mismo identificador
             //se asume que son el mismo tipo
             String tipo = operando1.getNombreVariable();
-            
-            if(tipo.equals("Int") && operando1.getValor() != null){
+
+            if (tipo.equals("Int") && operando1.getValor() != null) {
                 int operando1Int = (int) operando1.getValor();
                 int operando2Int = (int) operando2.getValor();
                 int resultado = realizarOperacion(operando1Int, operando2Int, operador.getOperador());
                 pila.pushRegistro(new RS_DO("Int", resultado));
                 return;
-            }else if(tipo.equals("Float") && operando1.getValor() != null){
+            } else if (tipo.equals("Float") && operando1.getValor() != null) {
                 Float operando1Float = (Float) operando1.getValor();
                 Float operando2Float = (Float) operando2.getValor();
-                
+
                 Float resultado = realizarOperacion(operando1Float, operando2Float, operador.getOperador());
                 pila.pushRegistro(new RS_DO("Float", resultado));
                 return;
             }
-            
-        } 
+
+        }
 
         //es una operacion que tiene identificadores
-
         //validar que existen
-
         //validar tipos
-
         //generar codigo
         codigo += "     mov ax, ";
-        if((operando1.getNombreVariable().equals("Int") || operando1.getNombreVariable().equals("Float") ) && operando1.getValor() != null){
+        if ((operando1.getNombreVariable().equals("Int") || operando1.getNombreVariable().equals("Float")) && operando1.getValor() != null) {
             //primer operador es un entero o un flotante
             codigo += operando1.getValor().toString() + "\n";
-        }else{
+        } else {
             codigo += operando1.getNombreVariable() + "\n";
         }
-        
-        switch(operador.getOperador().toUpperCase()){
+
+        switch (operador.getOperador().toUpperCase()) {
             case "+":
                 codigo += "add ax, ";
                 break;
@@ -197,33 +221,33 @@ public class Coder {
             case "DIV":
             case "MOD":
                 codigo += "div ";
-                
+
         }
-       
-        if((operando2.getNombreVariable().equals("Int") || operando2.getNombreVariable().equals("Float") ) && operando2.getValor() != null){
+
+        if ((operando2.getNombreVariable().equals("Int") || operando2.getNombreVariable().equals("Float")) && operando2.getValor() != null) {
             //segunfo operador es un entero o un flotante
-            codigo += operando2.getValor().toString() + "\n";            
-        }else{
+            codigo += operando2.getValor().toString() + "\n";
+        } else {
             codigo += operando2.getNombreVariable() + "\n";
         }
-        
-        if(operador.getOperador().toUpperCase().equals("MOD")){
+
+        if (operador.getOperador().toUpperCase().equals("MOD")) {
             recordarDO("dx", null);
             return;
         }
         //crear rs_do resultado
         //push pila
-        recordarDO("ax", null);      
-       
+        recordarDO("ax", null);
+
     }
-    
-    private boolean isOperacion(String operador){
-        return operador.equals("+") || operador.equals("-") || operador.equals("*") || operador.equals("/") ||
-                operador.toUpperCase().equals("DIV") || operador.toUpperCase().equals("MOD");
+
+    private boolean isOperacion(String operador) {
+        return operador.equals("+") || operador.equals("-") || operador.equals("*") || operador.equals("/")
+                || operador.toUpperCase().equals("DIV") || operador.toUpperCase().equals("MOD");
     }
-    
-    private int realizarOperacion(int op1, int op2, String operador){
-        switch(operador){
+
+    private int realizarOperacion(int op1, int op2, String operador) {
+        switch (operador) {
             case "+":
                 return op1 + op2;
             case "-":
@@ -235,12 +259,12 @@ public class Coder {
                 return op1 / op2;
             case "MOD":
                 return op1 % op2;
-        }        
+        }
         return 0;
     }
-    
-    private Float realizarOperacion(Float op1, Float op2, String operador){
-        switch(operador){
+
+    private Float realizarOperacion(Float op1, Float op2, String operador) {
+        switch (operador) {
             case "+":
                 return op1 + op2;
             case "-":
@@ -252,164 +276,182 @@ public class Coder {
                 return op1 / op2;
             case "MOD":
                 return op1 % op2;
-        }        
+        }
         return 0F;
     }
-    
-    public void generarCodigoAsignacion(){
+
+    public void generarCodigoAsignacion(String tipo) {
         RS_DO valorAsignar = (RS_DO) pila.popRegistro();
         RS_Operacion operadorAsignacion = (RS_Operacion) pila.popRegistro();
         RS_DO identificador = (RS_DO) pila.popRegistro();
-        codigo += "     mov " + identificador.getNombreVariable() + ", ";  
-        if(valorAsignar.getValor() != null){
-            codigo += String.valueOf(valorAsignar.getValor());
-        }else{
-            codigo += valorAsignar.getNombreVariable();
+        
+        Simbolo sim = tsimbolo.buscarSimbolo(identificador.getNombreVariable());
+        
+        if (sim == null) {
+            System.out.println("No se ha declarado la variable " + identificador.getNombreVariable());
+            generarCodigo = false;  
+        } else  if (sim.getEsConstante()) {
+                System.out.println("\u001B[31m La variable " + identificador.getNombreVariable() + " es una constante.");
+                generarCodigo = false;
+        } else  if (sim.esFuncion) {
+                System.out.println("\u001B[31m La variable " + identificador.getNombreVariable() + " es una función.");
+                generarCodigo = false;
+        } else if (sim.getTipo() != tipo) {
+            if (!((sim.getTipo().toLowerCase().equals("real") || 
+                sim.getTipo().toLowerCase().equals("int") || 
+                sim.getTipo().toLowerCase().equals("float") ||
+                sim.getTipo().toLowerCase().equals("longint") || 
+                sim.getTipo().toLowerCase().equals("shortint")) && tipo == "numero")) {
+                System.out.println("\u001B[31m La asignación no corresponde al tipo de la variable " + identificador.getNombreVariable());
+                generarCodigo = false;
+            }
+        }
+        
+        System.out.println(sim.toString());
+        
+        codigo += "     mov " + identificador.getNombreVariable() + ", ";
+        if (valorAsignar.getValor() != null) {
+            codigo += String.valueOf(valorAsignar.getValor()) + "\n";
+        } else {
+            codigo += valorAsignar.getNombreVariable()+ "\n";
         }
     }
-    
-    public void preIncDec(){
+
+    public void preIncDec() {
         RS_DO operando = (RS_DO) pila.popRegistro();
         RS_Operacion operador = (RS_Operacion) pila.popRegistro();
         generarCodigoIncDec(operando, operador);
         recordarDO(operando.getNombreVariable(), null);
     }
-    
-    public void postIncDec(){
+
+    public void postIncDec() {
         RS_Operacion operador = (RS_Operacion) pila.popRegistro();
         RS_DO operando = (RS_DO) pila.popRegistro();
         generarCodigoIncDec(operando, operador);
         recordarDO(operando.getNombreVariable(), null);
     }
-    
-    private void generarCodigoIncDec(RS_DO operando, RS_Operacion operador){
+
+    private void generarCodigoIncDec(RS_DO operando, RS_Operacion operador) {
         System.out.println("genera codigo inc dec");
-        switch(operador.getOperador()){
+        switch (operador.getOperador()) {
             case "++":
-                codigo += "     inc " + operando.getNombreVariable() + "\n";                
+                codigo += "     inc " + operando.getNombreVariable() + "\n";
                 break;
             case "--":
                 codigo += "     dec " + operando.getNombreVariable() + "\n";
         }
     }
-    
-    public void start_if(){
+
+    public void start_if() {
         // Se crea RS de If y se generan las etiquetas
         RS_If rs = new RS_If();
         System.out.println("Recuerda if");
-        pila.pushRegistro(rs);  
+        pila.pushRegistro(rs);
     }
 
-    
     public void else_if() {
         RegistroSemantico rs = pila.buscar("Clases.RS_If");
         // se agrega el salto
-         codigo += "     jmp " + ((RS_If)rs).getExit_label() + "\n";
-         // Se agrega la etiqueta del Else
-         codigo += " " + ((RS_If)rs).getElse_label()+ ":\n";
+        codigo += "     jmp " + ((RS_If) rs).getExit_label() + "\n";
+        // Se agrega la etiqueta del Else
+        codigo += " " + ((RS_If) rs).getElse_label() + ":\n";
     }
-    
-    public void end_if(){
+
+    public void end_if() {
         RegistroSemantico rs = pila.popRegistro();
-        while(!(rs instanceof RS_If)){
+        while (!(rs instanceof RS_If)) {
             rs = pila.popRegistro();
         }
-        codigo += " " + ((RS_If)rs).getExit_label() + ":\n";
+        codigo += " " + ((RS_If) rs).getExit_label() + ":\n";
     }
-    
-    public void start_while(){
+
+    public void start_while() {
         RS_While rs = new RS_While();
-        codigo += " " + rs.getStart_label()+ ":\n";
+        codigo += " " + rs.getStart_label() + ":\n";
         pila.pushRegistro(rs);
     }
-    
-    private RS_Operacion generarCodigoCmp(){
-        
+
+    private RS_Operacion generarCodigoCmp() {
+
         RS_DO operando2 = (RS_DO) pila.popRegistro();
         RS_Operacion operador = (RS_Operacion) pila.popRegistro();
         RS_DO operando1 = (RS_DO) pila.popRegistro();
-        
+
         codigo += "     mov ax, ";
-        if((operando1.getNombreVariable().equals("Int") || operando1.getNombreVariable().equals("Float") ) && operando1.getValor() != null){
+        if ((operando1.getNombreVariable().equals("Int") || operando1.getNombreVariable().equals("Float")) && operando1.getValor() != null) {
             //primer operando es un entero o un flotante
-            codigo+= operando1.getValor().toString() + "\n";
-        }else{
-            codigo+= operando1.getNombreVariable() + "\n";
+            codigo += operando1.getValor().toString() + "\n";
+        } else {
+            codigo += operando1.getNombreVariable() + "\n";
         }
-        
+
         codigo += "     mov bx, ";
-        
-        if((operando2.getNombreVariable().equals("Int") || operando2.getNombreVariable().equals("Float") ) && operando2.getValor() != null){
+
+        if ((operando2.getNombreVariable().equals("Int") || operando2.getNombreVariable().equals("Float")) && operando2.getValor() != null) {
             //segundo operando es un entero o un flotante
-            codigo+= operando2.getValor().toString() + "\n";
-        }else{
-            codigo+= operando2.getNombreVariable() + "\n";
+            codigo += operando2.getValor().toString() + "\n";
+        } else {
+            codigo += operando2.getNombreVariable() + "\n";
         }
-        
+
         codigo += "     cmp ax, bx \n";
-        
+
         return operador;
     }
-    
-    public void evalExp_if(){
-        RS_Operacion operador = generarCodigoCmp();     
-        
+
+    public void evalExp_if() {
+        RS_Operacion operador = generarCodigoCmp();
+
         RS_If rs = (RS_If) pila.buscar("Clases.RS_If");
-        
+
         generarCodigoJump(operador.getOperador(), rs.getElse_label());
-        
+
     }
-    
-    private void generarCodigoJump(String operador,String label){
-        switch(operador){
+
+    private void generarCodigoJump(String operador, String label) {
+        switch (operador) {
             case "=":
-                codigo += "     jne " + label + "\n"; 
+                codigo += "     jne " + label + "\n";
                 break;
             case ">":
-                codigo += "     jng " + label + "\n"; 
-                break; 
+                codigo += "     jng " + label + "\n";
+                break;
             case ">=":
-                codigo += "     jnge " + label + "\n"; 
-                break; 
+                codigo += "     jnge " + label + "\n";
+                break;
             case "<":
-                codigo += "     jnl " + label + "\n"; 
-                break; 
+                codigo += "     jnl " + label + "\n";
+                break;
             case "<=":
-                codigo += "     jnle " + label + "\n"; 
-                break; 
+                codigo += "     jnle " + label + "\n";
+                break;
             case "<>":
-                codigo += "     je " + label + "\n"; 
-                break; 
+                codigo += "     je " + label + "\n";
+                break;
         }
     }
-    
-    public void evalExp_While(){
+
+    public void evalExp_While() {
         System.out.println("eval exp while");
-        RS_Operacion operador = generarCodigoCmp();       
-        
-        RS_While rs = (RS_While) pila.buscar("Clases.RS_While");        
+        RS_Operacion operador = generarCodigoCmp();
+
+        RS_While rs = (RS_While) pila.buscar("Clases.RS_While");
         generarCodigoJump(operador.getOperador(), rs.getExit_label());
 
     }
-    
-    public void end_while(){
-       RegistroSemantico rs = pila.popRegistro();
-        while(!(rs instanceof RS_While)){
+
+    public void end_while() {
+        RegistroSemantico rs = pila.popRegistro();
+        while (!(rs instanceof RS_While)) {
             rs = pila.popRegistro();
         }
-       codigo += "     jmp " + ((RS_While)rs).getStart_label()+ "\n";
-       codigo += " " + ((RS_While)rs).getExit_label()+ ":\n";
+        codigo += "     jmp " + ((RS_While) rs).getStart_label() + "\n";
+        codigo += " " + ((RS_While) rs).getExit_label() + ":\n";
     }
-    
+
     @Override
     public String toString() {
         return tsimbolo.toString();
     }
-    
-    
-    
-    
-    
-    
-    
+
 }

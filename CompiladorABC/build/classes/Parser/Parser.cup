@@ -64,7 +64,7 @@ PROCEDIMIENTO_BLOQUE    ::= PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA
                           | error PUNTOYCOMA {: System.out.println("Error sintáctico: ERROR EN PROCEDIMIENTO"); :};
 
 
-FUNCION     ::=  FUNCTION IDENTIFICADOR:i FUNCION_BLOQUE {: parser.getCoder().guardarFuncionEnTsimbolo((String)i);:};
+FUNCION     ::=  FUNCTION {: parser.getCoder().startFunction();:} IDENTIFICADOR:i FUNCION_BLOQUE {: parser.getCoder().guardarFuncionEnTsimbolo((String)i);:};
 
 FUNCION_BLOQUE ::= PARENTESIS_ABRE ARGUMENTOS PARENTESIS_CIERRA DOS_PUNTOS TIPO:t {: parser.getCoder().recordarTipo((String)t);:}
                    BLOQUE_DECLARACIONES BEGIN SENTENCIAS 
@@ -113,8 +113,8 @@ VARIABLE           ::= IDENTIFICADORES DOS_PUNTOS TIPO:tipo {: parser.getCoder()
 IDENTIFICADORES    ::= IDENTIFICADORES COMA IDENTIFICADOR:i {: parser.getCoder().recordarIdentificador((String)i);:}
                               |  IDENTIFICADOR:i {: parser.getCoder().recordarIdentificador((String)i); :};
 
-EXP ::= ADITIVOS 
-      | STRING;
+EXP ::= ADITIVOS {: RESULT = "numero" :}
+      | STRING {: RESULT = "string" :};
 
 CONDICION ::=	CONDICION OpOR COND_AND 
 	      | COND_AND;
@@ -180,7 +180,7 @@ TIPO        ::=   TYPE_INT:t           {: RESULT = t; :}
                 | TYPE_BOOLEAN:t       {: RESULT = t; :}
                 | TYPE_REAL:t          {: RESULT = t; :} ;
 
-ASIGNACION  ::= IDENTIFICADOR:i {: parser.getCoder().recordarDO((String)i, null); :} OprASIGNACION:o {: parser.getCoder().recordarOperacion((String)o); :}  EXP {: parser.getCoder().evalBinaria(); parser.getCoder().generarCodigoAsignacion(); :}
+ASIGNACION  ::= IDENTIFICADOR:i {: parser.getCoder().recordarDO((String)i, null); :} OprASIGNACION:o {: parser.getCoder().recordarOperacion((String)o); :}  EXP:t {: parser.getCoder().evalBinaria(); parser.getCoder().generarCodigoAsignacion( (String)t); :}
               | IDENTIFICADOR:i {: parser.getCoder().recordarDO((String)i, null); :} OprASIG_MAS:o {: parser.getCoder().recordarOperacion((String)o); :} EXP
               | IDENTIFICADOR:i {: parser.getCoder().recordarDO((String)i, null); :} OprASIG_RESTA:o {: parser.getCoder().recordarOperacion((String)o); :} EXP
               | IDENTIFICADOR:i {: parser.getCoder().recordarDO((String)i, null); :} OprASIG_MUL:o {: parser.getCoder().recordarOperacion((String)o); :} EXP

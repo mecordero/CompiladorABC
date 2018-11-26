@@ -19,6 +19,8 @@ public class Simbolo {
     Object valor;
     ArrayList argumentos;
     boolean esVariable = false;
+    boolean esConstante = false;
+    boolean esFuncion = false;
     //constructor funciones
     public Simbolo(String nombre, String tipo, int direccion, ArrayList argumentos) {
         this.nombre = nombre;
@@ -26,6 +28,7 @@ public class Simbolo {
         this.direccion = direccion;
         this.valor = valor;
         this.argumentos = argumentos;
+        this.esFuncion = true;
     }
     //constructor variables
     public Simbolo(String nombre, String tipo, int direccion) {
@@ -40,6 +43,7 @@ public class Simbolo {
         this.tipo = tipo;
         this.direccion = direccion;
         this.valor = valor;
+        this.esConstante = true;
     }
 
     public Object getValor() {
@@ -56,6 +60,22 @@ public class Simbolo {
 
     public void setEsVariable(boolean esVariable) {
         this.esVariable = esVariable;
+    }
+
+    public boolean getEsConstante() {
+        return esConstante;
+    }
+
+    public void setEsConstante(boolean esConstante) {
+        this.esConstante = esConstante;
+    }
+
+    public boolean getEsFuncion() {
+        return esFuncion;
+    }
+
+    public void setEsFuncion(boolean esFuncion) {
+        this.esFuncion = esFuncion;
     }
     
     
