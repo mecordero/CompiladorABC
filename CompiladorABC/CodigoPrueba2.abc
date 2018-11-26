@@ -1,0 +1,23 @@
+.model tiny 
+.UDATA 
+y	 resb  	 2 
+x	 resb  	 2 
+z	 resb  	 4 
+asig	 resb  	 4 
+T	 resb  	 30 
+
+
+ function_1:
+     mov asig, 4
+     ret
+
+.CODE 
+ label_1:
+     mov ax, x
+     mov bx, 5
+     cmp ax, bx
+     jne label_2
+     mov r, 45
+     mov asig, 6
+     jmp label_1
+ label_2:

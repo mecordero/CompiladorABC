@@ -26,7 +26,7 @@ public class Coder {
     }
 
     public Coder() {
-        codigo = ".model tiny \n";
+        codigo = ".model tiny " + System.lineSeparator();
         pila = new PilaSemantica();
         tsimbolo = new TSimbolos();
         generadorLabels = new GeneradorLabels();
@@ -79,10 +79,10 @@ public class Coder {
         if (resultado == -1) {
             generarCodigo = false;
         }else{
-            codTemp += "\n\n function_" + contFunc + ":\n";
+            codTemp += "\n\n function_" + contFunc + ":" + System.lineSeparator();
             contFunc++;
             codTemp += codigo;
-            codTemp += "     ret\n\n";
+            codTemp += "     ret" + System.lineSeparator() + System.lineSeparator();
             codigo = codTemp;
             codTemp = "";
         }
@@ -110,19 +110,19 @@ public class Coder {
             codigo += ((RS_Identificador) top).getNombre() + "\t resb  \t";
 
             if (tipo.toUpperCase().equals("INT")) {
-                codigo += " 4 \n";
+                codigo += " 4 " + System.lineSeparator();
             } else if (tipo.toUpperCase().equals("SHORTINT")) {
-                codigo += " 2 \n";
+                codigo += " 2 " + System.lineSeparator();
             } else if (tipo.toUpperCase().equals("LONGTINT")) {
-                codigo += " 6 \n";
+                codigo += " 6 " + System.lineSeparator();
             } else if (tipo.toUpperCase().equals("CHAR")) {
-                codigo += " 1 \n";
+                codigo += " 1 " + System.lineSeparator();
             } else if (tipo.toUpperCase().equals("BOOLEAN")) {
-                codigo += " 1 \n";
+                codigo += " 1 " + System.lineSeparator();
             } else if (tipo.toUpperCase().equals("REAL")) {
-                codigo += " 4 \n";
+                codigo += " 4 " + System.lineSeparator();
             } else if (tipo.toUpperCase().equals("STRING")) {
-                codigo += " 30 \n";
+                codigo += " 30 " + System.lineSeparator();
             }
 
             top = pila.verTop();
@@ -130,11 +130,11 @@ public class Coder {
     }
 
     public void iniciarVar() {
-        codigo += ".UDATA \n";
+        codigo += ".UDATA " + System.lineSeparator();
     }
 
     public void iniciarCode() {
-        codigo += ".CODE \n";
+        codigo += ".CODE " + System.lineSeparator();
     }
 
     public void guardarConstanteEnTSimbolos(String nombre, String tipo, Object valor) {
@@ -202,9 +202,9 @@ public class Coder {
         codigo += "     mov ax, ";
         if ((operando1.getNombreVariable().equals("Int") || operando1.getNombreVariable().equals("Float")) && operando1.getValor() != null) {
             //primer operador es un entero o un flotante
-            codigo += operando1.getValor().toString() + "\n";
+            codigo += operando1.getValor().toString()  + System.lineSeparator();
         } else {
-            codigo += operando1.getNombreVariable() + "\n";
+            codigo += operando1.getNombreVariable()  + System.lineSeparator();
         }
 
         switch (operador.getOperador().toUpperCase()) {
@@ -226,9 +226,9 @@ public class Coder {
 
         if ((operando2.getNombreVariable().equals("Int") || operando2.getNombreVariable().equals("Float")) && operando2.getValor() != null) {
             //segunfo operador es un entero o un flotante
-            codigo += operando2.getValor().toString() + "\n";
+            codigo += operando2.getValor().toString()  + System.lineSeparator();
         } else {
-            codigo += operando2.getNombreVariable() + "\n";
+            codigo += operando2.getNombreVariable() + System.lineSeparator();
         }
 
         if (operador.getOperador().toUpperCase().equals("MOD")) {
@@ -311,9 +311,9 @@ public class Coder {
         
         codigo += "     mov " + identificador.getNombreVariable() + ", ";
         if (valorAsignar.getValor() != null) {
-            codigo += String.valueOf(valorAsignar.getValor()) + "\n";
+            codigo += String.valueOf(valorAsignar.getValor()) + System.lineSeparator();
         } else {
-            codigo += valorAsignar.getNombreVariable()+ "\n";
+            codigo += valorAsignar.getNombreVariable() + System.lineSeparator();
         }
     }
 
@@ -335,10 +335,10 @@ public class Coder {
         System.out.println("genera codigo inc dec");
         switch (operador.getOperador()) {
             case "++":
-                codigo += "     inc " + operando.getNombreVariable() + "\n";
+                codigo += "     inc " + operando.getNombreVariable() + System.lineSeparator();
                 break;
             case "--":
-                codigo += "     dec " + operando.getNombreVariable() + "\n";
+                codigo += "     dec " + operando.getNombreVariable() + System.lineSeparator();
         }
     }
 
@@ -352,9 +352,9 @@ public class Coder {
     public void else_if() {
         RegistroSemantico rs = pila.buscar("Clases.RS_If");
         // se agrega el salto
-        codigo += "     jmp " + ((RS_If) rs).getExit_label() + "\n";
+        codigo += "     jmp " + ((RS_If) rs).getExit_label() + System.lineSeparator();
         // Se agrega la etiqueta del Else
-        codigo += " " + ((RS_If) rs).getElse_label() + ":\n";
+        codigo += " " + ((RS_If) rs).getElse_label() + ":"  + System.lineSeparator();
     }
 
     public void end_if() {
@@ -362,12 +362,12 @@ public class Coder {
         while (!(rs instanceof RS_If)) {
             rs = pila.popRegistro();
         }
-        codigo += " " + ((RS_If) rs).getExit_label() + ":\n";
+        codigo += " " + ((RS_If) rs).getExit_label() + ":"  + System.lineSeparator();
     }
 
     public void start_while() {
         RS_While rs = new RS_While();
-        codigo += " " + rs.getStart_label() + ":\n";
+        codigo += " " + rs.getStart_label() + ":"  + System.lineSeparator();
         pila.pushRegistro(rs);
     }
 
@@ -380,21 +380,21 @@ public class Coder {
         codigo += "     mov ax, ";
         if ((operando1.getNombreVariable().equals("Int") || operando1.getNombreVariable().equals("Float")) && operando1.getValor() != null) {
             //primer operando es un entero o un flotante
-            codigo += operando1.getValor().toString() + "\n";
+            codigo += operando1.getValor().toString() + System.lineSeparator();
         } else {
-            codigo += operando1.getNombreVariable() + "\n";
+            codigo += operando1.getNombreVariable() + System.lineSeparator();
         }
 
         codigo += "     mov bx, ";
 
         if ((operando2.getNombreVariable().equals("Int") || operando2.getNombreVariable().equals("Float")) && operando2.getValor() != null) {
             //segundo operando es un entero o un flotante
-            codigo += operando2.getValor().toString() + "\n";
+            codigo += operando2.getValor().toString() + System.lineSeparator();
         } else {
-            codigo += operando2.getNombreVariable() + "\n";
+            codigo += operando2.getNombreVariable() + System.lineSeparator();
         }
 
-        codigo += "     cmp ax, bx \n";
+        codigo += "     cmp ax, bx"  + System.lineSeparator();
 
         return operador;
     }
@@ -411,22 +411,22 @@ public class Coder {
     private void generarCodigoJump(String operador, String label) {
         switch (operador) {
             case "=":
-                codigo += "     jne " + label + "\n";
+                codigo += "     jne " + label + System.lineSeparator();
                 break;
             case ">":
-                codigo += "     jng " + label + "\n";
+                codigo += "     jng " + label + System.lineSeparator();
                 break;
             case ">=":
-                codigo += "     jnge " + label + "\n";
+                codigo += "     jnge " + label + System.lineSeparator();
                 break;
             case "<":
-                codigo += "     jnl " + label + "\n";
+                codigo += "     jnl " + label + System.lineSeparator();
                 break;
             case "<=":
-                codigo += "     jnle " + label + "\n";
+                codigo += "     jnle " + label + System.lineSeparator();
                 break;
             case "<>":
-                codigo += "     je " + label + "\n";
+                codigo += "     je " + label + System.lineSeparator();
                 break;
         }
     }
@@ -445,8 +445,8 @@ public class Coder {
         while (!(rs instanceof RS_While)) {
             rs = pila.popRegistro();
         }
-        codigo += "     jmp " + ((RS_While) rs).getStart_label() + "\n";
-        codigo += " " + ((RS_While) rs).getExit_label() + ":\n";
+        codigo += "     jmp " + ((RS_While) rs).getStart_label() + System.lineSeparator();
+        codigo += " " + ((RS_While) rs).getExit_label() + ":"  + System.lineSeparator();
     }
 
     @Override

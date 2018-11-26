@@ -1717,7 +1717,7 @@ class CUP$Parser$actions {
           case 52: // EXP ::= STRING 
             {
               Object RESULT =null;
-		 RESULT = "string" 
+		 RESULT = "string" ;
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("EXP",16, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1726,7 +1726,7 @@ class CUP$Parser$actions {
           case 51: // EXP ::= ADITIVOS 
             {
               Object RESULT =null;
-		 RESULT = "numero" 
+		 RESULT = "numero" ;
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("EXP",16, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

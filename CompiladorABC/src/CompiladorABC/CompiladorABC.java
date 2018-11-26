@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.FileReader;
 import Parser.Parser;
 import Scanner.Lexer;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 /**
  *
@@ -19,8 +22,8 @@ public class CompiladorABC {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         try {
             
-            String nombreArchivo = "CodigoPrueba2.txt";
-            Lexer l = new Lexer(new FileReader(nombreArchivo));
+            String nombreArchivo = "CodigoPrueba2";
+            Lexer l = new Lexer(new FileReader(nombreArchivo+".txt"));
             Parser parser = new Parser(l);
             parser.parse();  
             System.out.println("");
@@ -28,6 +31,11 @@ public class CompiladorABC {
             System.out.println("FINALIZA EL PARSEO");
             System.out.println("\n Codigo:");
             System.out.println(parser.getCoder().getCodigo());
+            
+            FileWriter f = new FileWriter(new File(nombreArchivo + ".abc"));
+            PrintWriter p = new PrintWriter(f);
+            p.print(parser.getCoder().getCodigo());
+            p.close();
         } 
         catch (ScannerException e) {
                 System.out.println("[Línea: " + e.getLinea() + "]=>" + e.getCaracteres()+ ": " + e.getMessage()+ "\n");
