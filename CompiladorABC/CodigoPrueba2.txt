@@ -12,13 +12,13 @@ t = 10;
 
 function fun ( INT x ) : int
 begin
-asig:= 4;
+asig:= 5;
 end
 
 BEGIN
 while (x = 5) do
 begin
-r := 45;
+r := 2 + 3;
 asig := 6;
 end
 
