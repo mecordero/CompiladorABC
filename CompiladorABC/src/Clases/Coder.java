@@ -36,7 +36,6 @@ public class Coder {
     }
 
     public void recordarIdentificador(String id) {
-        System.out.println("Recuerda identificador");
         pila.pushRegistro(new RS_Identificador(id));
     }
 
@@ -45,17 +44,22 @@ public class Coder {
     }
 
     public void recordarDO(String nombreVariable, String valor) {
-        System.out.println("Recuerda DO " + nombreVariable);
+        
+        //verifica que si es una variable exista
+        if(valor == null && !nombreVariable.equals("ax") ){
+            Simbolo s = tsimbolo.buscarSimbolo(nombreVariable);
+            if(s == null)
+                System.out.println("Error semántico: el identificador " + nombreVariable + " no ha sido declarado");
+        }
+        
         pila.pushRegistro(new RS_DO(nombreVariable, valor));
     }
 
     public void recordarOperacion(String operador) {
-        System.out.println("Recuerda Operación " + operador);
         pila.pushRegistro(new RS_Operacion(operador));
     }
 
     public void guardarFuncionEnTsimbolo(String nombre) {
-        System.out.println("Guarda variables en ts");
         ArrayList<Simbolo> argumentos = new ArrayList<>();
 
         RegistroSemantico tipo = pila.popRegistro();
@@ -98,8 +102,6 @@ public class Coder {
     }
 
     public void guardarVariablesEnTSimbolos(String tipo) {
-        System.out.println("Guarda variables en ts");
-
         RegistroSemantico top = pila.verTop();
         while (top instanceof RS_Identificador) {
             int resultado = tsimbolo.agregarVariable(((RS_Identificador) top).getNombre(), tipo);
@@ -138,7 +140,6 @@ public class Coder {
     }
 
     public void guardarConstanteEnTSimbolos(String nombre, String tipo, Object valor) {
-        System.out.println("Gurda constante en ts");
         int resultado = tsimbolo.agregarConstante(nombre, tipo, valor);
         pila.popRegistro();
         if (resultado == -1) {
@@ -146,25 +147,10 @@ public class Coder {
         }
     }
 
-    /*
-    public void evalOperacion(){
-        System.out.println("Evalúa operacion");
-        RegistroSemantico top = pila.verTop();
-        if(top instanceof RS_Operacion && ((RS_Identificador)top).getNombre().equals(")")){
-            pila.popRegistro();
-            top = pila.verTop();
-            while(!(top instanceof RS_Operacion && ((RS_Identificador)top).getNombre().equals("("))){
-                RegistroSemantico resultado = evalBinaria();
-                top = pila.verTop();
-                pila.pushRegistro(resultado);
-            }
-        }
-    }*/
     public void evalBinaria() {
-        System.out.println("Evalúa operacion binaria");
         RS_DO operando2 = (RS_DO) pila.popRegistro();
         RS_Operacion operador = (RS_Operacion) pila.popRegistro();
-        RS_DO operando1 = (RS_DO) pila.popRegistro();
+        RS_DO operando1 = (RS_DO) pila.popRegistro();      
 
         if (!isOperacion(operador.getOperador())) {
             //si no es una operacion binaria lo devuelve a como estaba
@@ -209,18 +195,18 @@ public class Coder {
 
         switch (operador.getOperador().toUpperCase()) {
             case "+":
-                codigo += "add ax, ";
+                codigo += "     add ax, ";
                 break;
             case "-":
-                codigo += "sub ax, ";
+                codigo += "     sub ax, ";
                 break;
             case "*":
-                codigo += "mul ";
+                codigo += "     mul ";
                 break;
             case "/":
             case "DIV":
             case "MOD":
-                codigo += "div ";
+                codigo += "     div ";
 
         }
 
@@ -332,7 +318,6 @@ public class Coder {
     }
 
     private void generarCodigoIncDec(RS_DO operando, RS_Operacion operador) {
-        System.out.println("genera codigo inc dec");
         switch (operador.getOperador()) {
             case "++":
                 codigo += "     inc " + operando.getNombreVariable() + System.lineSeparator();
@@ -345,7 +330,6 @@ public class Coder {
     public void start_if() {
         // Se crea RS de If y se generan las etiquetas
         RS_If rs = new RS_If();
-        System.out.println("Recuerda if");
         pila.pushRegistro(rs);
     }
 
@@ -432,7 +416,6 @@ public class Coder {
     }
 
     public void evalExp_While() {
-        System.out.println("eval exp while");
         RS_Operacion operador = generarCodigoCmp();
 
         RS_While rs = (RS_While) pila.buscar("Clases.RS_While");

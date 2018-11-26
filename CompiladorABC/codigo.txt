@@ -1,0 +1,25 @@
+Program b
+VAR
+x: shortint ;
+y: int ;
+
+
+BEGIN
+
+    x:= 10;
+    y:= 20;
+    x := x+y;
+
+    while (x < 4) do BEGIN
+
+        if (y >= 15)
+        then
+            x := x * y;
+        ELSE
+          x := x - y;
+        END
+     x++;
+     y--;
+
+    END
+END

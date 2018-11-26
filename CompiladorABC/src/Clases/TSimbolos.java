@@ -27,7 +27,7 @@ public class TSimbolos {
     public int agregarFuncion(String nombre, String tipo, ArrayList argumentos) {
         // buscar si existe en t simbolos y si esta devuelve error
         if (tablaSimbolos.containsKey(nombre)) {
-            System.out.println("Ya existe un símbolo con el nombre " + nombre);
+            System.out.println("Error semántico: Ya existe un símbolo con el nombre " + nombre);
             return -1;
         }
 
@@ -44,7 +44,7 @@ public class TSimbolos {
     public int agregarVariable(String nombre, String tipo) {
         // buscar si existe en t simbolos y si esta devuelve error
         if (tablaSimbolos.containsKey(nombre)) {
-            System.out.println("Ya existe un símbolo con el nombre " + nombre);
+            System.out.println("Error semántico: Ya existe un símbolo con el nombre " + nombre);
             return -1;
         }
 
@@ -61,7 +61,7 @@ public class TSimbolos {
     public int agregarConstante(String nombre, String tipo, Object valor) {
         // buscar si existe en t simbolos y si esta devuelve error
         if (tablaSimbolos.containsKey(nombre)) {
-            System.out.println("Ya existe un símbolo con el nombre " + nombre);
+            System.out.println("Error semántico: Ya existe un símbolo con el nombre " + nombre);
             return -1;
         }
 

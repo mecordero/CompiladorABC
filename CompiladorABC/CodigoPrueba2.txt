@@ -1,26 +1,14 @@
-
-PROGRAM Prueba
+Program a
 VAR
-x,y: shortint;
-z:REAL;
-asig: INT;
-T:STRING;
+  a, b, c: int;
 
-CONST
-r = 8;
-t = 10;
-
-function fun ( INT x ) : int
-begin
-asig:= 5;
-end
+FUNCTION funcion1( int x, int y ): int // debe guardar tanto los parametros como la variable
+var
+z:int;
+BEGIN
+x := x+y;
+END
 
 BEGIN
-while (x = 5) do
-begin
-r := 2 + 3;
-asig := 6;
-end
-
-end
-
+c := a / b;
+END

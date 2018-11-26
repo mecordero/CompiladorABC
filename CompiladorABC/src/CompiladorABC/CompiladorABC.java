@@ -29,8 +29,6 @@ public class CompiladorABC {
             System.out.println("");
             System.out.println(parser.getCoder().toString());
             System.out.println("FINALIZA EL PARSEO");
-            System.out.println("\n Codigo:");
-            System.out.println(parser.getCoder().getCodigo());
             
             FileWriter f = new FileWriter(new File(nombreArchivo + ".abc"));
             PrintWriter p = new PrintWriter(f);
