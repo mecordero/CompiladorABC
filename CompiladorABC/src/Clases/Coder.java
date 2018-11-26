@@ -78,12 +78,37 @@ public class Coder {
     
     public void guardarVariablesEnTSimbolos(String tipo) {
         System.out.println("Guarda variables en ts");
+               
         RegistroSemantico top = pila.verTop();
         while(top instanceof RS_Identificador) {
             tsimbolo.agregarVariable(((RS_Identificador)top).getNombre(), tipo);
-            pila.popRegistro();
+            pila.popRegistro();            
+            codigo += ((RS_Identificador)top).getNombre() + "\t resb  \t";
+            
+            if(tipo.toUpperCase().equals("INT"))
+                codigo +=" 4 \n";
+            else if(tipo.toUpperCase().equals("SHORTINT"))
+                codigo +=" 2 \n";
+            else if(tipo.toUpperCase().equals("LONGTINT"))
+                codigo +=" 6 \n";
+            else if(tipo.toUpperCase().equals("CHAR"))
+                codigo +=" 1 \n";
+            else if(tipo.toUpperCase().equals("BOOLEAN"))
+                codigo +=" 1 \n";
+            else if(tipo.toUpperCase().equals("REAL"))
+                codigo +=" 4 \n";
+            
+            
             top = pila.verTop();
         }
+    }
+    
+    public void iniciarVar(){
+        codigo += ".UDATA \n";
+    }
+    
+    public void iniciarCode(){
+        codigo += ".CODE \n";
     }
     
     public void guardarConstanteEnTSimbolos(String nombre, String tipo, Object valor){

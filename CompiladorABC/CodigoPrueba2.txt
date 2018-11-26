@@ -1,6 +1,11 @@
 
 PROGRAM Prueba
 
+VAR
+x,y: shortint;
+z:REAL;
+
+T:BOOLEAN;
 BEGIN
 
 while (x = 5) do
