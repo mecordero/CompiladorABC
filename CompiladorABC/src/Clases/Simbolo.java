@@ -17,17 +17,19 @@ public class Simbolo {
     String tipo;
     int direccion;
     Object valor;
-    ArrayList argumentos;
+    ArrayList<Simbolo> argumentos;
     boolean esVariable = false;
     boolean esConstante = false;
     boolean esFuncion = false;
     //constructor funciones
-    public Simbolo(String nombre, String tipo, int direccion, ArrayList argumentos) {
+    public Simbolo(String nombre, String tipo, int direccion, ArrayList<Simbolo> argumentos) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.direccion = direccion;
-        this.valor = valor;
-        this.argumentos = argumentos;
+        this.argumentos = new ArrayList<>();
+        for(int i = argumentos.size()-1; i > -1; i--){
+            this.argumentos.add(argumentos.get(i));
+        }
         this.esFuncion = true;
     }
     //constructor variables
@@ -113,7 +115,15 @@ public class Simbolo {
     }
     
     public String toString() {
-        return nombre + "->[" + tipo + "]";
+        if(!esFuncion)
+            return nombre + "->[" + tipo + "]" ;
+        String result = nombre + "->[" + tipo + "]" + ", argumentos: ";
+        
+        for (Simbolo argumento : argumentos) {
+            result += argumento.nombre + "->[" + argumento.tipo + "]  ";
+        }
+        
+        return result;
     }
     
     

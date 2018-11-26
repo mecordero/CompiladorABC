@@ -53,7 +53,7 @@ ESTRUCTURA_PROGRAMA ::= PROGRAM IDENTIFICADOR {: parser.getCoder().iniciarVar();
                          | error  {: System.out.println("Error sintáctico: ERROR EN PROGRAMA, FALTA UN BEGIN O END"); :};
 
 BLOQUE_FUNCIONES_PROCEDIMIENTOS ::= PROCEDIMIENTO END BLOQUE_FUNCIONES_PROCEDIMIENTOS 
-                                  | FUNCION END BLOQUE_FUNCIONES_PROCEDIMIENTOS 
+                                  | FUNCION {: parser.getCoder().endFuncion(); :}END BLOQUE_FUNCIONES_PROCEDIMIENTOS 
                                   | ;
 
 
@@ -113,8 +113,8 @@ VARIABLE           ::= IDENTIFICADORES DOS_PUNTOS TIPO:tipo {: parser.getCoder()
 IDENTIFICADORES    ::= IDENTIFICADORES COMA IDENTIFICADOR:i {: parser.getCoder().recordarIdentificador((String)i);:}
                               |  IDENTIFICADOR:i {: parser.getCoder().recordarIdentificador((String)i); :};
 
-EXP ::= ADITIVOS {: RESULT = "numero" :}
-      | STRING {: RESULT = "string" :};
+EXP ::= ADITIVOS {: RESULT = "numero"; :}
+      | STRING {: RESULT = "string"; :};
 
 CONDICION ::=	CONDICION OpOR COND_AND 
 	      | COND_AND;

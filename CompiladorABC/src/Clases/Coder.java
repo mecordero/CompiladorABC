@@ -60,7 +60,7 @@ public class Coder {
     }
 
     public void guardarFuncionEnTsimbolo(String nombre) {
-        ArrayList<Simbolo> argumentos = new ArrayList<>();
+        ArrayList<Simbolo> argumentos = new ArrayList<Simbolo>();
 
         RegistroSemantico tipo = pila.popRegistro();
         RegistroSemantico top = pila.verTop();
@@ -77,7 +77,11 @@ public class Coder {
             argumentos.add(s);
             top = pila.verTop();
         }
-
+        
+        if(top instanceof RS_Func)
+            System.out.println("es funcion aqui");
+        else
+            System.out.println("no es funcion aqui");
         int resultado = tsimbolo.agregarFuncion(nombre, ((RS_Tipo) tipo).getTipo(), argumentos);
 
         if (resultado == -1) {
@@ -96,6 +100,12 @@ public class Coder {
         codTemp = codigo;
         codigo = "";
         
+    }
+    
+    public void endFuncion(){
+        System.out.println("end funcion");
+        RS_Func f = (RS_Func) pila.popRegistro();
+        System.out.println(f);
     }
     public void recordarFuncion() {
         pila.pushRegistro(new RS_Func());

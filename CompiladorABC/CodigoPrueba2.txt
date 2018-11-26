@@ -1,14 +1,30 @@
-Program a
+Program b
 VAR
-  a, b, c: int;
+x: shortint ;
+y: int ;
 
-FUNCTION funcion1( int x, int y ): int // debe guardar tanto los parametros como la variable
-var
-z:int;
-BEGIN
-x := x+y;
-END
+
+function f (int i, String u) : int
+begin
+x := 5;
+end
 
 BEGIN
-c := a / b;
+
+    x:= 10;
+    y:= 20;
+    x := x+y;
+
+    while (x < 4) do BEGIN
+
+        if (y >= 15)
+        then
+            x := x * y;
+        ELSE
+          x := x - y;
+        END
+     x++;
+     y--;
+
+    END
 END
