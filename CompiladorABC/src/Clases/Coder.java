@@ -97,6 +97,8 @@ public class Coder {
                 codigo +=" 1 \n";
             else if(tipo.toUpperCase().equals("REAL"))
                 codigo +=" 4 \n";
+            else if(tipo.toUpperCase().equals("STRING"))
+                codigo +=" 30 \n";
             
             
             top = pila.verTop();

@@ -5,7 +5,7 @@ VAR
 x,y: shortint;
 z:REAL;
 
-T:BOOLEAN;
+T:STRING;
 BEGIN
 
 while (x = 5) do
